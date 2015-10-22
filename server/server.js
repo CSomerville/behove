@@ -2,14 +2,13 @@ import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import pgSession from 'connect-pg-simple';
-import {db} from '../db/connection';
+import {createUser} from '../db/queries';
 
 let app = express();
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(session({
   store: new (pgSession(session))(),
@@ -62,15 +61,13 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/adduser', (req, res) => {
-  db.task((t) => {
-    return t.none("INSERT INTO users (username) VALUES ('" + req.body.username + "')");
-  })
+  createUser(req.body.username)
     .then(() => {
-      console.log('user created');
+      console.log('in here sucka')
       res.redirect('/loggedin');
     }, (err) => {
-      console.log(err);
-    });
+      res.redirect('/login');
+    })
 });
 
 
