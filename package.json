@@ -1,0 +1,18 @@
+{
+  "name": "behove",
+  "version": "0.0.0",
+  "description": "hive mind help",
+  "main": "index.js",
+  "scripts": {
+    "schema": "babel-node ./db/schema.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Colby Somerville",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.23"
+  },
+  "dependencies": {
+    "pg-promise": "^2.1.0"
+  }
+}
