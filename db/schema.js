@@ -10,9 +10,9 @@ const dropTables = (t) => {
 
 const establishSchema = (t) => {
   return Promise.all([
-    t.none("CREATE TABLE users (id integer PRIMARY KEY, username text);"),
-    t.none("CREATE TABLE combs (id integer PRIMARY KEY);"),
-    t.none("CREATE TABLE combs_hist (id integer PRIMARY KEY, " +
+    t.none("CREATE TABLE users (id SERIAL PRIMARY KEY, username text);"),
+    t.none("CREATE TABLE combs (id SERIAL PRIMARY KEY);"),
+    t.none("CREATE TABLE combs_hist (id SERIAL PRIMARY KEY, " +
       "user_id integer REFERENCES users(id), comb_id integer REFERENCES combs(id), name text)")
   ]);
 }
