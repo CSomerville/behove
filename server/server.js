@@ -1,9 +1,10 @@
 import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import logger from 'morgan';
 import cons from 'consolidate';
 import pgSession from 'connect-pg-simple';
-import routes from './routes/routes'
+import loginBoss from './routes/loginboss';
 
 let app = express();
 
@@ -13,6 +14,8 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 app.set('port', process.env.PORT || 3000);
+
+app.use(logger('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -24,7 +27,7 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use('/', routes);
+app.use('/', loginBoss);
 
 app.listen(app.get('port'), () => {
   console.log('server is listening on ', app.get('port'));

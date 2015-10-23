@@ -19,6 +19,7 @@
     "consolidate": "^0.13.1",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
+    "morgan": "^1.6.1",
     "mustache": "^2.2.0",
     "pg-promise": "^2.1.0"
   }
