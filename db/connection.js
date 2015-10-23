@@ -1,6 +1,6 @@
 import pgPromise from 'pg-promise';
 
-const con = 'postgres://localhost/behove';
+const con = process.env.DATABASE_URL || 'postgres://localhost/behove';
 
 export const pgp = pgPromise();
 

@@ -11,9 +11,10 @@ const dropTables = (t) => {
 const establishSchema = (t) => {
   return Promise.all([
     t.none("CREATE TABLE users (id SERIAL PRIMARY KEY, username text);"),
-    t.none("CREATE TABLE combs (id SERIAL PRIMARY KEY);"),
+    t.none("CREATE TABLE combs (id SERIAL PRIMARY KEY, name text);"),
     t.none("CREATE TABLE combs_hist (id SERIAL PRIMARY KEY, " +
-      "user_id integer REFERENCES users(id), comb_id integer REFERENCES combs(id), name text)")
+      "user_id integer REFERENCES users(id), comb_id integer REFERENCES combs(id), " +
+      "created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), action integer, name text);")
   ]);
 }
 
