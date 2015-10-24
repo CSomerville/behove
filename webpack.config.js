@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./app.js",
+  entry: "./index.jsx",
   context: __dirname + '/assets',
   resolve: {
     extensions: ['', '.js', '.jsx']
