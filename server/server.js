@@ -27,6 +27,8 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(express.static('bundle'));
+
 app.use('/', loginBoss);
 
 app.listen(app.get('port'), () => {
