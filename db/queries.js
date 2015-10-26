@@ -18,7 +18,7 @@ export function createComb(user_id, name) {
   })
     .then((data) => {
       return db.task((t) => {
-        t.none("INSERT INTO combs_hist (user_id, comb_id, name) VALUES ($1, $2, '$3');",
+        t.none("INSERT INTO combs_hist (user_id, comb_id, name) VALUES ($1, $2, $3);",
         [user_id, data.id, username]);
       });
     }, (err) => {

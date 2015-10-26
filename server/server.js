@@ -1,6 +1,5 @@
 import express from 'express';
 import session from 'express-session';
-import bodyParser from 'body-parser';
 import logger from 'morgan';
 import cons from 'consolidate';
 import pgSession from 'connect-pg-simple';
@@ -16,8 +15,6 @@ app.set('views', __dirname + '/views');
 app.set('port', process.env.PORT || 3000);
 
 app.use(logger('dev'));
-
-app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(session({
   store: new (pgSession(session))(),

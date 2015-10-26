@@ -1,7 +1,10 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import {createUser, findUser} from '../../db/queries';
 
 let loginBoss = express.Router();
+
+loginBoss.use(bodyParser.urlencoded({extended: false}));
 
 function restrict(req, res, next) {
   if (req.session.user) {
