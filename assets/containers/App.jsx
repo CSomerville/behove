@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { increment, decrement } from '../actions/index';
+import Counter from '../components/Counter.jsx';
+import Increment from '../components/Increment.jsx';
+import Decrement from '../components/Decrement.jsx';
 
-export default class App extends React.Component {
+class App extends Component {
   render() {
-    return <h1>hello you.</h1>
+    const { dispatch, counter } = this.props;
+    return (
+      <div>
+        <Counter
+          counter={counter}
+          />
+        <Decrement
+          onDecrementClick={() => {
+            console.log("happening")
+            dispatch(decrement())
+          }} />
+        <Increment
+          onIncrementClick={() => {
+            dispatch(increment())
+          }} />
+      </div>
+    );
   }
 }
+
+function select(state) {
+  return { counter: state.counter };
+}
+
+export default connect(select)(App);
