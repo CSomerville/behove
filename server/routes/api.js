@@ -15,9 +15,18 @@ function verifySession(req, res, next) {
   }
 }
 
+apiRoutes.get('/combs', (req, res) => {
+  userCombs(req.session.user)
+    .then((combs) => {
+      res.send(JSON.stringify(combs));
+    }, (err) => {
+      res.sendStatus(500);
+    });
+});
+
 apiRoutes.post('/comb', (req, res) => {
   createComb(req.session.user.id, req.body.name)
-    .then((comb) => {
+    .then(() => {
       res.send(JSON.stringify(comb));
     }, (err) => {
       res.sendStatus(500);
