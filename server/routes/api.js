@@ -15,7 +15,7 @@ function verifySession(req, res, next) {
   }
 }
 
-apiRoutes.post('comb', (req, res) => {
+apiRoutes.post('/comb', (req, res) => {
   createComb(req.session.user.id, req.body.name)
     .then((comb) => {
       res.send(JSON.stringify(comb));

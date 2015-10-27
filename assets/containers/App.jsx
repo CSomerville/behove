@@ -60,7 +60,6 @@ class App extends Component {
 // }
 
 function select(state) {
-  console.log(state)
   return {
     isEditing: state.isEditing,
     name: state.name
