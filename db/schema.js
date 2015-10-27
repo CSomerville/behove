@@ -3,15 +3,15 @@ import {db, pgp} from './connection';
 const dropTables = (t) => {
   return Promise.all([
     t.none("DROP TABLE IF EXISTS users CASCADE;"),
-    t.none("DROP TABLE IF EXISTS combs CASCADE;")
+    t.none("DROP TABLE IF EXISTS combs_hist CASCADE;")
   ]);
 }
 
 const establishSchema = (t) => {
   return Promise.all([
     t.none("CREATE TABLE users (id SERIAL PRIMARY KEY, username text);"),
-    t.none("CREATE TABLE combs (id uuid PRIMARY KEY, " +
-      "user_id integer REFERENCES users(id), " +
+    t.none("CREATE TABLE combs_hist (id SERIAL PRIMARY KEY, " +
+      "user_id integer REFERENCES users(id), comb_id uuid, " +
       "created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), action integer, name text);")
   ]);
 }
