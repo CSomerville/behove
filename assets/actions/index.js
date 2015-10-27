@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
 export const NEW_COMB = 'NEW_COMB';
+export const EDIT_NEW_COMB_NAME = 'EDIT_NEW_COMB_NAME';
 export const CANCEL_NEW_COMB = 'CANCEL_NEW_COMB';
 export const POST_COMB = 'POST_COMB';
 export const POST_COMB_SUCCESS = 'POST_COMB_SUCCESS';
@@ -8,6 +9,13 @@ export const POST_COMB_FAILURE = 'POST_COMB_FAILURE';
 
 export function newComb() {
   return { type: 'NEW_COMB' };
+}
+
+export function editNewCombName(comb) {
+  return {
+    type: 'EDIT_NEW_COMB_NAME',
+    comb
+  }
 }
 
 export function cancelNewComb() {
@@ -62,4 +70,4 @@ export function initiatePostComb(comb) {
 //
 // export function decrement() {
 //   return { type: DECREMENT };
-}
+// }
