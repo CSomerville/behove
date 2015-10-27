@@ -22,8 +22,12 @@ class App extends Component {
         }
         {isEditing &&
         <EditNewComb
-          onNewCombSave={(comb) => {
-            dispatch(initiatePostComb(comb))
+          name={name}
+          inputChanged={(name) => {
+            dispatch(editNewCombName(name))
+          }}
+          onNewCombSave={(name) => {
+            dispatch(initiatePostComb(name))
           }}
           onNewCombCancel={() => {
             dispatch(cancelNewComb)
@@ -56,7 +60,11 @@ class App extends Component {
 // }
 
 function select(state) {
-  return { isEditing: state.isEditing };
+  console.log(state)
+  return {
+    isEditing: state.isEditing,
+    name: state.name
+  };
 }
 
 export default connect(select)(App);

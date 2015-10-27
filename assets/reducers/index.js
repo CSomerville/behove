@@ -21,7 +21,7 @@ import {
 function name(state = '', action) {
   switch(action.type) {
   case EDIT_NEW_COMB_NAME:
-    return action.comb;
+    return action.name;
   default:
     return state;
   }

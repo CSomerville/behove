@@ -11,10 +11,10 @@ export function newComb() {
   return { type: 'NEW_COMB' };
 }
 
-export function editNewCombName(comb) {
+export function editNewCombName(e) {
   return {
     type: 'EDIT_NEW_COMB_NAME',
-    comb
+    name: e.target.value
   }
 }
 
