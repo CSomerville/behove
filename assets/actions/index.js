@@ -36,6 +36,23 @@ function postCombFailure(comb, err) {
   }
 }
 
+export function initiatePostComb(comb) {
+  return (dispatch) => {
+    dispatch(postComb(comb));
+    fetch('api/comb', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(comb)
+    })
+      .then((response) => response.json())
+      .then((json) => dispatch(postCombSuccess(json)));
+  }
+}
+
 // export const INCREMENT = 'INCREMENT';
 // export const DECREMENT = 'DECREMENT';
 //
