@@ -23,3 +23,5 @@ apiRoutes.post('comb', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+export default apiRoutes;

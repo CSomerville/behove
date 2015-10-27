@@ -4,6 +4,7 @@ import logger from 'morgan';
 import cons from 'consolidate';
 import pgSession from 'connect-pg-simple';
 import loginBoss from './routes/loginboss';
+import apiRoutes from './routes/api';
 
 let app = express();
 
@@ -27,6 +28,7 @@ app.use(session({
 app.use(express.static('bundle'));
 
 app.use('/', loginBoss);
+app.use('/api', apiRoutes);
 
 app.listen(app.get('port'), () => {
   console.log('server is listening on ', app.get('port'));

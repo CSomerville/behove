@@ -44,9 +44,10 @@ function postCombFailure(comb, err) {
   }
 }
 
-export function initiatePostComb(comb) {
-  return (dispatch) => {
-    dispatch(postComb(comb));
+export function initiatePostComb(e) {
+  e.preventDefault();
+  return (dispatch, getState) => {
+    dispatch(postComb(getState().name));
     fetch('api/comb', {
       method: 'post',
       headers: {
@@ -54,7 +55,7 @@ export function initiatePostComb(comb) {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin',
-      body: JSON.stringify(comb)
+      body: JSON.stringify(getState())
     })
       .then((response) => response.json())
       .then((json) => dispatch(postCombSuccess(json)));
