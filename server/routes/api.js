@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { createComb } from '../../db/queries';
+import { userCombs, findComb, createComb, updateComb } from '../../db/queries';
 
 let apiRoutes = express.Router();
 
@@ -16,7 +16,7 @@ function verifySession(req, res, next) {
 }
 
 apiRoutes.get('/combs', (req, res) => {
-  userCombs(req.session.user)
+  userCombs(req.session.user.id)
     .then((combs) => {
       res.send(JSON.stringify(combs));
     }, (err) => {
@@ -25,9 +25,9 @@ apiRoutes.get('/combs', (req, res) => {
 });
 
 apiRoutes.post('/comb', (req, res) => {
-  createComb(req.session.user.id, req.body.name)
+  createComb(req.session.user.id, req.body.comb)
     .then(() => {
-      res.send(JSON.stringify(comb));
+      res.sendStatus(200);
     }, (err) => {
       res.sendStatus(500);
     });

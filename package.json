@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node ./index.js",
-    "schema": "babel-node ./db/schema.js",
+    "schema": "babel-node ./db/schema.js; babel-node ./db/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Colby Somerville",

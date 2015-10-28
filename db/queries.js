@@ -18,6 +18,12 @@ export function userCombs(user_id) {
   });
 }
 
+export function findComb(id) {
+  return db.task((t) => {
+    return t.one("SELECT * FROM combs WHERE id = $1;", [id]);
+  });
+}
+
 export function createComb(user_id, comb) {
   return db.task((t) => {
     return t.any("INSERT INTO combs (id, user_id, name) VALUES ($1, $2, $3);",
