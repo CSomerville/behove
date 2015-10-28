@@ -2,7 +2,6 @@ import { db, pgp } from './connection';
 import uuid from 'node-uuid';
 
 const words = ['subsumé', 'flambé', 'resumflay', 'assumé', 'resumbray'];
-const combUuids = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4, uuid.v4()];
 
 const seed = (t) => {
   return Promise.all([
@@ -12,13 +11,11 @@ const seed = (t) => {
   ])
     .then((data) => {
       let combPromises = [];
-      data.forEach((el, ind) => {
-        for (var i = 0; i < 5; i++) {
-          combPromises.push(t.none("INSERT INTO combs_hist (user_id, comb_id, action, name)" +
-            "VALUES ($1, $2, 1, $3)", [el.id, combUuids[Math.floor(Math.random() * combUuids.length)],
-            words[Math.floor(Math.random() * words.length)]]));
-        }
-      });
+      for (var i = 0; i < 10; i++) {
+        combPromises.push(t.none(`INSERT INTO combs (id, user_id, name)
+          VALUES ($1, $2, $3)`, [uuid.v4(), data[Math.floor(Math.random() * data.length)].id,
+          words[Math.floor(Math.random() * words.length)]]));
+      }
       return Promise.all(combPromises);
     }, (err) => {
       console.log(err);
