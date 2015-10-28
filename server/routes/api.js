@@ -15,8 +15,6 @@ function verifySession(req, res, next) {
   }
 }
 
-console.log('in here');
-
 apiRoutes.get('/combs', (req, res) => {
   userCombs(req.session.user.id)
     .then((combs) => {

@@ -8,7 +8,20 @@ import {
 } from '../actions/index';
 
 function combs(state = { combs: [], isFetching: false, msg: '' }, action) {
+  console.log(state)
   switch(action.type) {
+  case EDIT_COMB:
+    return Object.assign(
+      {},
+      state,
+      {
+        combs: [
+          ...state.combs.slice(0, action.ind),
+          Object.assign({}, state.combs[action.ind], { editable: true}),
+          ...state.combs.slice(action.ind + 1)
+        ]
+      }
+    )
   case FETCH_COMBS:
     return Object.assign({}, state, { isFetching: true });
   case FETCH_COMBS_SUCCESS:

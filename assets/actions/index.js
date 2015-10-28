@@ -21,10 +21,11 @@ export function newComb() {
   };
 }
 
-export function editComb(comb) {
+export function editComb(comb, ind) {
   return {
     type: 'EDIT_COMB',
-    comb
+    comb,
+    ind: ind
   }
 }
 
