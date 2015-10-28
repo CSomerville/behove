@@ -14,10 +14,20 @@ export function findUser(username) {
 
 export function userCombs(user_id) {
   return db.task((t) => {
-    return t.any("SELECT * FROM combs WHERE user_id = $1", [user_id]);
-  })
+    return t.any("SELECT * FROM combs WHERE user_id = $1;", [user_id]);
+  });
 }
 
-export function editComb(user_id, name) {
+export function createComb(user_id, comb) {
+  return db.task((t) => {
+    return t.any("INSERT INTO combs (id, user_id, name) VALUES ($1, $2, $3);",
+      [comb.id, user_id, comb.name]);
+  });
+}
 
+export function updateComb(user_id, comb) {
+  return db.task((t) => {
+    return t.any("UPDATE combs SET user_id = $1, name = $2 WHERE id = $3;",
+      [user_id, comb.name, comb.id]);
+  });
 }
