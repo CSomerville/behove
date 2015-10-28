@@ -28,7 +28,6 @@ const seed = (t) => {
 
 db.task(seed)
   .then(() => {
-    console.log('got here');
     pgp.end();
   }, (err) => {
     console.log(err);
