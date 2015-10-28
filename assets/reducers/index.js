@@ -3,18 +3,21 @@
 //
 import { combineReducers } from 'redux';
 import {
-  NEW_COMB, EDIT_COMB, EDIT_COMB_NAME, SAVE_EDIT_COMB, SAVE_EDIT_COMB_SUCCESS,
-  SAVE_EDIT_COMB_FAILURE, FETCH_COMBS, FETCH_COMBS_SUCCESS, FETCH_COMBS_FAILURE
+  NEW_COMB, EDIT_COMB, CANCEL_EDIT_COMB, EDIT_COMB_NAME, SAVE_EDIT_COMB,
+  SAVE_EDIT_COMB_SUCCESS, SAVE_EDIT_COMB_FAILURE, FETCH_COMBS, FETCH_COMBS_SUCCESS,
+  FETCH_COMBS_FAILURE
 } from '../actions/index';
 
 function combs(state = { combs: [], isFetching: false, msg: '' }, action) {
-  console.log(state)
   switch(action.type) {
   case EDIT_COMB:
     return Object.assign({}, state, {
       combs: [
         ...state.combs.slice(0, action.ind),
-        Object.assign({}, state.combs[action.ind], { editable: true}),
+        Object.assign({}, state.combs[action.ind], {
+          editable: true,
+          prevName: state.combs[action.ind].name
+        }),
         ...state.combs.slice(action.ind + 1)
       ]
     });
@@ -23,6 +26,17 @@ function combs(state = { combs: [], isFetching: false, msg: '' }, action) {
       combs: [
         ...state.combs.slice(0, action.ind),
         Object.assign({}, state.combs[action.ind], { name: action.name}),
+        ...state.combs.slice(action.ind + 1)
+      ]
+    });
+  case CANCEL_EDIT_COMB:
+    return Object.assign({}, state, {
+      combs: [
+        ...state.combs.slice(0, action.ind),
+        Object.assign({}, state.combs[action.ind], {
+          editable: false,
+          name: state.combs[action.ind].prevName 
+        }),
         ...state.combs.slice(action.ind + 1)
       ]
     });

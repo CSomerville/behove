@@ -3,6 +3,7 @@ import uuid from 'node-uuid';
 
 export const NEW_COMB = 'NEW_COMB';
 export const EDIT_COMB = 'EDIT_COMB';
+export const CANCEL_EDIT_COMB = 'CANCEL_EDIT_COMB';
 export const EDIT_COMB_NAME = 'EDIT_COMB_NAME';
 export const SAVE_EDIT_COMB = 'SAVE_EDIT_COMB';
 export const SAVE_EDIT_COMB_SUCCESS = 'SAVE_EDIT_COMB_SUCCESS';
@@ -25,6 +26,13 @@ export function editComb(comb, ind) {
   return {
     type: 'EDIT_COMB',
     comb,
+    ind: ind
+  }
+}
+
+export function cancelEditComb(ind) {
+  return {
+    type: 'CANCEL_EDIT_COMB',
     ind: ind
   }
 }
