@@ -1,42 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { newComb, cancelNewComb, initiatePostComb, editNewCombName } from '../actions/index';
+import { initiateFetchCombs } from '../actions/index';
 import AddComb from '../components/AddComb';
 import EditNewComb from '../components/EditNewComb';
-
-// import { increment, decrement } from '../actions/index';
-// import Counter from '../components/Counter.jsx';
-// import Increment from '../components/Increment.jsx';
-// import Decrement from '../components/Decrement.jsx';
+import Combs from '../components/Combs';
 
 class App extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(initiateFetchCombs());
+  }
+
   render() {
-    const { dispatch, isEditing, name } = this.props;
+    const { dispatch, isEditing, name, combs } = this.props;
     return (
       <div>
-        {!isEditing &&
-        <AddComb
-          onAddCombClick={() => {
-            dispatch(newComb())
-          }} />
-        }
-        {isEditing &&
-        <EditNewComb
-          name={name}
-          inputChanged={(name) => {
-            dispatch(editNewCombName(name))
-          }}
-          onNewCombSave={(name) => {
-            dispatch(initiatePostComb(name))
-          }}
-          onNewCombCancel={() => {
-            dispatch(cancelNewComb)
-          }} />
-        }
+        <Combs
+          combs={combs}
+          />
+
       </div>
     );
   }
 }
+
+// {!isEditing &&
+// <AddComb
+//   onAddCombClick={() => {
+//     dispatch(newComb())
+//   }} />
+// }
+// {isEditing &&
+// <EditNewComb
+//   name={name}
+//   inputChanged={(name) => {
+//     dispatch(editNewCombName(name))
+//   }}
+//   onNewCombSave={(name) => {
+//     dispatch(initiatePostComb(name))
+//   }}
+//   onNewCombCancel={() => {
+//     dispatch(cancelNewComb)
+//   }} />
+// }
 
 // class App extends Component {
 //   render() {
@@ -61,6 +67,7 @@ class App extends Component {
 
 function select(state) {
   return {
+    combs: state.combs,
     isEditing: state.isEditing,
     name: state.name
   };

@@ -72,36 +72,38 @@ function fetchCombsSuccess(combs) {
 function fetchCombsFailure(err) {
   return {
     type: 'FETCH_COMBS_FAILURE',
-    err
+    msg: err
   };
 }
 
 export function initiateFetchCombs() {
   return (dispatch) => {
     dispatch(fetchCombs);
-    fetch('api/combs')
-      .then((res) => return res.json(),
+    fetch('api/combs', { credentials: 'same-origin' })
+      .then((res) => { return res.json() },
         (err) => dispatch(fetchCombsFailure(err)))
-      .then((combs) => dispatch(fetchCombsSuccess(combs)));
+      .then((combs) => { dispatch(fetchCombsSuccess(combs))},
+        (err) => console.log(err));
   }
 }
 
 export function initiateSaveEditComb(e) {
   e.preventDefault();
-    return (dispatch, getState) => {
-      dispatch(saveEditComb());
-      fetch('api/comb', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify(getState())
-      })
-        .then((res) => return res.json(),
-          (err) => dispatch(saveEditCombFailure(err)))
-        .then((comb) => dispatch(saveEditCombSuccess(comb)));
+  return (dispatch, getState) => {
+    dispatch(saveEditComb());
+    fetch('api/comb', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(getState())
+    })
+      .then((res) => { return res.json() },
+        (err) => dispatch(saveEditCombFailure(err)))
+      .then((comb) => dispatch(saveEditCombSuccess(comb)));
+  }
 }
 
 // export const CANCEL_NEW_COMB = 'CANCEL_NEW_COMB';
