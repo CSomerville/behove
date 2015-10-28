@@ -6,8 +6,17 @@ export default class Comb extends Component {
       <ul>
         {this.props.combs.combs.map((comb, i) =>
           <li key={comb.id}>
-            <h1>{comb.name}</h1>
-            <button onClick={this.props.makeEditable.bind(this, comb, i)}>edit</button>
+            {!comb.editable &&
+              <div>
+                <h1>{comb.name}</h1>
+                <button onClick={this.props.makeEditable.bind(this, comb, i)}>edit</button>
+              </div>
+            }
+            {comb.editable &&
+              <input type="text" value={comb.name}
+                onChange={this.props.combInputChanged.bind(this, i)}
+                />
+            }
           </li>
         )}
       </ul>

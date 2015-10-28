@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initiateFetchCombs, editComb } from '../actions/index';
+import { initiateFetchCombs, editComb, editCombName } from '../actions/index';
 import AddComb from '../components/AddComb';
 import EditNewComb from '../components/EditNewComb';
 import Combs from '../components/Combs';
@@ -19,6 +19,9 @@ class App extends Component {
           combs={combs}
           makeEditable={(comb, ind) => {
             dispatch(editComb(comb, ind));
+          }}
+          combInputChanged={(ind, e) => {
+            dispatch(editCombName(ind, e));
           }}
           />
 
