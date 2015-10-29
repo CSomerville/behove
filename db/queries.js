@@ -26,14 +26,14 @@ export function findComb(id) {
 
 export function createComb(user_id, comb) {
   return db.task((t) => {
-    return t.any("INSERT INTO combs (id, user_id, name) VALUES ($1, $2, $3);",
+    return t.none("INSERT INTO combs (id, user_id, name) VALUES ($1, $2, $3);",
       [comb.id, user_id, comb.name]);
   });
 }
 
-export function updateComb(user_id, comb) {
+export function updateComb(comb) {
   return db.task((t) => {
-    return t.any("UPDATE combs SET user_id = $1, name = $2 WHERE id = $3;",
-      [user_id, comb.name, comb.id]);
+    return t.none("UPDATE combs SET name = $1 WHERE id = $2;",
+      [comb.name, comb.id]);
   });
 }

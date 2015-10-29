@@ -18,6 +18,7 @@ export default class Comb extends Component {
                   onChange={this.props.combInputChanged.bind(this, i)}
                   />
                 <button onClick={this.props.cancelEdit.bind(this, i)}>cancel</button>
+                <button onClick={this.props.saveEdit.bind(this, i, comb)}>save</button>
               </div>
             }
           </li>

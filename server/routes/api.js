@@ -25,12 +25,22 @@ apiRoutes.get('/combs', (req, res) => {
 });
 
 apiRoutes.post('/comb', (req, res) => {
-  createComb(req.session.user.id, req.body.comb)
-    .then(() => {
-      res.sendStatus(200);
-    }, (err) => {
-      res.sendStatus(500);
-    });
+    findComb(req.body.id)
+      .then(() => {
+        updateComb(req.body);
+        res.sendStatus(200);
+      }, () => {
+        createComb(req.session.user.id, req.body);
+        res.sendStatus(200);
+      });
+
+
+  // createComb(req.session.user.id, req.body.comb)
+  //   .then(() => {
+  //     res.sendStatus(200);
+  //   }, (err) => {
+  //     res.sendStatus(500);
+  //   });
 });
 
 export default apiRoutes;

@@ -98,8 +98,7 @@ export function initiateFetchCombs() {
   }
 }
 
-export function initiateSaveEditComb(ind, comb, e) {
-  e.preventDefault();
+export function initiateSaveEditComb(ind, comb) {
   return (dispatch) => {
     dispatch(saveEditComb(ind));
     fetch('api/comb', {
@@ -114,8 +113,7 @@ export function initiateSaveEditComb(ind, comb, e) {
         name: comb.name
       })
     })
-      .then((res) => { return res.json() },
-        (err) => dispatch(saveEditCombFailure(ind)))
-      .then(() => dispatch(saveEditCombSuccess(ind)));
+      .then(() => { dispatch(saveEditCombSuccess(ind)) },
+        (err) => dispatch(saveEditCombFailure(ind)));
   }
 }
