@@ -17,7 +17,8 @@ export function newComb() {
     type: 'NEW_COMB',
     comb: {
       id: uuid.v4(),
-      isEditing: true
+      name: '',
+      editable: true
     }
   };
 }
@@ -45,24 +46,24 @@ export function editCombName(ind, e) {
   };
 }
 
-function saveEditComb(comb) {
+function saveEditComb(ind) {
   return {
     type: 'SAVE_EDIT_COMB',
-    comb
+    ind: ind
   };
 }
 
-function saveEditCombSuccess(comb) {
+function saveEditCombSuccess(ind) {
   return {
     type: 'SAVE_EDIT_COMB_SUCCESS',
-    comb
+    ind: ind
   };
 }
 
-function saveEditCombFailure(comb) {
+function saveEditCombFailure(ind) {
   return {
     type: 'SAVE_EDIT_COMB_FAILURE',
-    comb
+    ind: ind
   };
 }
 
@@ -97,10 +98,10 @@ export function initiateFetchCombs() {
   }
 }
 
-export function initiateSaveEditComb(e) {
+export function initiateSaveEditComb(ind, comb, e) {
   e.preventDefault();
-  return (dispatch, getState) => {
-    dispatch(saveEditComb());
+  return (dispatch) => {
+    dispatch(saveEditComb(ind));
     fetch('api/comb', {
       method: 'post',
       headers: {
@@ -108,61 +109,13 @@ export function initiateSaveEditComb(e) {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin',
-      body: JSON.stringify(getState())
+      body: JSON.stringify({
+        id: comb.id,
+        name: comb.name
+      })
     })
       .then((res) => { return res.json() },
-        (err) => dispatch(saveEditCombFailure(err)))
-      .then((comb) => dispatch(saveEditCombSuccess(comb)));
+        (err) => dispatch(saveEditCombFailure(ind)))
+      .then(() => dispatch(saveEditCombSuccess(ind)));
   }
 }
-
-// export const CANCEL_NEW_COMB = 'CANCEL_NEW_COMB';
-// export const POST_COMB = 'POST_COMB';
-// export const POST_COMB_SUCCESS = 'POST_COMB_SUCCESS';
-// export const POST_COMB_FAILURE = 'POST_COMB_FAILURE';
-//
-//
-//
-// export function cancelNewComb() {
-//   return { type: 'CANCEL_NEW_COMB' };
-// }
-//
-// function postComb(comb) {
-//   return {
-//     type: 'POST_COMB',
-//     comb
-//   }
-// }
-//
-// function postCombSuccess(comb) {
-//   return {
-//     type: 'POST_COMB_SUCCESS',
-//     comb
-//   }
-// }
-//
-// function postCombFailure(comb, err) {
-//   return {
-//     type: 'POST_COMB_FAILURE',
-//     comb,
-//     err
-//   }
-// }
-//
-// export function initiatePostComb(e) {
-//   e.preventDefault();
-//   return (dispatch, getState) => {
-//     dispatch(postComb(getState().name));
-//     fetch('api/comb', {
-//       method: 'post',
-//       headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json'
-//       },
-//       credentials: 'same-origin',
-//       body: JSON.stringify(getState())
-//     })
-//       .then((response) => response.json())
-//       .then((json) => dispatch(postCombSuccess(json)));
-//   }
-// }

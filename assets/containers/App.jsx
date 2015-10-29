@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initiateFetchCombs, editComb, editCombName, cancelEditComb } from '../actions/index';
+import { initiateFetchCombs, editComb, editCombName,
+  cancelEditComb, newComb } from '../actions/index';
 import AddComb from '../components/AddComb';
 import EditNewComb from '../components/EditNewComb';
 import Combs from '../components/Combs';
@@ -27,7 +28,11 @@ class App extends Component {
             dispatch(cancelEditComb(ind));
           }}
           />
-
+        <AddComb
+          onAddCombClick={() => {
+            dispatch(newComb());
+          }}
+          />
       </div>
     );
   }
