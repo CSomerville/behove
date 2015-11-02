@@ -90,7 +90,7 @@ function fetchCombsFailure(err) {
 export function initiateFetchCombs() {
   return (dispatch) => {
     dispatch(fetchCombs);
-    fetch('api/combs', { credentials: 'same-origin' })
+    fetch('/api/combs', { credentials: 'same-origin' })
       .then((res) => { return res.json() },
         (err) => dispatch(fetchCombsFailure(err)))
       .then((combs) => { dispatch(fetchCombsSuccess(combs))},

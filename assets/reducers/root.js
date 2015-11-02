@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import combs from './combs';
+import { routerStateReducer } from 'redux-router';
+import combReducer from './combs';
 
 const rootReducer = combineReducers({
-  combs
+  router: routerStateReducer,
+  combs: combReducer
 });
 
 export default rootReducer;

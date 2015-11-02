@@ -1,93 +1,25 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { initiateFetchCombs, editComb, editCombName,
-  cancelEditComb, newComb, initiateSaveEditComb } from '../actions/index';
-import AddComb from '../components/AddComb';
-import EditNewComb from '../components/EditNewComb';
-import Combs from '../components/Combs';
+import { Link } from 'react-router';
 
 class App extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(initiateFetchCombs());
-  }
-
   render() {
-    const { dispatch, isEditing, name, combs } = this.props;
+    const links = [
+      '/app',
+      '/app/combs',
+      '/app/test'
+    ].map((el) =>
+      <p>
+        <Link to={el}>{el}</Link>
+      </p>
+    );
     return (
       <div>
-        <Combs
-          combs={combs}
-          makeEditable={(comb, ind) => {
-            dispatch(editComb(comb, ind));
-          }}
-          combInputChanged={(ind, e) => {
-            dispatch(editCombName(ind, e));
-          }}
-          cancelEdit={(ind) => {
-            dispatch(cancelEditComb(ind));
-          }}
-          saveEdit={(ind, comb) => {
-            dispatch(initiateSaveEditComb(ind, comb));
-          }}
-          />
-        <AddComb
-          onAddCombClick={() => {
-            dispatch(newComb());
-          }}
-          />
+        <h1>App Container</h1>
+        { links }
+        {this.props.children}
       </div>
-    );
+    )
   }
 }
 
-// {!isEditing &&
-// <AddComb
-//   onAddCombClick={() => {
-//     dispatch(newComb())
-//   }} />
-// }
-// {isEditing &&
-// <EditNewComb
-//   name={name}
-//   inputChanged={(name) => {
-//     dispatch(editNewCombName(name))
-//   }}
-//   onNewCombSave={(name) => {
-//     dispatch(initiatePostComb(name))
-//   }}
-//   onNewCombCancel={() => {
-//     dispatch(cancelNewComb)
-//   }} />
-// }
-
-// class App extends Component {
-//   render() {
-//     const { dispatch, counter } = this.props;
-//     return (
-//       <div>
-//         <Counter
-//           counter={counter}
-//           />
-//         <Decrement
-//           onDecrementClick={() => {
-//             dispatch(decrement())
-//           }} />
-//         <Increment
-//           onIncrementClick={() => {
-//             dispatch(increment())
-//           }} />
-//       </div>
-//     );
-//   }
-// }
-
-function select(state) {
-  return {
-    combs: state.combs,
-    isEditing: state.isEditing,
-    name: state.name
-  };
-}
-
-export default connect(select)(App);
+export default App;
