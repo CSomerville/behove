@@ -1,11 +1,10 @@
-import { combineReducers } from 'redux';
 import {
   NEW_COMB, EDIT_COMB, CANCEL_EDIT_COMB, EDIT_COMB_NAME, SAVE_EDIT_COMB,
   SAVE_EDIT_COMB_SUCCESS, SAVE_EDIT_COMB_FAILURE, FETCH_COMBS, FETCH_COMBS_SUCCESS,
   FETCH_COMBS_FAILURE
 } from '../actions/index';
 
-function combs(state = { combs: [], isFetching: false, msg: '' }, action) {
+export default function(state = { combs: [], isFetching: false, msg: '' }, action) {
   switch(action.type) {
   case NEW_COMB:
     return Object.assign({}, state, {
@@ -81,9 +80,3 @@ function combs(state = { combs: [], isFetching: false, msg: '' }, action) {
     return state;
   }
 }
-
-const rootReducer = combineReducers({
-  combs
-});
-
-export default rootReducer;
