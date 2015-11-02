@@ -3,8 +3,8 @@ import session from 'express-session';
 import logger from 'morgan';
 import cons from 'consolidate';
 import pgSession from 'connect-pg-simple';
-import loginBoss from './routes/loginboss';
-import apiRoutes from './routes/api';
+import loginBoss from './routes/loginboss/router';
+import apiRoutes from './routes/api/router';
 
 let app = express();
 
