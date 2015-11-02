@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node ./index.js",
     "schema": "babel-node ./db/schema.js; babel-node ./db/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_init.js 'test/**/*.@(js|jsx)'"
   },
   "author": "Colby Somerville",
   "license": "MIT",
@@ -14,6 +14,9 @@
     "babel": "^5.8.23",
     "babel-core": "^5.8.25",
     "babel-loader": "^5.3.2",
+    "chai": "^3.4.0",
+    "jsdom": "^7.0.2",
+    "mocha": "^2.3.3",
     "node-sass": "^3.4.1",
     "sass-loader": "^3.1.1",
     "webpack": "^1.12.2"
