@@ -16,6 +16,6 @@ export function combPost(req, res) {
       res.sendStatus(200);
     }, () => {
       createComb(req.session.user.id, req.body);
-      res.sendStatus(200);
+      res.sendStatus(201);
     });
 }

@@ -2,7 +2,7 @@ import {
   NEW_COMB, EDIT_COMB, CANCEL_EDIT_COMB, EDIT_COMB_NAME, SAVE_EDIT_COMB,
   SAVE_EDIT_COMB_SUCCESS, SAVE_EDIT_COMB_FAILURE, FETCH_COMBS, FETCH_COMBS_SUCCESS,
   FETCH_COMBS_FAILURE
-} from '../actions/index';
+} from '../actions/combs_actions';
 
 export default function(state = { combs: [], isFetching: false, msg: '' }, action) {
   switch(action.type) {

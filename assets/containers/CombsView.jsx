@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchCombs, editComb, editCombName,
-  cancelEditComb, newComb, initiateSaveEditComb } from '../actions/index';
+  cancelEditComb, newComb, initiateSaveEditComb } from '../actions/combs_actions';
 import AddComb from '../components/AddComb';
 import Combs from '../components/Combs';
 
