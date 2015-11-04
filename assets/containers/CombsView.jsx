@@ -18,7 +18,7 @@ class CombsView extends Component {
         <Combs
           combs={combs}
           makeEditable={(comb, ind) => {
-            dispatch(editComb(comb, ind));
+            dispatch(editComb(ind));
           }}
           combInputChanged={(ind, e) => {
             dispatch(editCombName(ind, e));

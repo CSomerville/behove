@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import uuid from 'node-uuid';
+import checkStatus from '../utils/fetch-checkstatus';
 
 export const NEW_COMB = 'NEW_COMB';
 export const EDIT_COMB = 'EDIT_COMB';
@@ -23,15 +24,20 @@ export function newComb() {
   };
 }
 
-export function editComb(comb, ind) {
+export function editComb(ind) {
+  if (typeof ind !== 'number') {
+    throw new TypeError('editComb requires Number');
+  }
   return {
     type: 'EDIT_COMB',
-    comb,
     ind: ind
   }
 }
 
 export function cancelEditComb(ind) {
+  if (typeof ind !== 'number') {
+    throw new TypeError('cancelEditComb requires Number');
+  }
   return {
     type: 'CANCEL_EDIT_COMB',
     ind: ind
@@ -39,6 +45,9 @@ export function cancelEditComb(ind) {
 }
 
 export function editCombName(ind, e) {
+  if (typeof ind !== 'number') {
+    throw new TypeError('editCombName requires Number for first arg');
+  }
   return {
     type: 'EDIT_COMB_NAME',
     ind: ind,
@@ -83,18 +92,20 @@ function fetchCombsSuccess(combs) {
 function fetchCombsFailure(err) {
   return {
     type: 'FETCH_COMBS_FAILURE',
-    msg: err
+    msg: err.message
   };
 }
 
 export function initiateFetchCombs() {
   return (dispatch) => {
-    dispatch(fetchCombs);
-    fetch('/api/combs', { credentials: 'same-origin' })
-      .then((res) => { return res.json() },
-        (err) => dispatch(fetchCombsFailure(err)))
-      .then((combs) => { dispatch(fetchCombsSuccess(combs))},
-        (err) => console.log(err));
+    dispatch(fetchCombs());
+    fetch('http://127.0.0.1:3000/api/combs', { credentials: 'same-origin' })
+      .then((res) => {
+        checkStatus(res);
+        return res.json()
+      })
+        .then((combs) => { dispatch(fetchCombsSuccess(combs))})
+        .catch((err) => dispatch(fetchCombsFailure(err)))
   }
 }
 

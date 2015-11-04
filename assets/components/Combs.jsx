@@ -9,7 +9,7 @@ export default class Comb extends Component {
             {!comb.editable &&
               <div>
                 <h1>{comb.name}</h1>
-                <button onClick={this.props.makeEditable.bind(this, comb, i)}>edit</button>
+                <button onClick={this.props.makeEditable.bind(this, i)}>edit</button>
               </div>
             }
             {comb.editable &&
