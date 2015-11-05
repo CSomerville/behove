@@ -69,10 +69,11 @@ function saveEditCombSuccess(ind) {
   };
 }
 
-function saveEditCombFailure(ind) {
+function saveEditCombFailure(ind, err) {
   return {
     type: 'SAVE_EDIT_COMB_FAILURE',
-    ind: ind
+    ind: ind,
+    msg: err.message
   };
 }
 
@@ -96,10 +97,14 @@ function fetchCombsFailure(err) {
   };
 }
 
-export function initiateFetchCombs() {
+export function initiateFetchCombs(base) {
+
+  // for test injection
+  base = base || '';
+
   return (dispatch) => {
     dispatch(fetchCombs());
-    fetch('http://127.0.0.1:3000/api/combs', { credentials: 'same-origin' })
+    fetch(base + 'api/combs', { credentials: 'same-origin' })
       .then((res) => {
         checkStatus(res);
         return res.json()
@@ -109,10 +114,14 @@ export function initiateFetchCombs() {
   }
 }
 
-export function initiateSaveEditComb(ind, comb) {
+export function initiateSaveEditComb(ind, comb, base) {
+
+  // for test injection
+  base = base || '';
+
   return (dispatch) => {
     dispatch(saveEditComb(ind));
-    fetch('api/comb', {
+    fetch(base + 'api/comb', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -124,7 +133,12 @@ export function initiateSaveEditComb(ind, comb) {
         name: comb.name
       })
     })
-      .then(() => { dispatch(saveEditCombSuccess(ind)) },
-        (err) => dispatch(saveEditCombFailure(ind)));
+      .then((res) => {
+        checkStatus(res);
+        dispatch(saveEditCombSuccess(ind));
+      })
+      .catch((err) => {
+        dispatch(saveEditCombFailure(ind, err))
+      });
   }
 }

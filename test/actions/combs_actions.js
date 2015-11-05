@@ -1,9 +1,10 @@
 import { expect, assert } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
-import { newComb, editComb, cancelEditComb, editCombName, initiateFetchCombs,
-  NEW_COMB, EDIT_COMB, CANCEL_EDIT_COMB, EDIT_COMB_NAME, FETCH_COMBS,
-  FETCH_COMBS_SUCCESS, FETCH_COMBS_FAILURE
+import { newComb, editComb, cancelEditComb, editCombName, initiateFetchCombs, initiateSaveEditComb,
+  NEW_COMB, EDIT_COMB, CANCEL_EDIT_COMB, EDIT_COMB_NAME, SAVE_EDIT_COMB,
+  SAVE_EDIT_COMB_SUCCESS, SAVE_EDIT_COMB_FAILURE, FETCH_COMBS, FETCH_COMBS_SUCCESS,
+  FETCH_COMBS_FAILURE
 } from '../../assets/actions/combs_actions';
 import mockStore from '../mockstore';
 
@@ -99,7 +100,7 @@ describe('combsActions', () => {
           console.log(err);
         }
       });
-      store.dispatch(initiateFetchCombs());
+      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000/'));
     });
 
     it('creates FETCH_COMBS_FAILURE if server fails to respond', (done) => {
@@ -113,8 +114,51 @@ describe('combsActions', () => {
       ];
       const store = mockStore({ combs: [] }, expectedActions, done);
 
-      store.dispatch(initiateFetchCombs());
+      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000/'));
     });
   });
 
+  describe('initiateSaveEditComb', () => {
+    afterEach(() => {
+      nock.cleanAll();
+    });
+
+    it('should call SAVE_EDIT_COMB_SUCCESS when posting finishes', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/comb', {
+          id: id,
+          name: 'zo'
+        })
+        .reply(200);
+
+      const expectedActions = [
+        { type: SAVE_EDIT_COMB, ind: 3 },
+        { type: SAVE_EDIT_COMB_SUCCESS, ind: 3}
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000/'));
+    });
+
+    it('should call SAVE_EDIT_COMB_FAILURE when server returns error status', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/comb', {
+          id: id,
+          name: 'zo'
+        })
+        .reply(500);
+
+      const expectedActions = [
+        { type: SAVE_EDIT_COMB, ind: 3 },
+        { type: SAVE_EDIT_COMB_FAILURE, ind: 3, msg: 'Internal Server Error' }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000/'));
+    });
+  });
 });
