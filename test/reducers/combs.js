@@ -172,4 +172,143 @@ describe('combs reducer', () => {
       expect(combs(...input)).to.deep.equal(expected);
     });
   });
+
+  describe('save edit comb success', () => {
+    it('should set isSaving to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        combs: [{
+          id: id,
+          name: 'boozie',
+          prevName: 'boozy',
+          editable: false,
+          isSaving: true
+        }],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: SAVE_EDIT_COMB_SUCCESS,
+        ind: 0
+      }];
+
+      const expected = {
+        combs: [{
+          id: id,
+          name: 'boozie',
+          prevName: 'boozy',
+          editable: false,
+          isSaving: false
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(combs(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save edit combs failure', () => {
+    it('should set isSaving to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        combs: [{
+          id: id,
+          name: 'boozie',
+          prevName: 'boozy',
+          editable: false,
+          isSaving: true
+        }],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: SAVE_EDIT_COMB_FAILURE,
+        ind: 0
+      }];
+
+      const expected = {
+        combs: [{
+          id: id,
+          name: 'boozie',
+          prevName: 'boozy',
+          editable: false,
+          isSaving: false
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(combs(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('fetch combs', () => {
+    it('should set isFetching to true', () => {
+      const id = uuid.v4();
+      const input = [{
+        combs: [],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: FETCH_COMBS
+      }];
+
+      const expected = {
+        combs: [],
+        isFetching: true,
+        msg: ''
+      };
+
+      expect(combs(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('fetch combs success', () => {
+    it('should load combs and set isFetching to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        combs: [],
+        isFetching: true,
+        msg: ''
+      }, {
+        type: FETCH_COMBS_SUCCESS,
+        combs: [{
+          id: id,
+          name: 'boozy'
+        }]
+      }];
+
+      const expected = {
+        combs: [{
+          id: id,
+          name: 'boozy'
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(combs(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('fetch combs failure', () => {
+    it('should provide msg and set isFetching to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        combs: [],
+        isFetching: true,
+        msg: ''
+      }, {
+        type: FETCH_COMBS_FAILURE,
+        msg: 'Internal server error'
+      }];
+
+      const expected = {
+        combs: [],
+        isFetching: false,
+        msg: 'Internal server error'
+      };
+
+      expect(combs(...input)).to.deep.equal(expected);
+    });
+  });
 });

@@ -73,9 +73,9 @@ export default function(state = { combs: [], isFetching: false, msg: '' }, actio
   case FETCH_COMBS:
     return Object.assign({}, state, { isFetching: true });
   case FETCH_COMBS_SUCCESS:
-    return Object.assign({}, state, { combs: action.combs });
+    return Object.assign({}, state, { combs: action.combs, isFetching: false });
   case FETCH_COMBS_FAILURE:
-    return Object.assign({}, state, { msg: action.msg });
+    return Object.assign({}, state, { msg: action.msg, isFetching: false });
   default:
     return state;
   }
