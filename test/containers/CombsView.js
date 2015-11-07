@@ -64,6 +64,70 @@ describe('CombsView', () => {
       expect(dispatchSpy).to.have.been.calledOnce;
       expect(dispatchSpy.args[0][0]).to.deep.equal(combsActions.editComb(0));
     });
+
+    it('displays edit form when editable is true', () => {
+      const idOne = uuid.v4();
+      const idTwo = uuid.v4();
+      const output = setup([{
+        id: idOne,
+        name: 'hunh-her',
+        editable: false
+      }, {
+        id: idTwo,
+        name: 'sure yep',
+        editable: true
+      }], false, '');
+
+      const inputs = scryRenderedDOMComponentsWithTag(output.component, 'input');
+      expect(inputs.length).to.equal(1);
+      expect(inputs[0].value).to.equal('sure yep');
+
+      const cancelEditBtn = scryRenderedDOMComponentsWithClass(output.component, 'cancel-edit-comb');
+
+      expect(cancelEditBtn.length).to.equal(1);
+      expect(cancelEditBtn[0].textContent).to.equal('cancel');
+
+      const saveEditBtn = scryRenderedDOMComponentsWithClass(output.component, 'save-edit-comb');
+
+      expect(saveEditBtn.length).to.equal(1);
+      expect(saveEditBtn[0].textContent).to.equal('save');
+    });
+
+    it('edit form dispatches actions correctly', () => {
+      const idOne = uuid.v4();
+      const idTwo = uuid.v4();
+      const output = setup([{
+        id: idOne,
+        name: 'hunh-her',
+        editable: false
+      }, {
+        id: idTwo,
+        name: 'sure yep',
+        editable: true
+      }], false, '');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      const inputs = scryRenderedDOMComponentsWithTag(output.component, 'input');
+      Simulate.change(inputs[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combsActions.editCombName(1, { target: { value: 'sure yep'}}));
+
+      dispatchSpy.reset();
+
+      const cancelEditBtn = scryRenderedDOMComponentsWithClass(output.component, 'cancel-edit-comb');
+      Simulate.click(cancelEditBtn[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combsActions.cancelEditComb(1));
+
+      dispatchSpy.reset();
+
+      const saveEditBtn = scryRenderedDOMComponentsWithClass(output.component, 'save-edit-comb');
+      Simulate.click(saveEditBtn[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0].toString()).to.equal(combsActions.initiateSaveEditComb().toString());
+    });
   });
 
   describe('NewComb', () => {
