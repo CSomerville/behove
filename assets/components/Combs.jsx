@@ -8,7 +8,7 @@ export default class Comb extends Component {
           <li key={comb.id}>
             {!comb.editable &&
               <div>
-                <h1>{comb.name}</h1>
+                <h1 className="comb-title">{comb.name}</h1>
                 <button onClick={this.props.makeEditable.bind(this, i)}>edit</button>
               </div>
             }

@@ -100,7 +100,7 @@ describe('combsActions', () => {
           console.log(err);
         }
       });
-      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000/'));
+      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000'));
     });
 
     it('creates FETCH_COMBS_FAILURE if server fails to respond', (done) => {
@@ -114,7 +114,7 @@ describe('combsActions', () => {
       ];
       const store = mockStore({ combs: [] }, expectedActions, done);
 
-      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000/'));
+      store.dispatch(initiateFetchCombs('http://127.0.0.1:3000'));
     });
   });
 
@@ -139,7 +139,7 @@ describe('combsActions', () => {
       ];
 
       const store = mockStore({}, expectedActions, done);
-      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000/'));
+      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000'));
     });
 
     it('should call SAVE_EDIT_COMB_FAILURE when server returns error status', (done) => {
@@ -158,7 +158,7 @@ describe('combsActions', () => {
       ];
 
       const store = mockStore({}, expectedActions, done);
-      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000/'));
+      store.dispatch(initiateSaveEditComb(3, { id: id, name: 'zo' }, 'http://127.0.0.1:3000'));
     });
   });
 });

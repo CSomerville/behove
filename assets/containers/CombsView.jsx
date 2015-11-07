@@ -5,7 +5,8 @@ import { initiateFetchCombs, editComb, editCombName,
 import AddComb from '../components/AddComb';
 import Combs from '../components/Combs';
 
-class CombsView extends Component {
+// exports unconnected class for unit testing purposes
+export class CombsView extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(initiateFetchCombs());
@@ -17,7 +18,7 @@ class CombsView extends Component {
       <div>
         <Combs
           combs={combs}
-          makeEditable={(comb, ind) => {
+          makeEditable={(ind) => {
             dispatch(editComb(ind));
           }}
           combInputChanged={(ind, e) => {
@@ -42,10 +43,9 @@ class CombsView extends Component {
 
 function select(state) {
   return {
-    combs: state.combs,
-    isEditing: state.isEditing,
-    name: state.name
+    combs: state.combs
   };
 }
 
+// exports connection to redux store
 export default connect(select)(CombsView);

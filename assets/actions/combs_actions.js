@@ -104,7 +104,7 @@ export function initiateFetchCombs(base) {
 
   return (dispatch) => {
     dispatch(fetchCombs());
-    fetch(base + 'api/combs', { credentials: 'same-origin' })
+    fetch(base + '/api/combs', { credentials: 'same-origin' })
       .then((res) => {
         checkStatus(res);
         return res.json()
@@ -121,7 +121,7 @@ export function initiateSaveEditComb(ind, comb, base) {
 
   return (dispatch) => {
     dispatch(saveEditComb(ind));
-    fetch(base + 'api/comb', {
+    fetch(base + '/api/comb', {
       method: 'post',
       headers: {
         'Accept': 'application/json',

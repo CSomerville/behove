@@ -6,8 +6,8 @@
   "scripts": {
     "start": "babel-node ./index.js",
     "schema": "babel-node ./db/schema.js; babel-node ./db/seed.js",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_init.js 'test/**/*.@(js|jsx)'",
-    "test:watch": "npm run test -- --watch"
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_init.js ./test/**/*.js*",
+    "test:watch": "npm run test -- -w"
   },
   "author": "Colby Somerville",
   "license": "MIT",
@@ -21,6 +21,8 @@
     "nock": "^2.17.0",
     "node-sass": "^3.4.1",
     "sass-loader": "^3.1.1",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0",
     "webpack": "^1.12.2"
   },
   "dependencies": {
@@ -37,7 +39,7 @@
     "node-uuid": "^1.4.3",
     "pg-promise": "^2.1.0",
     "qs": "^5.2.0",
-    "react": "^0.14.0",
+    "react": "^0.14.2",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0-rc2",
