@@ -67,3 +67,23 @@ export function createCombCol(comb_col) {
       [comb_col.id, comb_col.combId, comb_col.name]);
   }
 }
+
+export function getCell(cell_id) {
+  return db.task((t) => {
+    return t.one("SELECT * FROM cells WHERE id = $1", [cell_id]);
+  });
+}
+
+export function updateCell(cell) {
+  return db.task(t) => {
+    return t.none("UPDATE cells SET name = $1, position = $2 WHERE id = $3",
+      [cell.name, cell.position, cell.id]);
+  }
+}
+
+export function createCell(cell) {
+  return db.task((t) => {
+    return t.one("INSERT INTO cells (id, comb_col_id, name, position) VALUES ($1, $2, $3, $4)",
+      [cell.id, cell.combColId, cell.name, cell.position]);
+  });
+}
