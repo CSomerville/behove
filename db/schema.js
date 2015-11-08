@@ -23,7 +23,9 @@ const dropTables = (t) => {
   return Promise.all([
     t.none("DROP TABLE IF EXISTS users CASCADE;"),
     t.none("DROP TABLE IF EXISTS combs CASCADE;"),
-    t.none("DROP TABLE IF EXISTS combs_hist CASCADE;")
+    t.none("DROP TABLE IF EXISTS combs_hist CASCADE;"),
+    t.none("DROP TABLE IF EXISTS comb_cols CASCADE;"),
+    t.none("DROP TABLE IF EXISTS cells CASCADE;")
   ]);
 }
 
@@ -37,7 +39,11 @@ const establishSchema = (t) => {
       "tstamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), action text, name text);"),
     t.none(historyTrigger),
     t.none("CREATE TRIGGER combs_hist_trig AFTER INSERT OR UPDATE OR DELETE " +
-      "ON combs FOR EACH ROW EXECUTE PROCEDURE comb_hist_func();")
+      "ON combs FOR EACH ROW EXECUTE PROCEDURE comb_hist_func();"),
+    t.none(`CREATE TABLE comb_cols (id uuid PRIMARY KEY, comb_id uuid REFERENCES combs(id),
+      name text);`),
+    t.none(`CREATE TABLE cells (id uuid PRIMARY KEY, comb_col_id uuid REFERENCES comb_cols(id),
+       position integer, name text);`)
   ]);
 }
 

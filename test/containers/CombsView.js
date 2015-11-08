@@ -126,7 +126,8 @@ describe('CombsView', () => {
       const saveEditBtn = scryRenderedDOMComponentsWithClass(output.component, 'save-edit-comb');
       Simulate.click(saveEditBtn[0]);
       expect(dispatchSpy).to.have.been.calledOnce;
-      expect(dispatchSpy.args[0][0].toString()).to.equal(combsActions.initiateSaveEditComb().toString());
+      expect(dispatchSpy.args[0][0].toString()).to
+        .equal(combsActions.initiateSaveEditComb().toString());
     });
   });
 
