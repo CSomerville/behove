@@ -37,3 +37,13 @@ export function updateComb(comb) {
       [comb.name, comb.id]);
   });
 }
+
+export function getOneComb(comb_id) {
+  return db.task((t) => {
+    return t.any(`SELECT
+      comb_cols.id, comb_cols.comb_id, comb_cols.name,
+      cells.id AS cell_id, cells.comb_col_id, cells.position, cells.name
+      FROM comb_cols, cells WHERE comb_cols.comb_id = $1 AND
+      cells.comb_col_id = comb_cols.id`, [comb_id]);
+  });
+}
