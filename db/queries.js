@@ -47,3 +47,23 @@ export function getOneComb(comb_id) {
       cells.comb_col_id = comb_cols.id`, [comb_id]);
   });
 }
+
+export function getCombCol(comb_col_id) {
+  return db.task((t) => {
+    return t.one("SELECT * FROM comb_cols WHERE id = $1", [comb_col_id]);
+  });
+}
+
+export function updateCombCol(comb_col) {
+  return db.task(t) => {
+    return t.none("UPDATE comb_cols SET name = $1 WHERE id = $2;",
+      [comb_col.name, comb_col.id]);
+  }
+}
+
+export function createCombCol(comb_col) {
+  return db.task(t) => {
+    return t.none("INSERT INTO comb_cols (id, comb_id, name) VALUES ($1, $2, $3);",
+      [comb_col.id, comb_col.combId, comb_col.name]);
+  }
+}
