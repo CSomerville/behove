@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb } from '../actions/comb_actions';
+import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
   componentDidMount() {
@@ -9,8 +10,11 @@ export class CombView extends Component {
   }
 
   render() {
+    const { comb } = this.props;
     return (
-      <div></div>
+      <div>
+        <CombColumns comb={comb} />
+      </div>
     );
   }
 }
