@@ -1,4 +1,4 @@
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { newComb, editComb, cancelEditComb, editCombName, initiateFetchCombs, initiateSaveEditComb,
@@ -82,7 +82,7 @@ describe('combsActions', () => {
       nock.cleanAll();
     });
 
-    it('creates FETCH_COMBS_SUCCESS when fetching combs finishes', () => {
+    it('creates FETCH_COMBS_SUCCESS when fetching combs finishes', (done) => {
 
       const id = uuid.v4();
 
@@ -95,11 +95,7 @@ describe('combsActions', () => {
         { type: FETCH_COMBS_SUCCESS, combs: { combs: [{ id: id, user_id: 1, name: 'flambe' }]}}
       ];
 
-      const store = mockStore({ combs: [] }, expectedActions, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+      const store = mockStore({ combs: [] }, expectedActions, done);
       store.dispatch(initiateFetchCombs('http://127.0.0.1:3000'));
     });
 
