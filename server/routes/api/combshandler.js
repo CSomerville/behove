@@ -26,45 +26,6 @@ export function combGet(req, res) {
       res.send(JSON.stringify(comb));
     })
     .catch((err) => {
-      console.log(err);
       res.sendStatus(500);
     });
-}
-
-function indexById(id, arr) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].id === id) {
-      return i;
-    }
-  }
-  return false;
-}
-
-function nestCombData(comb) {
-  let formatted = [];
-  comb.forEach((el, i) => {
-    let inFormatted = indexById(el.id, formatted);
-    if (inFormatted === 0 || inFormatted) {
-      formatted[inFormatted].cells.push({
-        id: el.cell_id,
-        combColId: el.comb_col_id,
-        position: el.position,
-        name: el.cell_name
-      });
-    } else {
-      formatted.push({
-        id: el.id,
-        combId: el.comb_id,
-        name: el.name,
-        cells: []
-      });
-      formatted[formatted.length - 1].cells.push({
-        id: el.cell_id,
-        combColId: el.comb_col_id,
-        position: el.position,
-        name: el.cell_name
-      });
-    }
-  });
-  return formatted;
 }
