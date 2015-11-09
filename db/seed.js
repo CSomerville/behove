@@ -26,10 +26,10 @@ const seed = (t) => {
       .then((combIds) => {
         let combColPromises = [];
         for (let i of combIds) {
-          for (let j of colNames) {
-            combColPromises.push(t.one(`INSERT INTO comb_cols (id, comb_id, name) VALUES
-              ($1, $2, $3) RETURNING id;`, [uuid.v4(), i.id, j]));
-          }
+          colNames.forEach((el, ind) => {
+            combColPromises.push(t.one(`INSERT INTO comb_cols (id, comb_id, position, name) VALUES
+              ($1, $2, $3, $4) RETURNING id;`, [uuid.v4(), i.id, ind, el]));            
+          });
         }
         return Promise.all(combColPromises);
       }, (err) => {

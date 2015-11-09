@@ -41,7 +41,7 @@ const establishSchema = (t) => {
     t.none("CREATE TRIGGER combs_hist_trig AFTER INSERT OR UPDATE OR DELETE " +
       "ON combs FOR EACH ROW EXECUTE PROCEDURE comb_hist_func();"),
     t.none(`CREATE TABLE comb_cols (id uuid PRIMARY KEY, comb_id uuid REFERENCES combs(id),
-      name text);`),
+      position integer, name text);`),
     t.none(`CREATE TABLE cells (id uuid PRIMARY KEY, comb_col_id uuid REFERENCES comb_cols(id),
        position integer, name text);`)
   ]);
