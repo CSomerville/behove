@@ -4,11 +4,11 @@ import checkStatus from '../utils/fetch-checkstatus';
 export const FETCH_COMB = 'FETCH_COMB';
 export const FETCH_COMB_SUCCESS = 'FETCH_COMB_SUCCESS';
 export const FETCH_COMB_FAILURE = 'FETCH_COMB_FAILURE';
+export const UPDATE_COMB_ID = 'UPDATE_COMB_ID';
 
-function fetchComb(id) {
+function fetchComb() {
   return {
-    type: FETCH_COMB,
-    id: id
+    type: FETCH_COMB
   }
 }
 
@@ -39,5 +39,12 @@ export function initiateFetchComb(id, base) {
       })
         .then((comb) => { dispatch(fetchCombSuccess(comb)) })
         .catch((err) => { dispatch(fetchCombFailure(err.message)) });
+  }
+}
+
+export function updateCombId(id) {
+  return {
+    type: UPDATE_COMB_ID,
+    id: id
   }
 }

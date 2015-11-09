@@ -8,7 +8,9 @@ export default class Comb extends Component {
         {this.props.combs.combs.map((comb, i) =>
           <li key={comb.id}>
             {!comb.editable &&
-              <Link to={'/app/comb/' + comb.id}>
+              <Link to={'/app/comb/' + comb.id}
+                onClick={this.props.handleLinkClick.bind(this, comb.id)}
+                >
                 <h1 className="comb-title">{comb.name}</h1>
                 <button onClick={this.props.makeEditable.bind(this, i)}>edit</button>
               </Link>

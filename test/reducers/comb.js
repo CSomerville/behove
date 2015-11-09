@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE } from '../../assets/actions/comb_actions';
+import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID
+ } from '../../assets/actions/comb_actions';
 import comb from '../../assets/reducers/comb';
 
 describe('combReducer', () => {
@@ -21,17 +22,16 @@ describe('combReducer', () => {
   });
 
   describe('fetch comb', () => {
-    it('should set fetching to true and set comb id', () => {
+    it('should set fetching to true', () => {
       const id = uuid.v4();
       const input = [{
-        id: null,
+        id: id,
         name: null,
         cols: [],
         isFetching: false,
         msg: ''
       }, {
-        type: FETCH_COMB,
-        id: id
+        type: FETCH_COMB
       }];
 
       const expected = {
@@ -118,6 +118,32 @@ describe('combReducer', () => {
         isFetching: false,
         msg: 'Internal Server Error'
       };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('update comb id', () => {
+    it('should update comb id', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: null,
+        name: null,
+        cols: [],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: UPDATE_COMB_ID,
+        id: id
+      }];
+
+      const expected = {
+        id: id,
+        name: null,
+        cols: [],
+        isFetching: false,
+        msg: ''
+      }
 
       expect(comb(...input)).to.deep.equal(expected);
     });

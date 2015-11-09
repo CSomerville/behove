@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
-import { initiateFetchComb,
-  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE
+import { initiateFetchComb, updateCombId,
+  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -36,7 +36,7 @@ describe('combActions', () => {
         .reply(200, comb);
 
       const expectedActions = [
-        { type: FETCH_COMB, id: id },
+        { type: FETCH_COMB },
         { type: FETCH_COMB_SUCCESS, comb: comb }
       ];
 
@@ -51,12 +51,24 @@ describe('combActions', () => {
         .reply(500);
 
       const expectedActions = [
-        { type: FETCH_COMB, id: id },
+        { type: FETCH_COMB },
         { type: FETCH_COMB_FAILURE, msg: 'Internal Server Error' }
       ];
 
       const store = mockStore({}, expectedActions, done);
       store.dispatch(initiateFetchComb(id, 'http://127.0.0.1:3000'));
+    });
+  });
+
+  describe('updateCombId', () => {
+    it('should update id', () => {
+      const id = uuid.v4();
+      const expected = {
+        type: UPDATE_COMB_ID,
+        id: id
+      };
+
+      expect(updateCombId(id)).to.deep.equal(expected);
     });
   });
 });

@@ -6,6 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import uuid from 'node-uuid';
 import { CombsView } from '../../assets/containers/CombsView';
 import * as combsActions from '../../assets/actions/combs_actions';
+import * as combActions from '../../assets/actions/comb_actions';
 
 chai.use(sinonChai);
 const { renderIntoDocument, scryRenderedDOMComponentsWithTag, Simulate,
@@ -59,6 +60,19 @@ describe('CombsView', () => {
       const links = scryRenderedDOMComponentsWithTag(output.component, 'a');
 
       expect(links.length).to.equal(1);
+    });
+
+    it.skip('handles link click by dispatching updateCombId', () => {
+      const id = uuid.v4();
+      const output = setup([{id: id, name: 'hunh-her', editable: false}], false, '');
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      const links = scryRenderedDOMComponentsWithTag(output.component, 'a');
+
+      Simulate.click(links[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.updateCombId(id));
     });
 
     it('edit button dispatches correctly', () => {

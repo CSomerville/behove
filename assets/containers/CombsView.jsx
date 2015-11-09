@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchCombs, editComb, editCombName,
   cancelEditComb, newComb, initiateSaveEditComb } from '../actions/combs_actions';
+import { updateCombId } from '../actions/comb_actions';
 import AddComb from '../components/AddComb';
 import Combs from '../components/Combs';
 
@@ -29,6 +30,9 @@ export class CombsView extends Component {
           }}
           saveEdit={(ind, comb) => {
             dispatch(initiateSaveEditComb(ind, comb));
+          }}
+          handleLinkClick={(id) => {
+            dispatch(updateCombId(id));
           }}
           />
         <AddComb

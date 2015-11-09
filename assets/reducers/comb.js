@@ -1,10 +1,10 @@
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE } from '../actions/comb_actions';
+import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID
+ } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
-        id: action.id,
         isFetching: true
       });
     case FETCH_COMB_SUCCESS:
@@ -17,6 +17,10 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
       return Object.assign({}, state, {
         msg: action.msg,
         isFetching: false
+      });
+    case UPDATE_COMB_ID:
+      return Object.assign({}, state, {
+        id: action.id
       });
     default:
       return state;

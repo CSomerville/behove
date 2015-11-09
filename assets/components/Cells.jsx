@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 export default class Cells extends Component {
   render() {
-  console.log(this.props);
     return (
       <ul>
         {this.props.cells.map((cell, i) =>
