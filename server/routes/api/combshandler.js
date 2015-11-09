@@ -23,9 +23,10 @@ export function combPost(req, res) {
 export function combGet(req, res) {
   getOneComb(req.params.id)
     .then((comb) => {
-      res.send(JSON.stringify(nestCombData(comb)));
+      res.send(JSON.stringify(comb));
     })
     .catch((err) => {
+      console.log(err);
       res.sendStatus(500);
     });
 }
