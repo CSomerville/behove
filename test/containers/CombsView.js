@@ -52,6 +52,15 @@ describe('CombsView', () => {
       expect(combTitles[0].textContent).to.equal('hunh-her');
     });
 
+    it('renders Link correctly', () => {
+      const id = uuid.v4();
+      const output = setup([{id: id, name: 'hunh-her', editable: false}], false, '');
+
+      const links = scryRenderedDOMComponentsWithTag(output.component, 'a');
+
+      expect(links.length).to.equal(1);
+    });
+
     it('edit button dispatches correctly', () => {
       const id = uuid.v4();
       const output = setup([{id: id, name: 'hunh-her', editable: false}], false, '');

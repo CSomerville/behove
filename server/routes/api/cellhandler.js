@@ -1,4 +1,4 @@
-import { findCell, createCell, updateCell } from '../../db/queries';
+import { findCell, createCell, updateCell } from '../../../db/queries';
 
 export function cellPost(req, res) {
   findCell(req.body.id)

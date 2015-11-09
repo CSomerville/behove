@@ -1,4 +1,4 @@
-import { findCombCol, createCombCol, updateCombCol } from '../../db/queries';
+import { findCombCol, createCombCol, updateCombCol } from '../../../db/queries';
 
 export function combColPost(req, res) {
   findComb(req.body.id)

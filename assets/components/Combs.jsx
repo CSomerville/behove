@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 export default class Comb extends Component {
   render() {
@@ -7,10 +8,10 @@ export default class Comb extends Component {
         {this.props.combs.combs.map((comb, i) =>
           <li key={comb.id}>
             {!comb.editable &&
-              <div>
+              <Link to={'/app/comb/' + comb.id}>
                 <h1 className="comb-title">{comb.name}</h1>
                 <button onClick={this.props.makeEditable.bind(this, i)}>edit</button>
-              </div>
+              </Link>
             }
             {comb.editable &&
               <div>

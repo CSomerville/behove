@@ -55,17 +55,17 @@ export function getCombCol(comb_col_id) {
 }
 
 export function updateCombCol(comb_col) {
-  return db.task(t) => {
+  return db.task((t) => {
     return t.none("UPDATE comb_cols SET name = $1 WHERE id = $2;",
       [comb_col.name, comb_col.id]);
-  }
+  });
 }
 
 export function createCombCol(comb_col) {
-  return db.task(t) => {
+  return db.task((t) => {
     return t.none("INSERT INTO comb_cols (id, comb_id, name) VALUES ($1, $2, $3);",
       [comb_col.id, comb_col.combId, comb_col.name]);
-  }
+  });
 }
 
 export function getCell(cell_id) {
@@ -75,10 +75,10 @@ export function getCell(cell_id) {
 }
 
 export function updateCell(cell) {
-  return db.task(t) => {
+  return db.task((t) => {
     return t.none("UPDATE cells SET name = $1, position = $2 WHERE id = $3",
       [cell.name, cell.position, cell.id]);
-  }
+  });
 }
 
 export function createCell(cell) {
