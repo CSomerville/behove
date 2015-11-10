@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
+import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
+  CANCEL_EDIT_COL
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -196,6 +197,109 @@ describe('combReducer', () => {
       expect(comb(...input)).to.deep.equal(expected);
     });
   });
+  describe('changeColName', () => {
+    it('should update name of correct column', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          prevName: 'elm',
+          position: 0,
+          cells: [],
+          editable: true
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          position: 1,
+          cells: 0
+        }],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: CHANGE_COL_NAME,
+        id: colId1,
+        name: 'olm'
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'olm',
+          prevName: 'elm',
+          position: 0,
+          cells: [],
+          editable: true
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          position: 1,
+          cells: 0
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('cancel edit col', () => {
+    it('should restore the previous name and make editable false', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          name: 'olmus',
+          prevName: 'elm',
+          editable: true,
+          cells: []
+        }, {
+          id: colId2,
+          name: 'beech',
+          editable: false,
+          cells: []
+        }],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: CANCEL_EDIT_COL,
+        id: colId1
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          name: 'elm',
+          prevName: 'elm',
+          editable: false,
+          cells: []
+        }, {
+          id: colId2,
+          name: 'beech',
+          editable: false,
+          cells: []
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
   describe('indexById', () => {
     it('should return correct index or false', () => {
       const [ colId1, colId2 ] = [ uuid.v4(), uuid.v4() ]

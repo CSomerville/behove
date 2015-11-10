@@ -1,7 +1,9 @@
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
+import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
+  CANCEL_EDIT_COL
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
+  let ind;
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
@@ -23,8 +25,7 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         id: action.id
       });
     case EDIT_COL:
-
-      const ind = indexById(state.cols, action.id);
+      ind = indexById(state.cols, action.id);
 
       return Object.assign({}, state, {
         cols: [
@@ -32,6 +33,29 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           Object.assign(state.cols[ind], {
             editable: true,
             prevName: state.cols[ind].name
+          }),
+          ...state.cols.slice(ind + 1)
+        ]
+      });
+    case CHANGE_COL_NAME:
+      ind = indexById(state.cols, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, ind),
+          Object.assign(state.cols[ind], {
+            name: action.name
+          }),
+          ...state.cols.slice(ind + 1)
+        ]
+      });
+    case CANCEL_EDIT_COL:
+      ind = indexById(state.cols, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, ind),
+          Object.assign(state.cols[ind], {
+            name: state.cols[ind].prevName,
+            editable: false
           }),
           ...state.cols.slice(ind + 1)
         ]

@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
-import { initiateFetchComb, updateCombId, editCol,
-  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
+import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol,
+  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
+  CANCEL_EDIT_COL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -81,6 +82,32 @@ describe('combActions', () => {
       };
 
       expect(editCol(id)).to.deep.equal(expected);
+    });
+  });
+
+  describe('changeColName', () => {
+    it('should pass id and name', () => {
+      const id = uuid.v4();
+      const ev = { target: { value: 'luxor' }};
+      const expected = {
+        type: CHANGE_COL_NAME,
+        id: id,
+        name: 'luxor'
+      };
+
+      expect(changeColName(id, ev)).to.deep.equal(expected);
+    });
+  });
+
+  describe('cancelEditCol', () => {
+    it('should pass in the id', () => {
+      const id = uuid.v4();
+      const expected = {
+        type: CANCEL_EDIT_COL,
+        id: id
+      };
+
+      expect(cancelEditCol(id)).to.deep.equal(expected);
     });
   });
 });

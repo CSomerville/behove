@@ -6,6 +6,8 @@ export const FETCH_COMB_SUCCESS = 'FETCH_COMB_SUCCESS';
 export const FETCH_COMB_FAILURE = 'FETCH_COMB_FAILURE';
 export const UPDATE_COMB_ID = 'UPDATE_COMB_ID';
 export const EDIT_COL = 'EDIT_COL';
+export const CANCEL_EDIT_COL = 'CANCEL_EDIT_COL';
+export const CHANGE_COL_NAME = 'CHANGE_COL_NAME';
 
 function fetchComb() {
   return {
@@ -54,5 +56,20 @@ export function editCol(id) {
   return {
     type: EDIT_COL,
     id: id
+  }
+}
+
+export function cancelEditCol(id) {
+  return {
+    type: CANCEL_EDIT_COL,
+    id: id
+  }
+}
+
+export function changeColName(id, e) {
+  return {
+    type: CHANGE_COL_NAME,
+    id: id,
+    name: e.target.value
   }
 }
