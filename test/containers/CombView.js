@@ -88,7 +88,7 @@ describe('CombView', () => {
 
       Simulate.click(editCol[0]);
       expect(dispatchSpy).to.have.been.calledOnce;
-      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.editCol(0));
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.editCol(colId));
     });
   });
 

@@ -23,17 +23,40 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         id: action.id
       });
     case EDIT_COL:
+
+      const ind = indexById(state.cols, action.id);
+
       return Object.assign({}, state, {
         cols: [
-          ...state.cols.slice(0, action.ind),
-          Object.assign(state.cols[action.ind], {
+          ...state.cols.slice(0, ind),
+          Object.assign(state.cols[ind], {
             editable: true,
-            prevName: state.cols[action.ind].name
+            prevName: state.cols[ind].name
           }),
-          ...state.cols.slice(action.ind + 1)
+          ...state.cols.slice(ind + 1)
         ]
       });
     default:
       return state;
   }
+}
+
+// retrieves index for array, 3nd arg is optional.
+// returns false if no match. exported for testing only
+export function indexById(cols, colId, cellId) {
+  for (let i = 0; i < cols.length; i++) {
+    if (cols[i].id === colId) {
+      if (cellId) {
+        for (let j = 0; j < cols[i].cells.length; j++) {
+          if (cols[i].cells[j].id === cellId) {
+            return [i, j];
+          }
+        }
+        return false;
+      } else {
+        return i;
+      }
+    }
+  }
+  return false;
 }

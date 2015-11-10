@@ -9,7 +9,7 @@ export default class CombColumns extends Component {
           <li key={col.position}>
             <h1 className="column-title">{col.name}</h1>
             <button className="edit-col"
-              onClick={this.props.onEditClick.bind(this, i)}>
+              onClick={this.props.onEditClick.bind(this, col.id)}>
               edit
             </button>
             <Cells cells={col.cells} />

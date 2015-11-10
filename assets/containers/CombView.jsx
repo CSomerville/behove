@@ -15,8 +15,8 @@ export class CombView extends Component {
       <div>
         <CombColumns
           comb={comb}
-          onEditClick={(ind) => {
-            dispatch(editCol(ind));
+          onEditClick={(id) => {
+            dispatch(editCol(id));
           }}
           />
       </div>

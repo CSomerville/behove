@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
  } from '../../assets/actions/comb_actions';
-import comb from '../../assets/reducers/comb';
+import comb, { indexById } from '../../assets/reducers/comb';
 
 describe('combReducer', () => {
   describe('default state', () => {
@@ -170,7 +170,7 @@ describe('combReducer', () => {
         msg: ''
       }, {
         type: EDIT_COL,
-        ind: 1
+        id: colId2
       }];
 
       const expected = {
@@ -194,6 +194,46 @@ describe('combReducer', () => {
       };
 
       expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('indexById', () => {
+    it('should return correct index or false', () => {
+      const [ colId1, colId2 ] = [ uuid.v4(), uuid.v4() ]
+      const cols = [{
+        id: colId1,
+        name: 'ok',
+        position: 0
+      }, {
+        id: colId2,
+        name: 'yes',
+        position: 0
+      }];
+
+      expect(indexById(cols, colId1)).to.equal(0);
+      expect(indexById(cols, colId2)).to.equal(1);
+      expect(indexById(cols, uuid.v4())).to.be.false;
+
+      const [ colId, cellId1, cellId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const colWithCells = [{
+        id: colId,
+        name: 'ok',
+        position: 0,
+        cells: [{
+          id: cellId1,
+          colId: colId,
+          name: 'elm',
+          position: 0,
+        }, {
+          id: cellId2,
+          colId: colId,
+          name: 'oak',
+          position: 1
+        }]
+      }];
+
+      expect(indexById(colWithCells, colId, cellId1)).to.deep.equal([0,0]);
+      expect(indexById(colWithCells, colId, cellId2)).to.deep.equal([0,1]);
+      expect(indexById(colWithCells, colId, uuid.v4())).to.be.false;
     });
   });
 });

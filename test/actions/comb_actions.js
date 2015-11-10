@@ -74,12 +74,13 @@ describe('combActions', () => {
 
   describe('editCol', () => {
     it('should pass id and correct action type', () => {
+      const id = uuid.v4();
       const expected = {
         type: EDIT_COL,
-        ind: 1
+        id: id
       };
 
-      expect(editCol(1)).to.deep.equal(expected);
+      expect(editCol(id)).to.deep.equal(expected);
     });
   });
 });

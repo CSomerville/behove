@@ -50,9 +50,9 @@ export function updateCombId(id) {
   }
 }
 
-export function editCol(ind) {
+export function editCol(id) {
   return {
     type: EDIT_COL,
-    ind: ind
+    id: id
   }
 }
