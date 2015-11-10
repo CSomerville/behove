@@ -5,6 +5,7 @@ export const FETCH_COMB = 'FETCH_COMB';
 export const FETCH_COMB_SUCCESS = 'FETCH_COMB_SUCCESS';
 export const FETCH_COMB_FAILURE = 'FETCH_COMB_FAILURE';
 export const UPDATE_COMB_ID = 'UPDATE_COMB_ID';
+export const EDIT_COL = 'EDIT_COL';
 
 function fetchComb() {
   return {
@@ -46,5 +47,12 @@ export function updateCombId(id) {
   return {
     type: UPDATE_COMB_ID,
     id: id
+  }
+}
+
+export function editCol(ind) {
+  return {
+    type: EDIT_COL,
+    ind: ind
   }
 }

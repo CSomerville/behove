@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID
+import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
  } from '../../assets/actions/comb_actions';
 import comb from '../../assets/reducers/comb';
 
@@ -144,6 +144,54 @@ describe('combReducer', () => {
         isFetching: false,
         msg: ''
       }
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('edit col', () => {
+    it('should make col editable by index and set prevName', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'Tarkovsky',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'Bunuel',
+          position: 0
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'Bresson',
+          position: 1
+        }],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: EDIT_COL,
+        ind: 1
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'Tarkovsky',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'Bunuel',
+          position: 0,
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'Bresson',
+          prevName: 'Bresson',
+          position: 1,
+          editable: true
+        }],
+        isFetching: false,
+        msg: ''
+      };
 
       expect(comb(...input)).to.deep.equal(expected);
     });

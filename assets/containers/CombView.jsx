@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initiateFetchComb } from '../actions/comb_actions';
+import { initiateFetchComb, editCol } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
@@ -10,10 +10,15 @@ export class CombView extends Component {
   }
 
   render() {
-    const { comb } = this.props;
+    const { dispatch, comb } = this.props;
     return (
       <div>
-        <CombColumns comb={comb} />
+        <CombColumns
+          comb={comb}
+          onEditClick={(ind) => {
+            dispatch(editCol(ind));
+          }}
+          />
       </div>
     );
   }

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
-import { initiateFetchComb, updateCombId,
-  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID
+import { initiateFetchComb, updateCombId, editCol,
+  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -69,6 +69,17 @@ describe('combActions', () => {
       };
 
       expect(updateCombId(id)).to.deep.equal(expected);
+    });
+  });
+
+  describe('editCol', () => {
+    it('should pass id and correct action type', () => {
+      const expected = {
+        type: EDIT_COL,
+        ind: 1
+      };
+
+      expect(editCol(1)).to.deep.equal(expected);
     });
   });
 });

@@ -8,7 +8,7 @@ import { CombView } from '../../assets/containers/CombView';
 import * as combActions from '../../assets/actions/comb_actions';
 
 chai.use(sinonChai);
-const { renderIntoDocument, scryRenderedDOMComponentsWithClass } = TestUtils;
+const { renderIntoDocument, scryRenderedDOMComponentsWithClass, Simulate } = TestUtils;
 
 function setup(data) {
   let props = {
@@ -40,7 +40,7 @@ describe('CombView', () => {
 
   describe('CombColumns', () => {
     it('should render list of comb columns', () => {
-      const [combId, colId1, colId2] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
       const output = setup({
         id: combId,
         name: 'everything',
@@ -61,6 +61,34 @@ describe('CombView', () => {
       expect(columnTitles.length).to.equal(2);
       expect(columnTitles[0].textContent).to.equal('Smell');
       expect(columnTitles[1].textContent).to.equal('Smelled');
+    });
+
+    it('should render an edit column button', () => {
+      const [ combId, colId ] = [ uuid.v4(), uuid.v4() ];
+      const output = setup({
+        id: combId,
+        name: 'studsy',
+        cols: [{
+          id: colId,
+          combId: combId,
+          name: 'sure',
+          position: 0,
+          cells: []
+        }],
+        isFetching: false,
+        msg: ''
+      });
+
+      const editCol = scryRenderedDOMComponentsWithClass(output.component, 'edit-col');
+      expect(editCol.length).to.equal(1);
+      expect(editCol[0].textContent).to.equal('edit');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      Simulate.click(editCol[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.editCol(0));
     });
   });
 
