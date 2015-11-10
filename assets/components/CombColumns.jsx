@@ -6,7 +6,7 @@ export default class CombColumns extends Component {
     return (
       <ul>
         {this.props.comb.cols.map((col, i) =>
-          <li key={col.id}>
+          <li key={col.position}>
             <h1 className="column-title">{col.name}</h1>
             <Cells cells={col.cells} />
           </li>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { initiateFetchCombs, editComb, editCombName,
   cancelEditComb, newComb, initiateSaveEditComb } from '../actions/combs_actions';
 import { updateCombId } from '../actions/comb_actions';
-import AddComb from '../components/AddComb';
+import AddComb from '../components/AddButton';
 import Combs from '../components/Combs';
 
 // exports unconnected class for unit testing purposes
@@ -19,7 +19,8 @@ export class CombsView extends Component {
       <div>
         <Combs
           combs={combs}
-          makeEditable={(ind) => {
+          makeEditable={(ind, e) => {
+            e.stopPropagation();
             dispatch(editComb(ind));
           }}
           combInputChanged={(ind, e) => {
@@ -36,7 +37,7 @@ export class CombsView extends Component {
           }}
           />
         <AddComb
-          onAddCombClick={() => {
+          onAddClick={() => {
             dispatch(newComb());
           }}
           />
