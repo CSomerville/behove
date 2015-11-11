@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
-import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol,
+import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
-  CANCEL_EDIT_COL
+  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -109,5 +109,58 @@ describe('combActions', () => {
 
       expect(cancelEditCol(id)).to.deep.equal(expected);
     });
+  });
+
+  describe('saveEditCol', () => {
+    it('should dispatch SAVE_EDIT_COL_SUCCESS on successful save', (done) => {
+      const id = uuid.v4();
+      const col = {
+        id: id,
+        name: 'hatshepsut',
+        position: 0,
+        cells: []
+      };
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/col/' + id, {
+          id: col.id,
+          name: col.name,
+          position: col.position
+        })
+        .reply(200);
+
+      const expectedActions = [
+        { type: SAVE_EDIT_COL, id: id },
+        { type: SAVE_EDIT_COL_SUCCESS, id: id }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveEditCol(col, 'http://127.0.0.1:3000'))
+    });
+    it('should dispatch SAVE_EDIT_COL_FAILURE on failure', (done) => {
+      const id = uuid.v4();
+      const col = {
+        id: id,
+        name: 'hatshepsut',
+        position: 0,
+        cells: []
+      };
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/col/' + id, {
+          id: col.id,
+          name: col.name,
+          position: col.position
+        })
+        .reply(500);
+
+      const expectedActions = [
+        { type: SAVE_EDIT_COL, id: id },
+        { type: SAVE_EDIT_COL_FAILURE, id: id, msg: 'Internal Server Error'}
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveEditCol(col, 'http://127.0.0.1:3000'))
+    })
   });
 });

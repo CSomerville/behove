@@ -14,7 +14,7 @@ apiRoutes.get('/combs', combsGet);
 apiRoutes.get('/comb/:id', combGet);
 
 apiRoutes.post('/comb', combPost);
-apiRoutes.post('/combcol', combColPost);
+apiRoutes.post('/col/:id', combColPost);
 apiRoutes.post('/cell', cellPost);
 
 export default apiRoutes;

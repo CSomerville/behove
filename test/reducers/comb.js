@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import uuid from 'node-uuid';
-import { FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
-  CANCEL_EDIT_COL
+import {
+  FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
+  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -297,6 +298,150 @@ describe('combReducer', () => {
       };
 
       expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save edit col', () => {
+    it('sets editable to false and sets isFetching to true', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'olmus',
+          prevName: 'elm',
+          editable: true
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          prevName: 'beec',
+          editable: true
+        }]
+      }, {
+        type: SAVE_EDIT_COL,
+        id: colId2
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'olmus',
+          prevName: 'elm',
+          editable: true
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          prevName: 'beec',
+          editable: false,
+          isFetching: true
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+
+    describe('save edit col success', () => {
+      it('should set isFetching to false', () => {
+        const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+        const input = [{
+          id: combId,
+          name: 'autumn',
+          cols: [{
+            id: colId1,
+            combId: combId,
+            name: 'olmus',
+            prevName: 'elm',
+            editable: true
+          }, {
+            id: colId2,
+            combId: combId,
+            name: 'beech',
+            prevName: 'beec',
+            editable: false,
+            isFetching: true
+          }]
+        }, {
+          type: SAVE_EDIT_COL_SUCCESS,
+          id: colId2
+        }];
+
+        const expected = {
+          id: combId,
+          name: 'autumn',
+          cols: [{
+            id: colId1,
+            combId: combId,
+            name: 'olmus',
+            prevName: 'elm',
+            editable: true
+          }, {
+            id: colId2,
+            combId: combId,
+            name: 'beech',
+            prevName: 'beec',
+            editable: false,
+            isFetching: false
+          }]
+        };
+
+        expect(comb(...input)).to.deep.equal(expected);
+      });
+    });
+
+    describe('save edit comb failure', () => {
+      it('should set msg and isFetching to false', () => {
+        const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+        const input = [{
+          id: combId,
+          name: 'autumn',
+          cols: [{
+            id: colId1,
+            combId: combId,
+            name: 'olmus',
+            prevName: 'elm',
+            editable: true
+          }, {
+            id: colId2,
+            combId: combId,
+            name: 'beech',
+            prevName: 'beec',
+            editable: false,
+            isFetching: true
+          }]
+        }, {
+          type: SAVE_EDIT_COL_FAILURE,
+          id: colId2,
+          msg: 'Internal Server Error'
+        }];
+
+        const expected = {
+          id: combId,
+          name: 'autumn',
+          cols: [{
+            id: colId1,
+            combId: combId,
+            name: 'olmus',
+            prevName: 'elm',
+            editable: true
+          }, {
+            id: colId2,
+            combId: combId,
+            name: 'beech',
+            prevName: 'beec',
+            editable: false,
+            isFetching: false
+          }],
+          msg: 'Internal Server Error'
+        };
+        expect(comb(...input)).to.deep.equal(expected);
+      });
     });
   });
 
