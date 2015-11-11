@@ -12,8 +12,9 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         isFetching: true
       });
     case FETCH_COMB_SUCCESS:
+      const sorted = sortByPosition(action.comb.cols.slice());
       return Object.assign({}, state, {
-        cols: action.comb.cols,
+        cols: sorted,
         name: action.comb.name,
         isFetching: false
       });
@@ -133,4 +134,18 @@ export function indexById(cols, colId, cellId) {
     }
   }
   return false;
+}
+
+function comparator(a, b) {
+  return a.position - b.position;
+}
+
+function sortByPosition(cols) {
+  for (let i in cols) {
+    if (i.cells) {
+      cells.sort(comparator);
+    }
+  }
+  cols.sort(comparator);
+  return cols;
 }

@@ -61,7 +61,7 @@ export function getOneComb(comb_id) {
   });
 }
 
-export function getCombCol(comb_col_id) {
+export function findCombCol(comb_col_id) {
   return db.task((t) => {
     return t.one("SELECT * FROM comb_cols WHERE id = $1", [comb_col_id]);
   });
@@ -79,6 +79,15 @@ export function createCombCol(comb_col) {
     return t.none("INSERT INTO comb_cols (id, comb_id, name) VALUES ($1, $2, $3);",
       [comb_col.id, comb_col.combId, comb_col.name]);
   });
+}
+
+export function deleteCol(id) {
+  return db.task((t) => {
+    return Promise.all[
+      t.none("DELETE FROM cells WHERE comb_col_id = $1", [id]),
+      t.none("DELETE FROM comb_cols WHERE id = $1;", [id])
+    ]
+  })
 }
 
 export function getCell(cell_id) {
