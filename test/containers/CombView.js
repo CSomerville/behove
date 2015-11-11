@@ -8,7 +8,8 @@ import { CombView } from '../../assets/containers/CombView';
 import * as combActions from '../../assets/actions/comb_actions';
 
 chai.use(sinonChai);
-const { renderIntoDocument, scryRenderedDOMComponentsWithClass, Simulate } = TestUtils;
+const { renderIntoDocument, scryRenderedDOMComponentsWithClass, Simulate,
+  scryRenderedDOMComponentsWithTag } = TestUtils;
 
 function setup(data) {
   let props = {
@@ -89,6 +90,77 @@ describe('CombView', () => {
       Simulate.click(editCol[0]);
       expect(dispatchSpy).to.have.been.calledOnce;
       expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.editCol(colId));
+    });
+
+    it('should render editable col correctly', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          name: 'elm',
+          prevName: 'elm',
+          editable: true,
+          position: 0,
+          cells: []
+        }, {
+          id: colId2,
+          name: 'beech',
+          editable: false,
+          position: 1,
+          cells: []
+        }]
+      });
+
+      const inputs = scryRenderedDOMComponentsWithTag(output.component, 'input');
+      expect(inputs.length).to.equal(1);
+      expect(inputs[0].value).to.equal('elm');
+
+      const saveButton = scryRenderedDOMComponentsWithClass(output.component, 'col-save');
+      expect(saveButton.length).to.equal(1);
+
+      const cancelButton = scryRenderedDOMComponentsWithClass(output.component, 'col-cancel');
+      expect(cancelButton.length).to.equal(1);
+
+      const deleteButton = scryRenderedDOMComponentsWithClass(output.component, 'col-delete');
+      expect(deleteButton.length).to.equal(1);
+    });
+
+    it('save, cancel and delete col buttons should dispatch correctly', () => {
+      const [ combId, colId ] = [ combId, colId ];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          name: 'elm',
+          prevName: 'elm',
+          editable: true,
+          position: 0,
+          cells: []
+        }]
+      });
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      const saveButtons = scryRenderedDOMComponentsWithClass(output.component, 'col-save');
+      Simulate.click(saveButtons[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateSaveEditCol().toString());
+
+      dispatchSpy.reset();
+      const cancelButtons = scryRenderedDOMComponentsWithClass(output.component, 'col-cancel');
+      Simulate.click(cancelButtons[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.cancelEditCol(colId));
+
+      dispatchSpy.reset();
+      const deleteButtons = scryRenderedDOMComponentsWithClass(output.component, 'col-delete');
+      Simulate.click(deleteButtons[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateDeleteCol().toString());
     });
   });
 

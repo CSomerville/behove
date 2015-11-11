@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initiateFetchComb, editCol } from '../actions/comb_actions';
+import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
+  initiateDeleteCol } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
@@ -17,6 +18,18 @@ export class CombView extends Component {
           comb={comb}
           onEditClick={(id) => {
             dispatch(editCol(id));
+          }}
+          onInputChange={(id, e) => {
+            dispatch(changeColName(id, e));
+          }}
+          onSaveClick={(col) => {
+            dispatch(initiateSaveEditCol(col));
+          }}
+          onCancelCol={(id) => {
+            dispatch(cancelEditCol(id));
+          }}
+          onDeleteCol={(id) => {
+            dispatch(initiateDeleteCol(id));
           }}
           />
       </div>
