@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
-  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE
+  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -442,6 +443,101 @@ describe('combReducer', () => {
         };
         expect(comb(...input)).to.deep.equal(expected);
       });
+    });
+  });
+
+  describe('Delete col', () => {
+    it('should remove col from array and set isFetching to true', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'elm',
+          position: 1,
+          cells: []
+        }],
+        isFetching: false,
+      }, {
+        type: 'DELETE_COL',
+        id: colId2
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }],
+        isFetching: true
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('delete col success', () => {
+    it('should set isFetching to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cells: [],
+        isFetching: true,
+        msg: ''
+      }, {
+        type: DELETE_COL_SUCCESS,
+        id: id
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
+        cells: [],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('delete col failure', () => {
+    it('should set isFetching to false and set msg', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cells: [],
+        isFetching: true,
+        msg: 'Internal Server Error'
+      }, {
+        type: DELETE_COL_FAILURE,
+        id: id,
+        msg: 'Internal Server Error'
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
+        cells: [],
+        isFetching: false,
+        msg: 'Internal Server Error'
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
     });
   });
 

@@ -2,8 +2,10 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
+  initiateDeleteCol,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
-  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE
+  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -162,5 +164,37 @@ describe('combActions', () => {
       const store = mockStore({}, expectedActions, done);
       store.dispatch(initiateSaveEditCol(col, 'http://127.0.0.1:3000'))
     })
+  });
+  describe('initiateDeleteCol', () => {
+    it('should dispatch DELETE_COL_SUCCESS on successful deletion', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .delete('/api/col/' + id)
+        .reply(200);
+
+      const expectedActions = [
+        { type: DELETE_COL, id: id },
+        { type: DELETE_COL_SUCCESS, id: id }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateDeleteCol(id, 'http://127.0.0.1:3000'));
+    });
+    it('should dispatch DELETE_COL_FAILURE and pass a message on failure', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .delete('/api/col/' + id)
+        .reply(500);
+
+      const expectedActions = [
+        { type: DELETE_COL, id: id },
+        { type: DELETE_COL_FAILURE, id: id, msg: 'Internal Server Error' }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateDeleteCol(id, 'http://127.0.0.1:3000'));
+    });
   });
 });

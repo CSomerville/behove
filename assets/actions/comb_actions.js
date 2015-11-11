@@ -11,6 +11,9 @@ export const CHANGE_COL_NAME = 'CHANGE_COL_NAME';
 export const SAVE_EDIT_COL = 'SAVE_EDIT_COL';
 export const SAVE_EDIT_COL_SUCCESS = 'SAVE_EDIT_COL_SUCCESS';
 export const SAVE_EDIT_COL_FAILURE = 'SAVE_EDIT_COL_FAILURE';
+export const DELETE_COL = 'DELETE_COL';
+export const DELETE_COL_SUCCESS = 'DELETE_COL_SUCCESS';
+export const DELETE_COL_FAILURE = 'DELETE_COL_FAILURE';
 
 function fetchComb() {
   return {
@@ -120,5 +123,44 @@ export function initiateSaveEditCol(col, base) {
       .then((res) => checkStatus(res))
       .then(() => { dispatch(saveEditColSuccess(col.id)) })
       .catch((err) => { dispatch(saveEditColFailure(col.id, err.message)) });
+  }
+}
+
+function deleteCol(id) {
+  return {
+    type: DELETE_COL,
+    id: id
+  }
+}
+
+function deleteColSuccess(id) {
+  return {
+    type: DELETE_COL_SUCCESS,
+    id: id
+  }
+}
+
+function deleteColFailure(msg, id) {
+  return {
+    type: DELETE_COL_FAILURE,
+    id: id,
+    msg: msg
+  }
+}
+
+export function initiateDeleteCol(id, base) {
+
+  base = base || '';
+
+  return (dispatch) => {
+    dispatch(deleteCol(id));
+    fetch(base + '/api/col/' + id, {
+      method: 'delete',
+      credentials: 'same-origin'
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(deleteColSuccess(id)))
+      .catch((err) => dispatch(deleteColFailure(err.message, id)));
+
   }
 }

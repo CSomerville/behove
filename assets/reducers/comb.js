@@ -1,6 +1,7 @@
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
-  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE
+  CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
@@ -95,7 +96,20 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           ...state.cols.slice(ind + 1)
         ],
         msg: action.msg
-      })
+      });
+    case DELETE_COL:
+      ind = indexById(state.cols, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, ind),
+          ...state.cols.slice(ind + 1)
+        ],
+        isFetching: true
+      });
+    case DELETE_COL_SUCCESS:
+      return Object.assign({}, state, { isFetching: false });
+    case DELETE_COL_FAILURE:
+      return Object.assign({}, state, { isFetching: false, msg: action.msg });
     default:
       return state;
   }
