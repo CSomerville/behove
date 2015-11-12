@@ -1,9 +1,11 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import React from 'react';
+import React, { Component } from 'react';
 import TestUtils from 'react-addons-test-utils';
 import uuid from 'node-uuid';
+import TestBackend from 'react-dnd-test-backend';
+import { DragDropContext } from 'react-dnd';
 import { CombView } from '../../assets/containers/CombView';
 import * as combActions from '../../assets/actions/comb_actions';
 
@@ -11,14 +13,26 @@ chai.use(sinonChai);
 const { renderIntoDocument, scryRenderedDOMComponentsWithClass, Simulate,
   scryRenderedDOMComponentsWithTag } = TestUtils;
 
+function wrapInDndCtx(DecoratedComponent) {
+  return DragDropContext(TestBackend)(
+    class TestContextContainer extends Component {
+      render() {
+        return (<DecoratedComponent {...this.props}/>);
+      }
+    }
+  )
+}
+
 function setup(data) {
+  const TestComb = wrapInDndCtx(CombView);
+
   let props = {
     dispatch: sinon.stub(),
     comb: data
   }
 
   const component = renderIntoDocument(
-    <CombView {...props} />
+    <TestComb {...props} />
   );
 
   return {
