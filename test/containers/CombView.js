@@ -53,6 +53,33 @@ describe('CombView', () => {
     });
   });
 
+  describe('NewCol AddButton', () => {
+    it('should render the button', () => {
+      const id = uuid.v4();
+      const output = setup({ id: id, name: null, cols: [], isFetching: false, msg: '' });
+
+      const newColButtons = scryRenderedDOMComponentsWithClass(output.component, 'new-col');
+      expect(newColButtons.length).to.equal(1);
+      expect(newColButtons[0].textContent).to.equal('+');
+    });
+
+    it('should dispatch newCol with combId', () => {
+      const id = uuid.v4();
+      const output = setup({ id: id, name: null, cols: [], isFetching: false, msg: '' });
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      const newColButtons = scryRenderedDOMComponentsWithClass(output.component, 'new-col');
+      Simulate.click(newColButtons[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0].type).to.equal(combActions.newCol(id).type);
+      expect(dispatchSpy.args[0][0].col.name).to.equal(combActions.newCol(id).col.name);
+      expect(dispatchSpy.args[0][0].col.combId).to.equal(combActions.newCol(id).col.combId);
+      expect(dispatchSpy.args[0][0].col.editable).to.equal(combActions.newCol(id).col.editable);
+
+    });
+  });
+
   describe('CombColumns', () => {
     it('should render list of comb columns', () => {
       const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];

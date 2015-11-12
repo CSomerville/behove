@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
-  initiateDeleteCol } from '../actions/comb_actions';
+  initiateDeleteCol, newCol } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
@@ -30,6 +30,9 @@ export class CombView extends Component {
           }}
           onDeleteCol={(id) => {
             dispatch(initiateDeleteCol(id));
+          }}
+          onAddCol={(id) => {
+            dispatch(newCol(id));
           }}
           />
       </div>

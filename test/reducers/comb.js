@@ -3,7 +3,7 @@ import uuid from 'node-uuid';
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -535,6 +535,55 @@ describe('combReducer', () => {
         cells: [],
         isFetching: false,
         msg: 'Internal Server Error'
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('new col', () => {
+    it('should add new col to cols arr', () => {
+      const [combId, colId1, colId2] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }],
+        isFetching: false
+      }, {
+        type: NEW_COL,
+        col: {
+          id: colId2,
+          combId: combId,
+          editable: true,
+          cells: [],
+          name: ''
+        }
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }, {
+          id: colId2,
+          combId: combId,
+          editable: true,
+          cells: [],
+          name: '',
+          position: 1
+        }],
+        isFetching: false
       };
 
       expect(comb(...input)).to.deep.equal(expected);

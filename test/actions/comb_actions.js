@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
-  initiateDeleteCol,
+  initiateDeleteCol, newCol,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -195,6 +195,29 @@ describe('combActions', () => {
 
       const store = mockStore({}, expectedActions, done);
       store.dispatch(initiateDeleteCol(id, 'http://127.0.0.1:3000'));
+    });
+  });
+
+  describe('newCol', () => {
+    it('should create a new col with id and editable true with combId passed in', () => {
+      const [combId, colId] = [uuid.v4(), uuid.v4()];
+      const expected = {
+        type: NEW_COL,
+        col: {
+          id: colId,
+          combId: combId,
+          name: '',
+          editable: true,
+          cells: []
+        }
+      };
+
+      expect(newCol(combId).type).to.equal(expected.type);
+      expect(newCol(combId).col.id.length).to.equal(expected.col.id.length);
+      expect(newCol(combId).col.combId).to.equal(expected.col.combId);
+      expect(newCol(combId).col.name).to.equal(expected.col.name);
+      expect(newCol(combId).col.editable).to.equal(expected.col.editable);
+      expect(newCol(combId).col.cells).to.deep.equal(expected.col.cells);
     });
   });
 });

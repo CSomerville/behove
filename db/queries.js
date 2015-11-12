@@ -76,8 +76,8 @@ export function updateCombCol(comb_col) {
 
 export function createCombCol(comb_col) {
   return db.task((t) => {
-    return t.none("INSERT INTO comb_cols (id, comb_id, name) VALUES ($1, $2, $3);",
-      [comb_col.id, comb_col.combId, comb_col.name]);
+    return t.none("INSERT INTO comb_cols (id, comb_id, name, position) VALUES ($1, $2, $3, $4);",
+      [comb_col.id, comb_col.combId, comb_col.name, comb_col.position]);
   });
 }
 

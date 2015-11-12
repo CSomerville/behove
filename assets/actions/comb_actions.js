@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import uuid from 'node-uuid';
 import checkStatus from '../utils/fetch-checkstatus';
 
 export const FETCH_COMB = 'FETCH_COMB';
@@ -14,6 +15,7 @@ export const SAVE_EDIT_COL_FAILURE = 'SAVE_EDIT_COL_FAILURE';
 export const DELETE_COL = 'DELETE_COL';
 export const DELETE_COL_SUCCESS = 'DELETE_COL_SUCCESS';
 export const DELETE_COL_FAILURE = 'DELETE_COL_FAILURE';
+export const NEW_COL = 'NEW_COL';
 
 function fetchComb() {
   return {
@@ -117,6 +119,7 @@ export function initiateSaveEditCol(col, base) {
       body: JSON.stringify({
         id: col.id,
         name: col.name,
+        combId: col.combId,
         position: col.position
       })
     })
@@ -162,5 +165,18 @@ export function initiateDeleteCol(id, base) {
       .then(() => dispatch(deleteColSuccess(id)))
       .catch((err) => dispatch(deleteColFailure(err.message, id)));
 
+  }
+}
+
+export function newCol(combId) {
+  return {
+    type: NEW_COL,
+    col: {
+      id: uuid.v4(),
+      combId: combId,
+      name: '',
+      editable: true,
+      cells: []
+    }
   }
 }

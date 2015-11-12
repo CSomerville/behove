@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import OneCol from './OneCol';
+import AddButton from '../components/AddButton';
 
 export default class CombColumns extends Component {
   render() {
@@ -11,6 +12,9 @@ export default class CombColumns extends Component {
             <OneCol col={col} { ...rest } />
           </li>
         )}
+        <AddButton
+          onAddClick={this.props.onAddCol.bind(this, comb.id)} 
+          buttonClass='new-col' />
       </ul>
     );
   }
