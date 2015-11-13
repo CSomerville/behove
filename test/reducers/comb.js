@@ -3,7 +3,7 @@ import uuid from 'node-uuid';
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -587,6 +587,74 @@ describe('combReducer', () => {
       };
 
       expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('reorder cols', () => {
+    it('should reorder the cols correctly', () => {
+      const [combId, colId1, colId2, colId3] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const initialState = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          name: 'beech',
+          cells: [],
+          position: 0
+        }, {
+          id: colId2,
+          name: 'elm',
+          cells: [],
+          position: 1
+        }, {
+          id: colId3,
+          name: 'oak',
+          cells: [],
+          position: 2
+        }],
+        isFetching: false,
+        msg: ''
+      };
+
+      let input = [initialState, {
+        type: REORDER_COLS,
+        sourceId: colId1,
+        targetId: colId2
+      }];
+
+      expect(comb(...input).cols[0].id).to.equal(colId2);
+      expect(comb(...input).cols[1].id).to.equal(colId1);
+      expect(comb(...input).cols[2].id).to.equal(colId3);
+
+      input = [initialState, {
+        type: REORDER_COLS,
+        sourceId: colId1,
+        targetId: colId3
+      }];
+
+      expect(comb(...input).cols[0].id).to.equal(colId2);
+      expect(comb(...input).cols[1].id).to.equal(colId3);
+      expect(comb(...input).cols[2].id).to.equal(colId1);
+
+      input = [initialState, {
+        type: REORDER_COLS,
+        sourceId: colId3,
+        targetId: colId1
+      }];
+
+      expect(comb(...input).cols[0].id).to.equal(colId3);
+      expect(comb(...input).cols[1].id).to.equal(colId1);
+      expect(comb(...input).cols[2].id).to.equal(colId2);
+
+      input = [initialState, {
+        type: REORDER_COLS,
+        sourceId: colId2,
+        targetId: colId2
+      }];
+
+      expect(comb(...input).cols[0].id).to.equal(colId1);
+      expect(comb(...input).cols[1].id).to.equal(colId2);
+      expect(comb(...input).cols[2].id).to.equal(colId3);
     });
   });
 

@@ -16,6 +16,7 @@ export const DELETE_COL = 'DELETE_COL';
 export const DELETE_COL_SUCCESS = 'DELETE_COL_SUCCESS';
 export const DELETE_COL_FAILURE = 'DELETE_COL_FAILURE';
 export const NEW_COL = 'NEW_COL';
+export const REORDER_COLS = 'REORDER_COLS';
 
 function fetchComb() {
   return {
@@ -178,5 +179,13 @@ export function newCol(combId) {
       editable: true,
       cells: []
     }
+  }
+}
+
+export function reorderCols(sourceId, targetId) {
+  return {
+    type: REORDER_COLS,
+    sourceId: sourceId,
+    targetId: targetId
   }
 }

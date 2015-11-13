@@ -4,22 +4,29 @@ import { DragSource } from 'react-dnd';
 
 const colSource = {
   beginDrag(props) {
-    return {};
+    return { id: props.col.id };
+  },
+
+  isDragging(props, monitor) {
+    return props.col.id === monitor.getItem().id;
   }
 }
 
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
+    dragSource: monitor.getItem()
   }
 }
 
 export default class OneCol extends Component {
+
   render() {
-    const { connectDragSource, col } = this.props;
+    const { connectDragSource, col, dragSource, connectDragPreview, isDragging } = this.props;
     return connectDragSource(
-      <div>
+        <div style={{opacity: (isDragging) ? 0 : 1}}>
         {!col.editable &&
           <div>
             <h1 className="column-title">{col.name}</h1>

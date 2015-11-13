@@ -1,7 +1,7 @@
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
@@ -118,6 +118,29 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           Object.assign({}, action.col, {position: state.cols.length})
         ]
       });
+    case REORDER_COLS:
+      let [ind1, ind2] = [ indexById(state.cols, action.sourceId), indexById(state.cols, action.targetId) ];
+      if (ind1 < ind2) {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, ind1),
+            ...state.cols.slice(ind1 + 1, ind2 + 1),
+            state.cols[ind1],
+            ...state.cols.slice(ind2 + 1)
+          ]
+        })
+      } else if (ind1 > ind2) {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, ind2),
+            state.cols[ind1],
+            ...state.cols.slice(ind2, ind1),
+            ...state.cols.slice(ind1 + 1)
+          ]
+        });
+      } else {
+        return state;
+      }
     default:
       return state;
   }

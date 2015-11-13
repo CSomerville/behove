@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
-  initiateDeleteCol, newCol,
+  initiateDeleteCol, newCol, reorderCols,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -218,6 +218,19 @@ describe('combActions', () => {
       expect(newCol(combId).col.name).to.equal(expected.col.name);
       expect(newCol(combId).col.editable).to.equal(expected.col.editable);
       expect(newCol(combId).col.cells).to.deep.equal(expected.col.cells);
+    });
+  });
+
+  describe('reorderCols', () => {
+    it('should pass in sourceId and targetId', () => {
+      const [sourceId, targetId] = [uuid.v4(), uuid.v4()];
+      const expected = {
+        type: REORDER_COLS,
+        sourceId: sourceId,
+        targetId: targetId
+      };
+
+      expect(reorderCols(sourceId, targetId)).to.deep.equal(expected);
     });
   });
 });
