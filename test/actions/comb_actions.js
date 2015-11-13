@@ -253,14 +253,40 @@ describe('combActions', () => {
         .reply(200);
 
       const expectedActions = [
-        { type: UPDATE_COL_POS, col: cols[0], ind: 0 },
-        { type: UPDATE_COL_POS, col: cols[1], ind: 1 },
+        { type: UPDATE_COL_POS, ind: 0 },
+        { type: UPDATE_COL_POS, ind: 1 },
         { type: SAVE_COL_POSES },
         { type: SAVE_COL_POSES_SUCCESS }
       ];
 
       const store = mockStore({cols: cols}, expectedActions, done);
-      store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'))
+      store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'));
+    });
+    it('should dispatch SAVE_COL_POSES FAILURE on failure', (done) => {
+      const [id1, id2] = [uuid.v4(), uuid.v4()];
+      const cols = [{
+        id: id1,
+        name: 'sure',
+        position: 1
+      }, {
+        id: id2,
+        name: 'nope',
+        position: 0
+      }];
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cols', cols)
+        .reply(500);
+
+      const expectedActions = [
+        { type: UPDATE_COL_POS, ind: 0 },
+        { type: UPDATE_COL_POS, ind: 1 },
+        { type: SAVE_COL_POSES },
+        { type: SAVE_COL_POSES_FAILURE, msg: 'Internal Server Error' }
+      ];
+
+      const store = mockStore({cols: cols}, expectedActions, done);
+      store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'));
     });
   });
 });

@@ -3,7 +3,8 @@ import uuid from 'node-uuid';
 import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -655,6 +656,128 @@ describe('combReducer', () => {
       expect(comb(...input).cols[0].id).to.equal(colId1);
       expect(comb(...input).cols[1].id).to.equal(colId2);
       expect(comb(...input).cols[2].id).to.equal(colId3);
+    });
+  });
+
+  describe('update col position', () => {
+    it('should take col index and correctly update position', () => {
+      const [ combId, colId1, colId2 ] = [ uuid.v4(), uuid.v4(), uuid.v4() ];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          position: 1,
+          cells: []
+        }, {
+          id: colId2,
+          combId, combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }]
+      }, {
+        type: UPDATE_COL_POS,
+        ind: 0
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          position: 0,
+          cells: []
+        }, {
+          id: colId2,
+          combId, combId,
+          name: 'beech',
+          position: 0,
+          cells: []
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save col poses', () => {
+    it('should set isfetching to true', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: false,
+        msg: ''
+      }, {
+        type: SAVE_COL_POSES
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: true,
+        msg: ''
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save col poses success', () => {
+    it('should set isFetching to false', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: true,
+        msg: ''
+      }, {
+        type: SAVE_COL_POSES_SUCCESS
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: false,
+        msg: ''
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save col poses failure', () => {
+    it('should set isFetching to false and set msg', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: true,
+        msg: ''
+      }, {
+        type: SAVE_COL_POSES_FAILURE,
+        msg: 'Internal Server Error'
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
+        cols: [],
+        isFetching: false,
+        msg: 'Internal Server Error'
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
     });
   });
 

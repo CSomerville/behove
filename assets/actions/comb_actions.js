@@ -194,10 +194,9 @@ export function reorderCols(sourceId, targetId) {
   }
 }
 
-function updateColPos(col, ind) {
+function updateColPos(ind) {
   return {
     type: UPDATE_COL_POS,
-    col: col,
     ind: ind
   };
 }
@@ -214,13 +213,20 @@ function saveColPosesSuccess() {
   };
 }
 
+function saveColPosesFailure(msg) {
+  return {
+    type: SAVE_COL_POSES_FAILURE,
+    msg: msg
+  };
+}
+
 export function initiateSaveColPoses(cols, base) {
 
   base = base || '';
 
   return (dispatch, getState) => {
     cols.forEach((col, i) => {
-      dispatch(updateColPos(col, i));
+      dispatch(updateColPos(i));
     });
 
     dispatch(saveColPoses());
@@ -237,7 +243,6 @@ export function initiateSaveColPoses(cols, base) {
     })
       .then((res) => checkStatus(res))
       .then((res) => dispatch(saveColPosesSuccess()))
-      .catch((err) => console.log(err))
-
+      .catch((err) => dispatch(saveColPosesFailure(err.message)));
   }
 }
