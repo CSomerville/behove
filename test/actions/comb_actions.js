@@ -2,10 +2,11 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
-  initiateDeleteCol, newCol, reorderCols,
+  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
-  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS
+  DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -231,6 +232,35 @@ describe('combActions', () => {
       };
 
       expect(reorderCols(sourceId, targetId)).to.deep.equal(expected);
+    });
+  });
+
+  describe('initiateSaveColPoses', () => {
+    it('should dispatch SAVE_COL_POSES_SUCCESS on success', (done) => {
+      const [id1, id2] = [uuid.v4(), uuid.v4()];
+      const cols = [{
+        id: id1,
+        name: 'sure',
+        position: 1
+      }, {
+        id: id2,
+        name: 'nope',
+        position: 0
+      }];
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cols', cols)
+        .reply(200);
+
+      const expectedActions = [
+        { type: UPDATE_COL_POS, col: cols[0], ind: 0 },
+        { type: UPDATE_COL_POS, col: cols[1], ind: 1 },
+        { type: SAVE_COL_POSES },
+        { type: SAVE_COL_POSES_SUCCESS }
+      ];
+
+      const store = mockStore({cols: cols}, expectedActions, done);
+      store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'))
     });
   });
 });

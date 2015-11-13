@@ -17,6 +17,10 @@ export const DELETE_COL_SUCCESS = 'DELETE_COL_SUCCESS';
 export const DELETE_COL_FAILURE = 'DELETE_COL_FAILURE';
 export const NEW_COL = 'NEW_COL';
 export const REORDER_COLS = 'REORDER_COLS';
+export const UPDATE_COL_POS = 'UPDATE_COL_POS';
+export const SAVE_COL_POSES ='SAVE_COL_POSES';
+export const SAVE_COL_POSES_SUCCESS = 'SAVE_COL_POSES_SUCCESS';
+export const SAVE_COL_POSES_FAILURE = 'SAVE_COL_POSES_FAILURE';
 
 function fetchComb() {
   return {
@@ -187,5 +191,53 @@ export function reorderCols(sourceId, targetId) {
     type: REORDER_COLS,
     sourceId: sourceId,
     targetId: targetId
+  }
+}
+
+function updateColPos(col, ind) {
+  return {
+    type: UPDATE_COL_POS,
+    col: col,
+    ind: ind
+  };
+}
+
+function saveColPoses() {
+  return {
+    type: SAVE_COL_POSES
+  };
+}
+
+function saveColPosesSuccess() {
+  return {
+    type: SAVE_COL_POSES_SUCCESS
+  };
+}
+
+export function initiateSaveColPoses(cols, base) {
+
+  base = base || '';
+
+  return (dispatch, getState) => {
+    cols.forEach((col, i) => {
+      dispatch(updateColPos(col, i));
+    });
+
+    dispatch(saveColPoses());
+    fetch(base + '/api/cols', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(
+        getState().cols
+      )
+    })
+      .then((res) => checkStatus(res))
+      .then((res) => dispatch(saveColPosesSuccess()))
+      .catch((err) => console.log(err))
+
   }
 }

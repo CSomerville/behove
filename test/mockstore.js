@@ -21,7 +21,6 @@ export default function mockStore(getState, expectedActions, done) {
       },
 
       dispatch(action) {
-
         const expectedAction = expectedActions.shift();
         try {
           expect(action).to.deep.equal(expectedAction);
