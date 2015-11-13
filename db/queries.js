@@ -74,6 +74,18 @@ export function updateCombCol(comb_col) {
   });
 }
 
+export function updateColPoses(cols) {
+  return db.task((t) => {
+    
+    let promises = [];
+    cols.forEach((col) => {
+      promises.push(t.none("UPDATE comb_cols SET position = $1 WHERE id = $2;", [col.position, col.id]));
+    });
+
+    return Promise.all(promises);
+  })
+}
+
 export function createCombCol(comb_col) {
   return db.task((t) => {
     return t.none("INSERT INTO comb_cols (id, comb_id, name, position) VALUES ($1, $2, $3, $4);",

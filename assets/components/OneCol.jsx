@@ -9,6 +9,10 @@ const colSource = {
 
   isDragging(props, monitor) {
     return props.col.id === monitor.getItem().id;
+  },
+
+  endDrag(props) {
+    props.colDragEnded();
   }
 }
 

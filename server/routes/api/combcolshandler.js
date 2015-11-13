@@ -1,4 +1,5 @@
-import { findCombCol, createCombCol, updateCombCol, deleteCol } from '../../../db/queries';
+import { findCombCol, createCombCol, updateCombCol, deleteCol, updateColPoses
+ } from '../../../db/queries';
 
 export function combColPost(req, res) {
   findCombCol(req.body.id)
@@ -11,6 +12,12 @@ export function combColPost(req, res) {
         .then(() => { res.sendStatus(201) })
         .catch(() => { res.sendStatus(500) })
     });
+}
+
+export function combColsPost(req, res) {
+  updateColPoses(req.body)
+    .then(() => { res.sendStatus(200) })
+    .catch(() => { res.sendStatus(500) });
 }
 
 export function combColDelete(req, res) {

@@ -238,7 +238,7 @@ export function initiateSaveColPoses(cols, base) {
       },
       credentials: 'same-origin',
       body: JSON.stringify(
-        getState().cols
+        getState().comb.cols
       )
     })
       .then((res) => checkStatus(res))
