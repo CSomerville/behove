@@ -7,6 +7,7 @@ import {
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
   let ind;
+  console.log(state);
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {

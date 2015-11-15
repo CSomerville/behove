@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import uuid from 'node-uuid';
+import camelize from 'camelize';
 import checkStatus from '../utils/fetch-checkstatus';
 
 export const FETCH_COMB = 'FETCH_COMB';
@@ -53,7 +54,7 @@ export function initiateFetchComb(id, base) {
         checkStatus(res);
         return res.json();
       })
-        .then((comb) => { dispatch(fetchCombSuccess(comb)) })
+        .then((comb) => { dispatch(fetchCombSuccess(camelize(comb))) })
         .catch((err) => { dispatch(fetchCombFailure(err.message)) });
   }
 }
