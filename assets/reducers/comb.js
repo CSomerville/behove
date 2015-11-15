@@ -129,7 +129,7 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
             state.cols[ind1],
             ...state.cols.slice(ind2 + 1)
           ]
-        })
+        });
       } else if (ind1 > ind2) {
         return Object.assign({}, state, {
           cols: [

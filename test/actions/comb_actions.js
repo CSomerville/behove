@@ -259,7 +259,7 @@ describe('combActions', () => {
         { type: SAVE_COL_POSES_SUCCESS }
       ];
 
-      const store = mockStore({cols: cols}, expectedActions, done);
+      const store = mockStore({comb: {cols: cols}}, expectedActions, done);
       store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'));
     });
     it('should dispatch SAVE_COL_POSES FAILURE on failure', (done) => {
@@ -285,8 +285,14 @@ describe('combActions', () => {
         { type: SAVE_COL_POSES_FAILURE, msg: 'Internal Server Error' }
       ];
 
-      const store = mockStore({cols: cols}, expectedActions, done);
+      const store = mockStore({comb: {cols: cols}}, expectedActions, done);
       store.dispatch(initiateSaveColPoses(cols, 'http://127.0.0.1:3000'));
+    });
+  });
+
+  describe('reorderCells', () => {
+    it('should pass the id and colId of both source and target', () => {
+
     });
   });
 });
