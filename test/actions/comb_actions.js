@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
-  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses,
+  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS,
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -292,7 +292,18 @@ describe('combActions', () => {
 
   describe('reorderCells', () => {
     it('should pass the id and colId of both source and target', () => {
+      const [ sourceId, sourceColId, targetId, targetColId ] =
+        [ uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4() ];
 
+      const expected = {
+        type: REORDER_CELLS,
+        sourceId: sourceId,
+        sourceColId: sourceColId,
+        targetId: targetId,
+        targetColId: targetColId
+      }
+
+      expect(reorderCells(sourceId, sourceColId, targetId, targetColId)).to.deep.equal(expected);
     });
   });
 });

@@ -4,7 +4,7 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -775,6 +775,170 @@ describe('combReducer', () => {
         cols: [],
         isFetching: false,
         msg: 'Internal Server Error'
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('reorder cells', () => {
+    it('should reorder cells correctly', () => {
+      const [combId, colId1, colId2, cellId1, cellId2, cellId3, cellId4] =
+        [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+
+      const initialState = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            colId: colId1,
+            name: 'nicobar pigeon'
+          }, {
+            id: cellId2,
+            colId: colId1,
+            name: 'scarlet ibis'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId3,
+            colId: colId2,
+            name: 'ruddy shelduck'
+          }, {
+            id: cellId4,
+            colId: colId2,
+            name: 'mandarin duck'
+          }]
+        }]
+      };
+      let input = [initialState, {
+        type: REORDER_CELLS,
+        sourceId: cellId1,
+        sourceColId: colId1,
+        targetId: cellId4,
+        targetColId: colId2
+      }];
+
+      let expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId2,
+            colId: colId1,
+            name: 'scarlet ibis'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId3,
+            colId: colId2,
+            name: 'ruddy shelduck'
+          }, {
+            id: cellId1,
+            colId: colId1,
+            name: 'nicobar pigeon'
+          }, {
+            id: cellId4,
+            colId: colId2,
+            name: 'mandarin duck'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+
+      input = [initialState, {
+        type: REORDER_CELLS,
+        sourceId: cellId3,
+        sourceColId: colId2,
+        targetId: cellId1,
+        targetColId: colId1
+      }];
+
+      expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId3,
+            colId: colId2,
+            name: 'ruddy shelduck'
+          }, {
+            id: cellId1,
+            colId: colId1,
+            name: 'nicobar pigeon'
+          }, {
+            id: cellId2,
+            colId: colId1,
+            name: 'scarlet ibis'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId4,
+            colId: colId2,
+            name: 'mandarin duck'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+
+      input = [initialState, {
+        type: REORDER_CELLS,
+        sourceId: cellId4,
+        sourceColId: colId2,
+        targetId: cellId3,
+        targetColId: colId2
+      }];
+
+      expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            colId: colId1,
+            name: 'nicobar pigeon'
+          }, {
+            id: cellId2,
+            colId: colId1,
+            name: 'scarlet ibis'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId4,
+            colId: colId2,
+            name: 'mandarin duck'
+          }, {
+            id: cellId3,
+            colId: colId2,
+            name: 'ruddy shelduck'
+          }]
+        }]
       };
 
       expect(comb(...input)).to.deep.equal(expected);

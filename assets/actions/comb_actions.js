@@ -22,6 +22,7 @@ export const UPDATE_COL_POS = 'UPDATE_COL_POS';
 export const SAVE_COL_POSES ='SAVE_COL_POSES';
 export const SAVE_COL_POSES_SUCCESS = 'SAVE_COL_POSES_SUCCESS';
 export const SAVE_COL_POSES_FAILURE = 'SAVE_COL_POSES_FAILURE';
+export const REORDER_CELLS = 'REORDER_CELLS';
 
 function fetchComb() {
   return {
@@ -245,5 +246,15 @@ export function initiateSaveColPoses(cols, base) {
       .then((res) => checkStatus(res))
       .then((res) => dispatch(saveColPosesSuccess()))
       .catch((err) => dispatch(saveColPosesFailure(err.message)));
+  }
+}
+
+export function reorderCells(sourceId, sourceColId, targetId, targetColId) {
+  return {
+    type: REORDER_CELLS,
+    sourceId: sourceId,
+    sourceColId: sourceColId,
+    targetId: targetId,
+    targetColId: targetColId
   }
 }

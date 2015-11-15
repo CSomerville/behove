@@ -88,11 +88,11 @@ describe('combsActions', () => {
 
       nock('http://127.0.0.1:3000')
         .get('/api/combs')
-        .reply(200, { combs: [{ id: id, user_id: 1, name: 'flambe' }]});
+        .reply(200, { combs: [{ id: id, userId: 1, name: 'flambe' }]});
 
       const expectedActions = [
         { type: FETCH_COMBS },
-        { type: FETCH_COMBS_SUCCESS, combs: { combs: [{ id: id, user_id: 1, name: 'flambe' }]}}
+        { type: FETCH_COMBS_SUCCESS, combs: { combs: [{ id: id, userId: 1, name: 'flambe' }]}}
       ];
 
       const store = mockStore({ combs: [] }, expectedActions, done);
