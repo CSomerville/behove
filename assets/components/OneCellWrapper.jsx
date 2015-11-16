@@ -18,19 +18,19 @@ const targetSpecs = {
 
 class OneCellWrapper extends Component {
 
-  componentDidUpdate() {
-    const { isOver, dragSource, cell } = this.props;
-    if (isOver) {
+  componentDidUpdate(prevProps) {
+    const { isOver, dragSource, cell, triggerCellReorder } = this.props;
+    if (isOver && !prevProps.isOver) {
       if (dragSource.id !== cell.id) {
-
+        triggerCellReorder(dragSource.id, dragSource.colId, cell.id, cell.combColId);
       }
     }
   }
 
   render() {
-    const { connectDropTarget } = this.props;
+    const { connectDropTarget, isOver } = this.props;
     return connectDropTarget(
-      <div>
+      <div style={{height: '150px'}}>
         <OneCell {...this.props} />
       </div>
     );

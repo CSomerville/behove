@@ -164,8 +164,8 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         msg: action.msg
       });
     case REORDER_CELLS:
-      const [sourceColInd, sourceInd] = indexById(state.cols, action.sourceColId, action.sourceId);
-      const [targetColInd, targetInd] = indexById(state.cols, action.targetColId, action.targetId);
+      const [sourceColInd, sourceInd] = indexById(state.cols, null, action.sourceId);
+      const [targetColInd, targetInd] = indexById(state.cols, null, action.targetId);
       if (sourceColInd < targetColInd) {
         return Object.assign({}, state, {
           cols: [
@@ -177,7 +177,9 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
             ...state.cols.slice(sourceColInd + 1, targetColInd),
             Object.assign({}, state.cols[targetColInd], { cells: [
               ...state.cols[targetColInd].cells.slice(0, targetInd),
-              state.cols[sourceColInd].cells[sourceInd],
+              Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                combColId: action.targetColId
+              }),
               ...state.cols[targetColInd].cells.slice(targetInd)
             ]}),
             ...state.cols.slice(targetColInd + 1)
@@ -189,7 +191,9 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
             ...state.cols.slice(0, targetColInd),
             Object.assign({}, state.cols[targetColInd], { cells: [
               ...state.cols[targetColInd].cells.slice(0, targetInd),
-              state.cols[sourceColInd].cells[sourceInd],
+              Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                combColId: action.targetColId
+              }),
               ...state.cols[targetColInd].cells.slice(targetInd)
             ]}),
             ...state.cols.slice(targetColInd + 1, sourceColInd),
@@ -204,27 +208,31 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         if (sourceInd < targetInd) {
           return Object.assign({}, state, {
             cols: [
-              ...state.cols.slice(0, sourceColInd),
-              Object.assign({}, state.cols[sourceColInd], { cells: [
-                ...state.cols[sourceColInd].cells.slice(0, sourceInd),
-                ...state.cols[sourceColInd].cells.slice(sourceInd + 1, targetInd),
-                state.cols[sourceColInd].cells[sourceInd],
-                ...state.cols[sourceColInd].cells.slice(targetInd)
-              ]}),
-              ...state.cols.slice(sourceColInd + 1)
+              ...state.cols.slice(0, targetColInd),
+              Object.assign({}, state.cols[targetColInd], {
+                cells: [
+                  ...state.cols[targetColInd].cells.slice(0, sourceInd),
+                  ...state.cols[targetColInd].cells.slice(sourceInd + 1, targetInd + 1),
+                  state.cols[targetColInd].cells[sourceInd],
+                  ...state.cols[targetColInd].cells.slice(targetInd + 1)
+                ]
+              }),
+              ...state.cols.slice(targetColInd + 1)
             ]
           });
         } else if (targetInd < sourceInd) {
           return Object.assign({}, state, {
             cols: [
-              ...state.cols.slice(0, sourceColInd),
-              Object.assign({}, state.cols[sourceColInd], { cells: [
-                ...state.cols[sourceColInd].cells.slice(0, targetInd),
-                state.cols[sourceColInd].cells[sourceInd],
-                ...state.cols[sourceColInd].cells.slice(targetInd, sourceInd),
-                ...state.cols[sourceColInd].cells.slice(sourceInd + 1)
-              ]}),
-              ...state.cols.slice(sourceColInd + 1)
+              ...state.cols.slice(0, targetColInd),
+              Object.assign({}, state.cols[targetColInd], {
+                cells: [
+                  ...state.cols[targetColInd].cells.slice(0, targetInd),
+                  state.cols[targetColInd].cells[sourceInd],
+                  ...state.cols[targetColInd].cells.slice(targetInd, sourceInd),
+                  ...state.cols[targetColInd].cells.slice(sourceInd + 1)
+                ]
+              }),
+              ...state.cols.slice(targetColInd + 1)
             ]
           });
         } else {
@@ -239,17 +247,29 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
 // retrieves index for array, 3nd arg is optional.
 // returns false if no match. exported for testing only
 export function indexById(cols, colId, cellId) {
-  for (let i = 0; i < cols.length; i++) {
-    if (cols[i].id === colId) {
-      if (cellId) {
+  if (colId) {
+    for (let i = 0; i < cols.length; i++) {
+      if (cols[i].id === colId) {
+        if (cellId) {
+          for (let j = 0; j < cols[i].cells.length; j++) {
+            if (cols[i].cells[j].id === cellId) {
+              return [i, j];
+            }
+          }
+          return false;
+        } else {
+          return i;
+        }
+      }
+    }
+  } else {
+    for (let i = 0; i < cols.length; i++) {
+      if (cols[i].cells) {
         for (let j = 0; j < cols[i].cells.length; j++) {
           if (cols[i].cells[j].id === cellId) {
             return [i, j];
           }
         }
-        return false;
-      } else {
-        return i;
       }
     }
   }

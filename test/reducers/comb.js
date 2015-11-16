@@ -795,11 +795,11 @@ describe('combReducer', () => {
           name: 'elm',
           cells: [{
             id: cellId1,
-            colId: colId1,
+            combColId: colId1,
             name: 'nicobar pigeon'
           }, {
             id: cellId2,
-            colId: colId1,
+            combColId: colId1,
             name: 'scarlet ibis'
           }]
         }, {
@@ -808,11 +808,11 @@ describe('combReducer', () => {
           name: 'beech',
           cells: [{
             id: cellId3,
-            colId: colId2,
+            combColId: colId2,
             name: 'ruddy shelduck'
           }, {
             id: cellId4,
-            colId: colId2,
+            combColId: colId2,
             name: 'mandarin duck'
           }]
         }]
@@ -834,7 +834,7 @@ describe('combReducer', () => {
           name: 'elm',
           cells: [{
             id: cellId2,
-            colId: colId1,
+            combColId: colId1,
             name: 'scarlet ibis'
           }]
         }, {
@@ -843,15 +843,15 @@ describe('combReducer', () => {
           name: 'beech',
           cells: [{
             id: cellId3,
-            colId: colId2,
+            combColId: colId2,
             name: 'ruddy shelduck'
           }, {
             id: cellId1,
-            colId: colId1,
+            combColId: colId2,
             name: 'nicobar pigeon'
           }, {
             id: cellId4,
-            colId: colId2,
+            combColId: colId2,
             name: 'mandarin duck'
           }]
         }]
@@ -876,15 +876,15 @@ describe('combReducer', () => {
           name: 'elm',
           cells: [{
             id: cellId3,
-            colId: colId2,
+            combColId: colId1,
             name: 'ruddy shelduck'
           }, {
             id: cellId1,
-            colId: colId1,
+            combColId: colId1,
             name: 'nicobar pigeon'
           }, {
             id: cellId2,
-            colId: colId1,
+            combColId: colId1,
             name: 'scarlet ibis'
           }]
         }, {
@@ -893,7 +893,7 @@ describe('combReducer', () => {
           name: 'beech',
           cells: [{
             id: cellId4,
-            colId: colId2,
+            combColId: colId2,
             name: 'mandarin duck'
           }]
         }]
@@ -918,11 +918,11 @@ describe('combReducer', () => {
           name: 'elm',
           cells: [{
             id: cellId1,
-            colId: colId1,
+            combColId: colId1,
             name: 'nicobar pigeon'
           }, {
             id: cellId2,
-            colId: colId1,
+            combColId: colId1,
             name: 'scarlet ibis'
           }]
         }, {
@@ -931,11 +931,53 @@ describe('combReducer', () => {
           name: 'beech',
           cells: [{
             id: cellId4,
-            colId: colId2,
+            combColId: colId2,
             name: 'mandarin duck'
           }, {
             id: cellId3,
-            colId: colId2,
+            combColId: colId2,
+            name: 'ruddy shelduck'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+
+      input = [initialState, {
+        type: REORDER_CELLS,
+        sourceId: cellId3,
+        sourceColId: colId2,
+        targetId: cellId4,
+        targetColId: colId2
+      }];
+
+      expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            name: 'nicobar pigeon'
+          }, {
+            id: cellId2,
+            combColId: colId1,
+            name: 'scarlet ibis'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId4,
+            combColId: colId2,
+            name: 'mandarin duck'
+          }, {
+            id: cellId3,
+            combColId: colId2,
             name: 'ruddy shelduck'
           }]
         }]

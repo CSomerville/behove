@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
-  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses } from '../actions/comb_actions';
+  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells
+ } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
@@ -39,6 +40,9 @@ export class CombView extends Component {
           }}
           colDragEnded={() => {
             dispatch(initiateSaveColPoses(comb.cols));
+          }}
+          triggerCellReorder={(sourceId, sourceColId, targetId, targetColId) => {
+            dispatch(reorderCells(sourceId, sourceColId, targetId, targetColId));
           }}
           />
       </div>

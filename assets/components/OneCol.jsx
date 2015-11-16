@@ -59,7 +59,8 @@ export default class OneCol extends Component {
             </button>
           </div>
         }
-        <Cells cells={col.cells} />
+        <Cells cells={col.cells}
+          triggerCellReorder={this.props.triggerCellReorder} />
       </div>
     );
   }

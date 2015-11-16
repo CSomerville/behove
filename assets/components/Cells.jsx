@@ -7,7 +7,10 @@ export default class Cells extends Component {
       <ul>
         {this.props.cells && this.props.cells.map((cell, i) =>
           <li key={cell.id}>
-            <OneCellWrapper cell={cell} />
+            <OneCellWrapper
+              cell={cell}
+              triggerCellReorder={this.props.triggerCellReorder}
+              />
           </li>
         )}
       </ul>
