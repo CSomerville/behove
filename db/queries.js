@@ -42,10 +42,10 @@ export function getOneComb(comb_id) {
   return db.task((t) => {
     return t.one( `
         SELECT id, name, (
-          SELECT json_agg(c)
+          SELECT COALESCE(json_agg(c), '[]')
           FROM (
             SELECT *, (
-              SELECT json_agg(l)
+              SELECT COALESCE(json_agg(l), '[]')
               FROM (
                 SELECT * from cells
                 WHERE comb_cols.id = cells.comb_col_id
@@ -76,7 +76,7 @@ export function updateCombCol(comb_col) {
 
 export function updateColPoses(cols) {
   return db.task((t) => {
-    
+
     let promises = [];
     cols.forEach((col) => {
       promises.push(t.none("UPDATE comb_cols SET position = $1 WHERE id = $2;", [col.position, col.id]));
