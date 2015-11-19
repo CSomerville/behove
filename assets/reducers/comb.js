@@ -2,11 +2,11 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
-  let ind;
+  let ind, sourceInd, targetInd, sourceColInd, targetColInd;
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
@@ -164,8 +164,8 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         msg: action.msg
       });
     case REORDER_CELLS:
-      const [sourceColInd, sourceInd] = indexById(state.cols, null, action.sourceId);
-      const [targetColInd, targetInd] = indexById(state.cols, null, action.targetId);
+      [sourceColInd, sourceInd] = indexById(state.cols, null, action.sourceId);
+      [targetColInd, targetInd] = indexById(state.cols, null, action.targetId);
       if (sourceColInd < targetColInd) {
         return Object.assign({}, state, {
           cols: [
@@ -238,6 +238,46 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         } else {
           return state;
         }
+      }
+    case INSERT_IN_EMPTY_COL:
+      [sourceInd, sourceColInd] = indexById(state.cols, null, action.sourceId);
+      targetColInd = indexById(state.cols, action.targetColId);
+      if (sourceColInd < targetColInd) {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, sourceColInd),
+            Object.assign({}, state.cols[sourceColInd], {
+              cells: [
+                ...state.cols[sourceColInd].cells.slice(0, sourceInd),
+                ...state.cols[sourceColInd].cells.slice(sourceInd + 1)
+              ]
+            }),
+            ...state.cols.slice(sourceColInd + 1, targetColInd),
+            Object.assign({}, state.cols[targetColInd], {
+              cells: [state.cols[sourceColInd].cells[sourceInd]]
+            }),
+            ...state.cols.slice(targetColInd + 1)
+          ]
+        });
+      } else if (targetColInd < sourceColInd) {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, targetColInd),
+            Object.assign({}, state.cols[targetColInd], {
+              cells: [state.cols[sourceColInd].cells[sourceInd]]
+            }),
+            ...state.cols.slice(targetColInd + 1, sourceColInd),
+            Object.assign({}, state.cols[sourceColInd], {
+              cells: [
+                ...state.cols[sourceColInd].slice(0, sourceInd),
+                ...state.cols[sourceColInd].slice(sourceInd + 1)
+              ]
+            }),
+            ...state.cols.slice(sourceColInd + 1)
+          ]
+        });
+      } else {
+        return state;
       }
     default:
       return state;

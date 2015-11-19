@@ -4,7 +4,7 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -979,6 +979,58 @@ describe('combReducer', () => {
             id: cellId3,
             combColId: colId2,
             name: 'ruddy shelduck'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('insert in empty col', () => {
+    it('should remove cell from source col and insert in target col', () => {
+      const [combId, colId1, colId2, cellId1] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId1,
+            colId: colId1,
+            name: 'rust-red'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'elm',
+          cells: []
+        }]
+      }, {
+        type: INSERT_IN_EMPTY_COL,
+        sourceId: cellId1,
+        targetColId: colId2
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          cells: []
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            colId: colId1,
+            name: 'rust-red'
           }]
         }]
       };

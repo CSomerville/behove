@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
-  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells,
+  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS,
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -304,6 +304,20 @@ describe('combActions', () => {
       }
 
       expect(reorderCells(sourceId, sourceColId, targetId, targetColId)).to.deep.equal(expected);
+    });
+  });
+
+  describe('insertInEmptyCol', () => {
+    it('should pass in the source cell id and target col id', () => {
+      const [sourceId, targetColId] = [uuid.v4(), uuid.v4()];
+
+      const expected = {
+        type: INSERT_IN_EMPTY_COL,
+        sourceId: sourceId,
+        targetColId: targetColId
+      };
+
+      expect(insertInEmptyCol(sourceId, targetColId)).to.deep.equal(expected);
     });
   });
 });

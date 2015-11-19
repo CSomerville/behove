@@ -23,6 +23,7 @@ export const SAVE_COL_POSES ='SAVE_COL_POSES';
 export const SAVE_COL_POSES_SUCCESS = 'SAVE_COL_POSES_SUCCESS';
 export const SAVE_COL_POSES_FAILURE = 'SAVE_COL_POSES_FAILURE';
 export const REORDER_CELLS = 'REORDER_CELLS';
+export const INSERT_IN_EMPTY_COL = 'INSERT_IN_EMPTY_COL';
 
 function fetchComb() {
   return {
@@ -257,4 +258,12 @@ export function reorderCells(sourceId, sourceColId, targetId, targetColId) {
     targetId: targetId,
     targetColId: targetColId
   }
+}
+
+export function insertInEmptyCol(sourceId, targetColId) {
+  return {
+    type: INSERT_IN_EMPTY_COL,
+    sourceId: sourceId,
+    targetColId: targetColId
+  };
 }
