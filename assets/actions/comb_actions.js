@@ -31,6 +31,7 @@ export const SAVE_CELL_POSES_FAILURE = 'SAVE_CELL_POSES_FAILURE';
 export const NEW_CELL = 'NEW_CELL';
 export const CHANGE_CELL_NAME = 'CHANGE_CELL_NAME';
 export const EDIT_CELL = 'EDIT_CELL';
+export const CANCEL_EDIT_CELL = 'CANCEL_EDIT_CELL';
 
 function fetchComb() {
   return {
@@ -356,4 +357,11 @@ export function editCell(id) {
     type: EDIT_CELL,
     id: id
   };
+}
+
+export function cancelEditCell(id) {
+  return {
+    type: CANCEL_EDIT_CELL,
+    id: id
+  }
 }

@@ -3,13 +3,13 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses, newCell, changeCellName, editCell,
+  initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
   SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE, NEW_CELL, CHANGE_CELL_NAME,
-  EDIT_CELL
+  EDIT_CELL, CANCEL_EDIT_CELL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -461,6 +461,18 @@ describe('combActions', () => {
 
       expect(editCell(cellId)).to.deep.equal(expected);
 
+    });
+  });
+
+  describe('cancelEditCell', () => {
+    it('should pass cell id', () => {
+      const cellId = uuid.v4();
+      const expected = {
+        type: CANCEL_EDIT_CELL,
+        id: cellId
+      };
+
+      expect(cancelEditCell(cellId)).to.deep.equal(expected);
     });
   });
 });
