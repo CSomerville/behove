@@ -121,3 +121,16 @@ export function createCell(cell) {
       [cell.id, cell.combColId, cell.name, cell.position]);
   });
 }
+
+export function updateCellPoses(cells) {
+  return db.task((t) => {
+
+    let promises = [];
+    cells.forEach((cell) => {
+      promises.push(t.none("UPDATE cells SET position = $1, comb_col_id = $2 WHERE id = $3;", 
+        [cell.position, cell.combColId, cell.id]));
+    });
+
+    return Promise.all(promises);
+  });
+}

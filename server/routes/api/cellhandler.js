@@ -1,4 +1,4 @@
-import { findCell, createCell, updateCell } from '../../../db/queries';
+import { findCell, createCell, updateCell, updateCellPoses } from '../../../db/queries';
 
 export function cellPost(req, res) {
   findCell(req.body.id)
@@ -9,4 +9,12 @@ export function cellPost(req, res) {
       createCell(req.body);
       res.sendStatus(201);
     });
+}
+
+export function cellsPost(req, res) {
+  updateCellPoses(req.body)
+    .then(() => res.sendStatus(200),
+      (err) => {
+        res.sendStatus(500);
+      });
 }

@@ -48,8 +48,9 @@ export class CombView extends Component {
           triggerInsert={(sourceId, targetColId) => {
             dispatch(insertInEmptyCol(sourceId, targetColId));
           }}
-          cellDragEnded={(sourceColId, targetColId) => {
-            dispatch(initiateSaveCellPoses(sourceColId, targetColId));
+          cellDragEnded={(sourceColId, sourceId) => {
+            console.log(sourceColId, sourceId)
+            dispatch(initiateSaveCellPoses(sourceColId, sourceId));
           }}
           />
       </div>

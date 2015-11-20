@@ -272,11 +272,11 @@ export function insertInEmptyCol(sourceId, targetColId) {
   };
 }
 
-function updateCellPoses(sourceColId, targetColId) {
+function updateCellPoses(sourceColId, sourceId) {
   return {
     type: UPDATE_CELL_POSES,
     sourceColId: sourceColId,
-    targetColId: targetColId
+    sourceId: sourceId
   }
 }
 
@@ -299,11 +299,11 @@ function saveCellPosesFailure(err) {
   }
 }
 
-export function initiateSaveCellPoses(sourceColId, targetColId, base){
+export function initiateSaveCellPoses(sourceColId, sourceId, base){
   base = base || '';
 
   return (dispatch, getState) => {
-    dispatch(updateCellPoses(sourceColId, targetColId));
+    dispatch(updateCellPoses(sourceColId, sourceId));
     dispatch(saveCellPoses());
 
     let cells = [];

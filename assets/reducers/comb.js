@@ -286,7 +286,7 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
       }
     case UPDATE_CELL_POSES:
       sourceColInd = indexById(state.cols, action.sourceColId);
-      targetColInd = indexById(state.cols, action.targetColId);
+      targetColInd = indexById(state.cols, null, action.sourceId)[0];
       const [min, max] = [Math.min(sourceColInd, targetColInd), Math.max(sourceColInd, targetColInd)];
       return Object.assign({}, state, {
         cols: [

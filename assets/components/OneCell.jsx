@@ -13,8 +13,8 @@ const cellSource = {
     return props.cell.id === monitor.getItem().id;
   },
 
-  endDrag(props, monitor) {
-    props.dragEnded(props.colId);
+  endDrag(props) {
+    props.cellDragEnded(props.cell.combColId, props.cell.id);
   }
 }
 
