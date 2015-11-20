@@ -4,7 +4,8 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
+  NEW_CELL
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1146,6 +1147,59 @@ describe('combReducer', () => {
             combColId: colId2,
             position: 1,
             name: 'root'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('newCell', () => {
+    it('should insert a new cell in col and assign pos', () => {
+      const [combId, combColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: combColId,
+          name: 'elm',
+          position: 0,
+          combId: combId,
+          cells: [{
+            id: cellId1,
+            name: 'leaf',
+            combColId: combColId,
+            position: 0
+          }]
+        }]
+      }, {
+        type: NEW_CELL,
+        id: cellId2,
+        combColId: combColId,
+        editable: true,
+        name: ''
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: combColId,
+          name: 'elm',
+          position: 0,
+          combId: combId,
+          cells: [{
+            id: cellId1,
+            name: 'leaf',
+            combColId: combColId,
+            position: 0
+          }, {
+            id: cellId2,
+            combColId: combColId,
+            editable: true,
+            name: '',
+            position: 1
           }]
         }]
       };

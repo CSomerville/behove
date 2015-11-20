@@ -28,6 +28,7 @@ export const UPDATE_CELL_POSES = 'UPDATE_CELL_POSES';
 export const SAVE_CELL_POSES = 'SAVE_CELL_POSES';
 export const SAVE_CELL_POSES_SUCCESS = 'SAVE_CELL_POSES_SUCCESS';
 export const SAVE_CELL_POSES_FAILURE = 'SAVE_CELL_POSES_FAILURE';
+export const NEW_CELL = 'NEW_CELL';
 
 function fetchComb() {
   return {
@@ -327,5 +328,15 @@ export function initiateSaveCellPoses(sourceColId, sourceId, base){
       .then((res) => checkStatus(res))
       .then(() => dispatch(saveCellPosesSuccess()))
       .catch((err) => dispatch(saveCellPosesFailure(err.message)));
+  }
+}
+
+export function newCell(combColId) {
+  return {
+    type: NEW_COL,
+    id: uuid.v4(),
+    combColId: combColId,
+    name: '',
+    editable: true
   }
 }

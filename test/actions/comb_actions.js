@@ -3,12 +3,12 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses,
+  initiateSaveCellPoses, newCell,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
-  SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE
+  SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE, NEW_CELL
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -369,6 +369,7 @@ describe('combActions', () => {
       const store = mockStore(getState, expectedActions, done);
       store.dispatch(initiateSaveCellPoses(sourceColId, cellId2, 'http://127.0.0.1:3000'));
     });
+
     it('should dispatch SAVE_CELL_POSES_FAILURE on failure', (done) => {
       const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
       const getState = { comb: { cols: [{
@@ -413,6 +414,25 @@ describe('combActions', () => {
 
       const store = mockStore(getState, expectedActions, done);
       store.dispatch(initiateSaveCellPoses(sourceColId, cellId2, 'http://127.0.0.1:3000'));
+    });
+  });
+
+  describe('newCell', () => {
+    it('should create a new cell with id empty string name and editable true', () => {
+      const combColId = uuid.v4();
+      const expected = {
+        type: NEW_COL,
+        id: uuid.v4(),
+        combColId: combColId,
+        name: '',
+        editable: true
+      };
+
+      expect(newCell(combColId).type).to.equal(expected.type);
+      expect(newCell(combColId).id.length).to.equal(expected.id.length);
+      expect(newCell(combColId).name).to.equal(expected.name);
+      expect(newCell(combColId).editable).to.equal(expected.editable);
+      expect(newCell(combColId).combColId).to.equal(expected.combColId);
     });
   });
 });

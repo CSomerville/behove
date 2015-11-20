@@ -3,7 +3,7 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL,
-  UPDATE_CELL_POSES
+  UPDATE_CELL_POSES, NEW_CELL
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
@@ -305,7 +305,25 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           ...state.cols.slice(max + 1)
         ]
       });
-
+    case NEW_CELL:
+      ind = indexById(state.cols, action.combColId);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, ind),
+          Object.assign({}, state.cols[ind], {
+            cells: [
+              ...state.cols[ind].cells, {
+                id: action.id,
+                combColId: action.combColId,
+                name: action.name,
+                editable: action.editable,
+                position: state.cols[ind].cells.length
+              }
+            ]
+          }),
+          ...state.cols.slice(ind + 1)
+        ]
+      });
     default:
       return state;
   }
