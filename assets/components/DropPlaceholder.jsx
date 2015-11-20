@@ -20,6 +20,7 @@ class DropPlaceholder extends Component {
   componentDidUpdate(prevProps) {
     const { isOver, col, dragSource, triggerInsert } = this.props;
     if (isOver && !prevProps.isOver) {
+      // hacky, but prevents react dnd from complaining that the target is gone.
       setTimeout(() => {
         triggerInsert(dragSource.id, col.id);
       }, 100);

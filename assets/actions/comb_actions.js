@@ -24,6 +24,10 @@ export const SAVE_COL_POSES_SUCCESS = 'SAVE_COL_POSES_SUCCESS';
 export const SAVE_COL_POSES_FAILURE = 'SAVE_COL_POSES_FAILURE';
 export const REORDER_CELLS = 'REORDER_CELLS';
 export const INSERT_IN_EMPTY_COL = 'INSERT_IN_EMPTY_COL';
+export const UPDATE_CELL_POSES = 'UPDATE_CELL_POSES';
+export const SAVE_CELL_POSES = 'SAVE_CELL_POSES';
+export const SAVE_CELL_POSES_SUCCESS = 'SAVE_CELL_POSES_SUCCESS';
+export const SAVE_CELL_POSES_FAILURE = 'SAVE_CELL_POSES_FAILURE';
 
 function fetchComb() {
   return {
@@ -266,4 +270,62 @@ export function insertInEmptyCol(sourceId, targetColId) {
     sourceId: sourceId,
     targetColId: targetColId
   };
+}
+
+function updateCellPoses(sourceColId, targetColId) {
+  return {
+    type: UPDATE_CELL_POSES,
+    sourceColId: sourceColId,
+    targetColId: targetColId
+  }
+}
+
+function saveCellPoses() {
+  return {
+    type: SAVE_CELL_POSES
+  }
+}
+
+function saveCellPosesSuccess() {
+  return {
+    type: SAVE_CELL_POSES_SUCCESS
+  }
+}
+
+function saveCellPosesFailure(err) {
+  return {
+    type: SAVE_CELL_POSES_FAILURE,
+    msg: err
+  }
+}
+
+export function initiateSaveCellPoses(sourceColId, targetColId, base){
+  base = base || '';
+
+  return (dispatch, getState) => {
+    dispatch(updateCellPoses(sourceColId, targetColId));
+    dispatch(saveCellPoses());
+
+    let cells = [];
+    getState().cols.forEach((el) => {
+      el.cells.forEach((cell) => {
+        cells.push(cell);
+      })
+    })
+
+    fetch(base + '/api/cells', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(
+        cells
+      )
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(saveCellPosesSuccess()))
+      .catch((err) => dispatch(saveCellPosesFailure(err.message)));
+  }
 }

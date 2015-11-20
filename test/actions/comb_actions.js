@@ -3,10 +3,12 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
+  initiateSaveCellPoses,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
+  SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -318,6 +320,99 @@ describe('combActions', () => {
       };
 
       expect(insertInEmptyCol(sourceId, targetColId)).to.deep.equal(expected);
+    });
+  });
+
+  describe('initiateSaveCellPoses', () => {
+    it('should dispatch SAVE_CELL_POSES_SUCCESS on success', (done) => {
+      const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const getState = { cols: [{
+        id: sourceColId,
+        name: 'elm',
+        cells: [{
+          id: cellId1,
+          combColId: sourceColId,
+          name: 'leaf',
+          position: 0
+        }]
+      }, {
+        id: targetColId,
+        name: 'beech',
+        cells: [{
+          id: cellId2,
+          combColId: targetColId,
+          name: 'stem',
+          position: 0
+        }]
+      }]};
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cells', [{
+            id: cellId1,
+            combColId: sourceColId,
+            name: 'leaf',
+            position: 0
+          }, {
+            id: cellId2,
+            combColId: targetColId,
+            name: 'stem',
+            position: 0
+          }])
+        .reply(200);
+
+      const expectedActions = [
+        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, targetColId: targetColId},
+        {type: SAVE_CELL_POSES},
+        {type: SAVE_CELL_POSES_SUCCESS}
+      ];
+
+      const store = mockStore(getState, expectedActions, done);
+      store.dispatch(initiateSaveCellPoses(sourceColId, targetColId, 'http://127.0.0.1:3000'));
+    });
+    it('should dispatch SAVE_CELL_POSES_FAILURE on failure', (done) => {
+      const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const getState = { cols: [{
+        id: sourceColId,
+        name: 'elm',
+        cells: [{
+          id: cellId1,
+          combColId: sourceColId,
+          name: 'leaf',
+          position: 0
+        }]
+      }, {
+        id: targetColId,
+        name: 'beech',
+        cells: [{
+          id: cellId2,
+          combColId: targetColId,
+          name: 'stem',
+          position: 0
+        }]
+      }]};
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cells', [{
+            id: cellId1,
+            combColId: sourceColId,
+            name: 'leaf',
+            position: 0
+          }, {
+            id: cellId2,
+            combColId: targetColId,
+            name: 'stem',
+            position: 0
+          }])
+        .reply(500);
+
+      const expectedActions = [
+        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, targetColId: targetColId},
+        {type: SAVE_CELL_POSES},
+        {type: SAVE_CELL_POSES_FAILURE, msg: 'Internal Server Error'}
+      ];
+
+      const store = mockStore(getState, expectedActions, done);
+      store.dispatch(initiateSaveCellPoses(sourceColId, targetColId, 'http://127.0.0.1:3000'));
     });
   });
 });

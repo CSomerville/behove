@@ -4,7 +4,7 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1082,6 +1082,71 @@ describe('combReducer', () => {
           combId: combId,
           name: 'elm',
           cells: []
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('update cell poses', () => {
+    it('should update the cell position attrs properly', () => {
+      const [colId1, colId2, cellId1, cellId2, cellId3] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const input = [{
+        cols: [{
+          id: colId1,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            position: 1,
+            name: 'stem'
+          }]
+        }, {
+          id: colId2,
+          name: 'beech',
+          cells: [{
+            id: cellId2,
+            combColId: colId2,
+            position: 0,
+            name: 'leaf'
+          }, {
+            id: cellId3,
+            combColId: colId2,
+            position: 0,
+            name: 'root'
+          }]
+        }]
+      }, {
+        type: UPDATE_CELL_POSES,
+        sourceColId: colId1,
+        targetColId: colId2
+      }];
+
+      const expected = {
+        cols: [{
+          id: colId1,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            position: 0,
+            name: 'stem'
+          }]
+        }, {
+          id: colId2,
+          name: 'beech',
+          cells: [{
+            id: cellId2,
+            combColId: colId2,
+            position: 0,
+            name: 'leaf'
+          }, {
+            id: cellId3,
+            combColId: colId2,
+            position: 1,
+            name: 'root'
+          }]
         }]
       };
 
