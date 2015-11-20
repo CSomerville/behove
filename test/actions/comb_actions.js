@@ -3,12 +3,12 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses, newCell,
+  initiateSaveCellPoses, newCell, changeCellName,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
-  SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE, NEW_CELL
+  SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE, NEW_CELL, CHANGE_CELL_NAME
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -433,6 +433,20 @@ describe('combActions', () => {
       expect(newCell(combColId).name).to.equal(expected.name);
       expect(newCell(combColId).editable).to.equal(expected.editable);
       expect(newCell(combColId).combColId).to.equal(expected.combColId);
+    });
+  });
+
+  describe('changeCellName', () => {
+    it('should pass in cell id and event target value', () => {
+      const cellId = uuid.v4();
+      const ev = { target: { value: 'unk'}};
+      const expected = {
+        type: CHANGE_CELL_NAME,
+        id: cellId,
+        name: 'unk'
+      };
+
+      expect(changeCellName(cellId, ev)).to.deep.equal(expected);
     });
   });
 });

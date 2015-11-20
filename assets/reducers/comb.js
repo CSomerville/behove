@@ -3,12 +3,12 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL,
-  UPDATE_CELL_POSES, NEW_CELL
+  UPDATE_CELL_POSES, NEW_CELL, CHANGE_CELL_NAME
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
   console.log(state.cols);
-  let ind, sourceInd, targetInd, sourceColInd, targetColInd;
+  let ind, colInd, cellInd, sourceInd, targetInd, sourceColInd, targetColInd;
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
@@ -325,6 +325,23 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           ...state.cols.slice(ind + 1)
         ]
       });
+    case CHANGE_CELL_NAME:
+      [colInd, cellInd] = indexById(state.cols, null, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, colInd),
+          Object.assign({}, state.cols[colInd], {
+            cells: [
+              ...state.cols[colInd].cells.slice(0, cellInd),
+              Object.assign({}, state.cols[colInd].cells[cellInd], {
+                name: action.name
+              }),
+              ...state.cols[colInd].cells.slice(cellInd + 1)
+            ]
+          }),
+          ...state.cols.slice(colInd + 1)
+        ]
+      })
     default:
       return state;
   }

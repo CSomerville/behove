@@ -29,6 +29,7 @@ export const SAVE_CELL_POSES = 'SAVE_CELL_POSES';
 export const SAVE_CELL_POSES_SUCCESS = 'SAVE_CELL_POSES_SUCCESS';
 export const SAVE_CELL_POSES_FAILURE = 'SAVE_CELL_POSES_FAILURE';
 export const NEW_CELL = 'NEW_CELL';
+export const CHANGE_CELL_NAME = 'CHANGE_CELL_NAME';
 
 function fetchComb() {
   return {
@@ -338,5 +339,13 @@ export function newCell(combColId) {
     combColId: combColId,
     name: '',
     editable: true
+  }
+}
+
+export function changeCellName(id, e) {
+  return {
+    type: CHANGE_CELL_NAME,
+    id: id,
+    name: e.target.value
   }
 }

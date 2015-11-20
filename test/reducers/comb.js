@@ -5,7 +5,7 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
-  NEW_CELL
+  NEW_CELL, CHANGE_CELL_NAME
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1205,6 +1205,44 @@ describe('combReducer', () => {
       };
 
       expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('change cell name', () => {
+    it('should update name with new value', () => {
+      const [colId, cellId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        cols: [{
+          id: colId,
+          name: 'beech',
+          cells: [{
+            id: cellId,
+            editable: true,
+            name: 'unk',
+            prevName: 'unk'
+          }]
+        }]
+      }, {
+        type: CHANGE_CELL_NAME,
+        id: cellId,
+        name: 'unkk'
+      }];
+
+      const expected = {
+        cols: [{
+          id: colId,
+          name: 'beech',
+          cells: [{
+            id: cellId,
+            editable: true,
+            name: 'unkk',
+            prevName: 'unk'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+
     });
   });
 
