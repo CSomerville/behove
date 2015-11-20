@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
-import OneCell from './OneCell';
 
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
     dragSource: monitor.getItem()
-  }
+  };
 }
 
 const targetSpecs = {
@@ -16,25 +15,23 @@ const targetSpecs = {
   }
 }
 
-class OneCellWrapper extends Component {
+class DropPlaceholder extends Component {
 
   componentDidUpdate(prevProps) {
-    const { isOver, dragSource, cell, triggerCellReorder } = this.props;
+    const { isOver, col, dragSource, triggerInsert } = this.props;
     if (isOver && !prevProps.isOver) {
-      if (dragSource.id !== cell.id) {
-        triggerCellReorder(dragSource.id, dragSource.colId, cell.id, cell.combColId);
-      }
+      setTimeout(() => {
+        triggerInsert(dragSource.id, col.id);
+      }, 100);
     }
   }
 
   render() {
     const { connectDropTarget } = this.props;
     return connectDropTarget(
-      <div style={{height: '150px'}}>
-        <OneCell {...this.props} />
-      </div>
+      <div style={{height: '150px', backgroundColor: 'red'}} className="drop-placeholder"></div>
     );
   }
 }
 
-export default DropTarget('cell', targetSpecs, collect)(OneCellWrapper);
+export default DropTarget('cell', targetSpecs, collect)(DropPlaceholder);

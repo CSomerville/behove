@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cells from './Cells';
+import DropPlaceholder from './DropPlaceholder';
 import { DragSource } from 'react-dnd';
 
 const colSource = {
@@ -61,6 +62,10 @@ export default class OneCol extends Component {
         }
         <Cells cells={col.cells}
           triggerCellReorder={this.props.triggerCellReorder} />
+        {!col.cells.length &&
+          <DropPlaceholder col={col}
+            triggerInsert={this.props.triggerInsert} />
+        }
       </div>
     );
   }

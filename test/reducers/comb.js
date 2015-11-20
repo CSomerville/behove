@@ -1000,7 +1000,7 @@ describe('combReducer', () => {
           name: 'beech',
           cells: [{
             id: cellId1,
-            colId: colId1,
+            combColId: colId1,
             name: 'rust-red'
           }]
         }, {
@@ -1029,9 +1029,59 @@ describe('combReducer', () => {
           name: 'elm',
           cells: [{
             id: cellId1,
-            colId: colId1,
+            combColId: colId2,
             name: 'rust-red'
           }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+
+    it('should work in both directions', () => {
+      const [combId, colId1, colId2, cellId1] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          cells: []
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId1,
+            combColId: colId2,
+            name: 'rust-red'
+          }]
+        }]
+      }, {
+        type: INSERT_IN_EMPTY_COL,
+        sourceId: cellId1,
+        targetColId: colId1
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId1,
+          combId: combId,
+          name: 'beech',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            name: 'rust-red'
+          }]
+        }, {
+          id: colId2,
+          combId: combId,
+          name: 'elm',
+          cells: []
         }]
       };
 

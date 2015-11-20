@@ -240,7 +240,7 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         }
       }
     case INSERT_IN_EMPTY_COL:
-      [sourceInd, sourceColInd] = indexById(state.cols, null, action.sourceId);
+      [sourceColInd, sourceInd] = indexById(state.cols, null, action.sourceId);
       targetColInd = indexById(state.cols, action.targetColId);
       if (sourceColInd < targetColInd) {
         return Object.assign({}, state, {
@@ -254,7 +254,9 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
             }),
             ...state.cols.slice(sourceColInd + 1, targetColInd),
             Object.assign({}, state.cols[targetColInd], {
-              cells: [state.cols[sourceColInd].cells[sourceInd]]
+              cells: [Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                combColId: action.targetColId
+              })]
             }),
             ...state.cols.slice(targetColInd + 1)
           ]
@@ -264,13 +266,15 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           cols: [
             ...state.cols.slice(0, targetColInd),
             Object.assign({}, state.cols[targetColInd], {
-              cells: [state.cols[sourceColInd].cells[sourceInd]]
+              cells: [Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                combColId: action.targetColId
+              })]
             }),
             ...state.cols.slice(targetColInd + 1, sourceColInd),
             Object.assign({}, state.cols[sourceColInd], {
               cells: [
-                ...state.cols[sourceColInd].slice(0, sourceInd),
-                ...state.cols[sourceColInd].slice(sourceInd + 1)
+                ...state.cols[sourceColInd].cells.slice(0, sourceInd),
+                ...state.cols[sourceColInd].cells.slice(sourceInd + 1)
               ]
             }),
             ...state.cols.slice(sourceColInd + 1)

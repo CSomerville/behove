@@ -169,7 +169,7 @@ describe('CombView', () => {
     });
 
     it('save, cancel and delete col buttons should dispatch correctly', () => {
-      const [ combId, colId ] = [ combId, colId ];
+      const [ combId, colId ] = [ uuid.v4(), uuid.v4() ];
       const output = setup({
         id: combId,
         name: 'autumn',
@@ -202,6 +202,23 @@ describe('CombView', () => {
       Simulate.click(deleteButtons[0]);
       expect(dispatchSpy).to.have.been.calledOnce;
       expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateDeleteCol().toString());
+    });
+
+    it('should create an empty drop target if no cells in col', () => {
+      const [combId, colId] = [uuid.v4(), uuid.v4()];
+      const output = setup({
+        combId: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combId: combId,
+          name: 'elm',
+          cells: []
+        }]
+      });
+
+      const dropTarget = scryRenderedDOMComponentsWithClass(output.component, 'drop-placeholder');
+      expect(dropTarget.length).to.equal(1);
     });
   });
 
