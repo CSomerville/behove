@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Cells from './Cells';
 import DropPlaceholder from './DropPlaceholder';
 import { DragSource } from 'react-dnd';
+import AddButton from './AddButton';
 
 const colSource = {
   beginDrag(props) {
@@ -67,6 +68,9 @@ export default class OneCol extends Component {
           <DropPlaceholder col={col}
             triggerInsert={this.props.triggerInsert} />
         }
+        <AddButton buttonClass="new-cell"
+          onAddClick={this.props.triggerNewCell.bind(this, col.id)}
+          />
       </div>
     );
   }

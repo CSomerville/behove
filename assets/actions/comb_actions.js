@@ -333,7 +333,7 @@ export function initiateSaveCellPoses(sourceColId, sourceId, base){
 
 export function newCell(combColId) {
   return {
-    type: NEW_COL,
+    type: NEW_CELL,
     id: uuid.v4(),
     combColId: combColId,
     name: '',

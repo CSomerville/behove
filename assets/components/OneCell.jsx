@@ -30,8 +30,17 @@ class OneCell extends Component {
   render() {
     const { cell, connectDragSource, isDragging } = this.props;
     return connectDragSource(
-      <h1 style={{opacity: (isDragging) ? 0 : 1}}
-        className="cell-title">{cell.name}</h1>
+      <div style={{opacity: (isDragging) ? 0 : 1}}>
+        {!cell.editable &&
+          <h1 className="cell-title">{cell.name}</h1>
+        }
+        {cell.editable &&
+          <div>
+            <input type="text" value={cell.name} />
+            <h1>googgoo</h1>
+          </div>
+        }
+      </div>
     );
   }
 }

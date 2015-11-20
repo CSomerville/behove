@@ -7,6 +7,7 @@ import {
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
+  console.log(state.cols);
   let ind, sourceInd, targetInd, sourceColInd, targetColInd;
   switch(action.type) {
     case FETCH_COMB:

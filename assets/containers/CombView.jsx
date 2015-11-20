@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses
+  initiateSaveCellPoses, newCell
  } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
@@ -49,8 +49,10 @@ export class CombView extends Component {
             dispatch(insertInEmptyCol(sourceId, targetColId));
           }}
           cellDragEnded={(sourceColId, sourceId) => {
-            console.log(sourceColId, sourceId)
             dispatch(initiateSaveCellPoses(sourceColId, sourceId));
+          }}
+          triggerNewCell={(colId) => {
+            dispatch(newCell(colId));
           }}
           />
       </div>

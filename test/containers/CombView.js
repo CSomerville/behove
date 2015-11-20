@@ -253,5 +253,29 @@ describe('CombView', () => {
       expect(cellTitles[0].textContent).to.equal('hullo');
       expect(cellTitles[1].textContent).to.equal('goodbye');
     });
+
+    it('should render add button which dispatches newCol', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combId: combId,
+          name: 'elm',
+          position: 0,
+          cells: []
+        }]
+      });
+
+      const addButton = scryRenderedDOMComponentsWithClass(output.component, 'new-cell');
+      expect(addButton.length).to.equal(1);
+      expect(addButton[0].textContent).to.equal('+');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+      Simulate.click(addButton[0]);
+      expect(dispatchSpy.args[0][0].type).to.equal(combActions.newCell().type);
+    });
   });
 });

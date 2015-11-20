@@ -421,7 +421,7 @@ describe('combActions', () => {
     it('should create a new cell with id empty string name and editable true', () => {
       const combColId = uuid.v4();
       const expected = {
-        type: NEW_COL,
+        type: NEW_CELL,
         id: uuid.v4(),
         combColId: combColId,
         name: '',
