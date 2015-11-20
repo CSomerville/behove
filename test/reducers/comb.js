@@ -5,7 +5,7 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
-  NEW_CELL, CHANGE_CELL_NAME
+  NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1243,6 +1243,60 @@ describe('combReducer', () => {
 
       expect(comb(...input)).to.deep.equal(expected);
 
+    });
+  });
+
+  describe('edit cell', () => {
+    it('should set editable to true', () => {
+      const [colId1, colId2, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
+      const input = [{
+        cols: [{
+          id: colId1,
+          name: 'beech',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            editable: false,
+            name: 'leaf'
+          }]
+        }, {
+          id: colId2,
+          name: 'elm',
+          cells: [{
+            id: cellId2,
+            combColId: colId2,
+            editable: false,
+            name: 'stem'
+          }]
+        }]
+      }, {
+        type: EDIT_CELL,
+        id: cellId1
+      }];
+
+      const expected = {
+        cols: [{
+          id: colId1,
+          name: 'beech',
+          cells: [{
+            id: cellId1,
+            combColId: colId1,
+            editable: true,
+            name: 'leaf'
+          }]
+        }, {
+          id: colId2,
+          name: 'elm',
+          cells: [{
+            id: cellId2,
+            combColId: colId2,
+            editable: false,
+            name: 'stem'
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
     });
   });
 
