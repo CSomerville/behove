@@ -1120,7 +1120,7 @@ describe('combReducer', () => {
       }, {
         type: UPDATE_CELL_POSES,
         sourceColId: colId1,
-        targetColId: colId2
+        sourceId: cellId2
       }];
 
       const expected = {

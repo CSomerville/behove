@@ -361,13 +361,13 @@ describe('combActions', () => {
         .reply(200);
 
       const expectedActions = [
-        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, targetColId: targetColId},
+        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, sourceId: cellId2},
         {type: SAVE_CELL_POSES},
         {type: SAVE_CELL_POSES_SUCCESS}
       ];
 
       const store = mockStore(getState, expectedActions, done);
-      store.dispatch(initiateSaveCellPoses(sourceColId, targetColId, 'http://127.0.0.1:3000'));
+      store.dispatch(initiateSaveCellPoses(sourceColId, cellId2, 'http://127.0.0.1:3000'));
     });
     it('should dispatch SAVE_CELL_POSES_FAILURE on failure', (done) => {
       const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
@@ -406,13 +406,13 @@ describe('combActions', () => {
         .reply(500);
 
       const expectedActions = [
-        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, targetColId: targetColId},
+        {type: UPDATE_CELL_POSES, sourceColId: sourceColId, sourceId: cellId2},
         {type: SAVE_CELL_POSES},
         {type: SAVE_CELL_POSES_FAILURE, msg: 'Internal Server Error'}
       ];
 
       const store = mockStore(getState, expectedActions, done);
-      store.dispatch(initiateSaveCellPoses(sourceColId, targetColId, 'http://127.0.0.1:3000'));
+      store.dispatch(initiateSaveCellPoses(sourceColId, cellId2, 'http://127.0.0.1:3000'));
     });
   });
 });
