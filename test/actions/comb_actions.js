@@ -326,7 +326,7 @@ describe('combActions', () => {
   describe('initiateSaveCellPoses', () => {
     it('should dispatch SAVE_CELL_POSES_SUCCESS on success', (done) => {
       const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
-      const getState = { cols: [{
+      const getState = { comb: { cols: [{
         id: sourceColId,
         name: 'elm',
         cells: [{
@@ -344,7 +344,7 @@ describe('combActions', () => {
           name: 'stem',
           position: 0
         }]
-      }]};
+      }]}};
 
       nock('http://127.0.0.1:3000')
         .post('/api/cells', [{
@@ -371,7 +371,7 @@ describe('combActions', () => {
     });
     it('should dispatch SAVE_CELL_POSES_FAILURE on failure', (done) => {
       const [sourceColId, targetColId, cellId1, cellId2] = [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()];
-      const getState = { cols: [{
+      const getState = { comb: { cols: [{
         id: sourceColId,
         name: 'elm',
         cells: [{
@@ -389,7 +389,7 @@ describe('combActions', () => {
           name: 'stem',
           position: 0
         }]
-      }]};
+      }]}};
 
       nock('http://127.0.0.1:3000')
         .post('/api/cells', [{

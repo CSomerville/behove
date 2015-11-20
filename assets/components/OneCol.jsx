@@ -61,6 +61,9 @@ export default class OneCol extends Component {
           </div>
         }
         <Cells cells={col.cells}
+          dragEnded={(sourceColId) => {
+            this.props.cellDragEnded(sourceColId, col.id);
+          }}
           triggerCellReorder={this.props.triggerCellReorder} />
         {!col.cells.length &&
           <DropPlaceholder col={col}

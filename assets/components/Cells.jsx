@@ -9,6 +9,7 @@ export default class Cells extends Component {
           <li key={cell.id}>
             <OneCellWrapper
               cell={cell}
+              dragEnded={this.props.dragEnded}
               triggerCellReorder={this.props.triggerCellReorder}
               />
           </li>

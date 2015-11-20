@@ -307,11 +307,11 @@ export function initiateSaveCellPoses(sourceColId, targetColId, base){
     dispatch(saveCellPoses());
 
     let cells = [];
-    getState().cols.forEach((el) => {
+    getState().comb.cols.forEach((el) => {
       el.cells.forEach((cell) => {
         cells.push(cell);
-      })
-    })
+      });
+    });
 
     fetch(base + '/api/cells', {
       method: 'post',

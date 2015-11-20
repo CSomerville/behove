@@ -11,6 +11,10 @@ const cellSource = {
 
   isDragging(props, monitor) {
     return props.cell.id === monitor.getItem().id;
+  },
+
+  endDrag(props, monitor) {
+    props.dragEnded(props.colId);
   }
 }
 
