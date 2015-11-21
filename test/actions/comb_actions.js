@@ -3,13 +3,13 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 import { initiateFetchComb, updateCombId, editCol, changeColName, cancelEditCol, initiateSaveEditCol,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell,
+  initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell, initiateSaveEditCell,
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
   SAVE_CELL_POSES, SAVE_CELL_POSES_SUCCESS, SAVE_CELL_POSES_FAILURE, NEW_CELL, CHANGE_CELL_NAME,
-  EDIT_CELL, CANCEL_EDIT_CELL
+  EDIT_CELL, CANCEL_EDIT_CELL, SAVE_EDIT_CELL, SAVE_EDIT_CELL_SUCCESS, SAVE_EDIT_CELL_FAILURE
 } from '../../assets/actions/comb_actions';
 import mockStore from '../mockstore';
 
@@ -473,6 +473,63 @@ describe('combActions', () => {
       };
 
       expect(cancelEditCell(cellId)).to.deep.equal(expected);
+    });
+  });
+
+  describe('initiateSaveEditCell', () => {
+    it('should dispatch SAVE_EDIT_CELL_SUCCESS on success', (done) => {
+      const [cellId, combColId] = [uuid.v4(), uuid.v4()];
+      const cell = {
+        id: cellId,
+        combColId: combColId,
+        name: 'leaf',
+        position: 0
+      };
+      const state = {
+        cols: [{
+          id: combColId,
+          cells: [ cell ]
+        }]
+      };
+
+      const expectedActions = [
+        { type: SAVE_EDIT_CELL, id: cellId },
+        { type: SAVE_EDIT_CELL_SUCCESS }
+      ];
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cell', cell)
+        .reply(200)
+
+      const store = mockStore(state, expectedActions, done);
+      store.dispatch(initiateSaveEditCell(cell, 'http://127.0.0.1:3000'));
+    });
+    it('should dispatch SAVE_EDIT_CELL_FAILURE on failure', (done) => {
+      const [cellId, combColId] = [uuid.v4(), uuid.v4()];
+      const cell = {
+        id: cellId,
+        combColId: combColId,
+        name: 'leaf',
+        position: 0
+      };
+      const state = {
+        cols: [{
+          id: combColId,
+          cells: [ cell ]
+        }]
+      };
+
+      const expectedActions = [
+        { type: SAVE_EDIT_CELL, id: cellId },
+        { type: SAVE_EDIT_CELL_FAILURE, msg: 'Internal Server Error' }
+      ];
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/cell', cell)
+        .reply(500)
+
+      const store = mockStore(state, expectedActions, done);
+      store.dispatch(initiateSaveEditCell(cell, 'http://127.0.0.1:3000'));
     });
   });
 });

@@ -32,6 +32,9 @@ export const NEW_CELL = 'NEW_CELL';
 export const CHANGE_CELL_NAME = 'CHANGE_CELL_NAME';
 export const EDIT_CELL = 'EDIT_CELL';
 export const CANCEL_EDIT_CELL = 'CANCEL_EDIT_CELL';
+export const SAVE_EDIT_CELL = 'SAVE_EDIT_CELL';
+export const SAVE_EDIT_CELL_SUCCESS = 'SAVE_EDIT_CELL_SUCCESS';
+export const SAVE_EDIT_CELL_FAILURE = 'SAVE_EDIT_CELL_FAILURE';
 
 function fetchComb() {
   return {
@@ -363,5 +366,49 @@ export function cancelEditCell(id) {
   return {
     type: CANCEL_EDIT_CELL,
     id: id
+  }
+}
+
+function saveEditCell(id) {
+  return {
+    type: SAVE_EDIT_CELL,
+    id: id
+  }
+}
+
+function saveEditCellSuccess(){
+  return {
+    type: SAVE_EDIT_CELL_SUCCESS
+  }
+}
+
+function saveEditCellFailure(msg) {
+  return {
+    type: SAVE_EDIT_CELL_FAILURE,
+    msg: msg
+  }
+}
+
+export function initiateSaveEditCell(cell, base) {
+  base = base || '';
+
+  return (dispatch) => {
+
+    dispatch(saveEditCell(cell.id));
+
+    fetch(base + '/api/cell', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(
+        cell
+      )
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(saveEditCellSuccess()))
+      .catch((err) => dispatch(saveEditCellFailure(err.message)));
   }
 }

@@ -8,7 +8,6 @@ import {
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
   let ind, colInd, cellInd, sourceInd, targetInd, sourceColInd, targetColInd;
-  console.log(action.type)
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
