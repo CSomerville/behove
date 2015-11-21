@@ -7,8 +7,8 @@ import {
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
-  console.log(state.cols);
   let ind, colInd, cellInd, sourceInd, targetInd, sourceColInd, targetColInd;
+  console.log(action.type)
   switch(action.type) {
     case FETCH_COMB:
       return Object.assign({}, state, {
@@ -289,23 +289,37 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
       sourceColInd = indexById(state.cols, action.sourceColId);
       targetColInd = indexById(state.cols, null, action.sourceId)[0];
       const [min, max] = [Math.min(sourceColInd, targetColInd), Math.max(sourceColInd, targetColInd)];
-      return Object.assign({}, state, {
-        cols: [
-          ...state.cols.slice(0, min),
-          Object.assign({}, state.cols[min], {
-            cells: state.cols[min].cells.map((e, i) => {
-              return Object.assign({}, e, {position: i});
-            })
-          }),
-          ...state.cols.slice(min + 1, max),
-          Object.assign({}, state.cols[max], {
-            cells: state.cols[max].cells.map((e, i) => {
-              return Object.assign({}, e, {position: i});
-            })
-          }),
-          ...state.cols.slice(max + 1)
-        ]
-      });
+      if (min === max) {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, min),
+            Object.assign({}, state.cols[min], {
+              cells: state.cols[min].cells.map((e, i) => {
+                return Object.assign({}, e, {position: i});
+              })
+            }),
+            ...state.cols.slice(min + 1)
+          ]
+        });
+      } else {
+        return Object.assign({}, state, {
+          cols: [
+            ...state.cols.slice(0, min),
+            Object.assign({}, state.cols[min], {
+              cells: state.cols[min].cells.map((e, i) => {
+                return Object.assign({}, e, {position: i});
+              })
+            }),
+            ...state.cols.slice(min + 1, max),
+            Object.assign({}, state.cols[max], {
+              cells: state.cols[max].cells.map((e, i) => {
+                return Object.assign({}, e, {position: i});
+              })
+            }),
+            ...state.cols.slice(max + 1)
+          ]
+        });
+      }
     case NEW_CELL:
       ind = indexById(state.cols, action.combColId);
       return Object.assign({}, state, {

@@ -254,6 +254,102 @@ describe('CombView', () => {
       expect(cellTitles[1].textContent).to.equal('goodbye');
     });
 
+    it('should render edit button when editable is false', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combColId: combId,
+          name: 'elm',
+          position: 0,
+          cells: [{
+            id: cellId,
+            name: 'leaf',
+            position: 0,
+            editable: false
+          }]
+        }]
+      });
+
+      const editBtns = scryRenderedDOMComponentsWithClass(output.component, 'edit-cell');
+      expect(editBtns.length).to.equal(1);
+      expect(editBtns[0].textContent).to.equal('edit');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      Simulate.click(editBtns[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.editCell(cellId));
+
+    });
+
+    it('should render input when editable is true', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combColId: combId,
+          name: 'elm',
+          position: 0,
+          cells: [{
+            id: cellId,
+            name: 'leaf',
+            position: 0,
+            editable: true
+          }]
+        }]
+      });
+
+      const inputs = scryRenderedDOMComponentsWithTag(output.component, 'input');
+      expect(inputs.length).to.equal(1);
+      expect(inputs[0].value).to.equal('leaf');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      inputs[0].value = 'leaff';
+      Simulate.change(inputs[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep
+        .equal(combActions.changeCellName(cellId, { target: { value: 'leaff' }}))
+    });
+
+    it('should render cancel button when comb is editable', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combColId: combId,
+          name: 'elm',
+          position: 0,
+          cells: [{
+            id: cellId,
+            name: 'leaf',
+            position: 0,
+            editable: true
+          }]
+        }]
+      });
+
+      const cancelBtns = scryRenderedDOMComponentsWithClass(output.component, 'cancel-edit-cell');
+      expect(cancelBtns.length).to.equal(1);
+      expect(cancelBtns[0].textContent).to.equal('cancel');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      Simulate.click(cancelBtns[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.cancelEditCell(cellId));     
+    });
+
     it('should render add button which dispatches newCol', () => {
       const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
       const output = setup({

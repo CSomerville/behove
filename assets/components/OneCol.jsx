@@ -63,7 +63,10 @@ export default class OneCol extends Component {
         }
         <Cells cells={col.cells}
           cellDragEnded={this.props.cellDragEnded}
-          triggerCellReorder={this.props.triggerCellReorder} />
+          triggerCellReorder={this.props.triggerCellReorder}
+          triggerChangeCellName={this.props.triggerChangeCellName}
+          triggerEditCell={this.props.triggerEditCell}
+          triggerCancelEditCell={this.props.triggerCancelEditCell} />
         {!col.cells.length &&
           <DropPlaceholder col={col}
             triggerInsert={this.props.triggerInsert} />

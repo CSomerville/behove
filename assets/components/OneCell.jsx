@@ -28,16 +28,27 @@ function collect(connect, monitor) {
 
 class OneCell extends Component {
   render() {
-    const { cell, connectDragSource, isDragging } = this.props;
+    const { cell, connectDragSource, isDragging, triggerChangeCellName } = this.props;
     return connectDragSource(
       <div style={{opacity: (isDragging) ? 0 : 1}}>
         {!cell.editable &&
-          <h1 className="cell-title">{cell.name}</h1>
+          <div>
+            <h1 className="cell-title">{cell.name}</h1>
+            <button className="edit-cell"
+              onClick={this.props.triggerEditCell.bind(this, cell.id)}>
+              edit
+            </button>
+          </div>
         }
         {cell.editable &&
           <div>
-            <input type="text" value={cell.name} />
-            <h1>googgoo</h1>
+            <input type="text" value={cell.name}
+              onChange={triggerChangeCellName.bind(this, cell.id)}/>
+            <button className="cancel-edit-cell"
+              onClick={this.props.triggerCancelEditCell.bind(this, cell.id)}
+              >
+              cancel
+            </button>
           </div>
         }
       </div>

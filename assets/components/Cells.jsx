@@ -3,14 +3,14 @@ import OneCellWrapper from './OneCellWrapper';
 
 export default class Cells extends Component {
   render() {
+    const { cells, ...rest } = this.props;
     return (
       <ul>
-        {this.props.cells && this.props.cells.map((cell, i) =>
+        {cells && cells.map((cell, i) =>
           <li key={cell.id}>
             <OneCellWrapper
               cell={cell}
-              cellDragEnded={this.props.cellDragEnded}
-              triggerCellReorder={this.props.triggerCellReorder}
+              { ...rest }
               />
           </li>
         )}
