@@ -457,9 +457,9 @@ function comparator(a, b) {
 }
 
 function sortByPosition(cols) {
-  for (let i in cols) {
+  for (let i of cols) {
     if (i.cells) {
-      cells.sort(comparator);
+      i.cells.sort(comparator);
     }
   }
   cols.sort(comparator);
