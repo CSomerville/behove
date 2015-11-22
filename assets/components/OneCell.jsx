@@ -49,7 +49,7 @@ class OneCell extends Component {
               cancel
             </button>
             <button className="save-edit-cell"
-              onClick={this.props.triggerSaveCell.bind(this, cell.id)}>
+              onClick={this.props.triggerSaveCell.bind(this, cell)}>
               save
             </button>
           </div>

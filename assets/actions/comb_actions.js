@@ -395,7 +395,7 @@ export function initiateSaveEditCell(cell, base) {
   return (dispatch) => {
 
     dispatch(saveEditCell(cell.id));
-
+    
     fetch(base + '/api/cell', {
       method: 'post',
       headers: {
