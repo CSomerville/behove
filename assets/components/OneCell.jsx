@@ -45,9 +45,12 @@ class OneCell extends Component {
             <input type="text" value={cell.name}
               onChange={triggerChangeCellName.bind(this, cell.id)}/>
             <button className="cancel-edit-cell"
-              onClick={this.props.triggerCancelEditCell.bind(this, cell.id)}
-              >
+              onClick={this.props.triggerCancelEditCell.bind(this, cell.id)}>
               cancel
+            </button>
+            <button className="save-edit-cell"
+              onClick={this.props.triggerSaveCell.bind(this, cell.id)}>
+              save
             </button>
           </div>
         }

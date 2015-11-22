@@ -5,7 +5,8 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
-  NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL
+  NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL, SAVE_EDIT_CELL, SAVE_EDIT_CELL_SUCCESS,
+  SAVE_EDIT_CELL_FAILURE
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1351,6 +1352,74 @@ describe('combReducer', () => {
             name: 'stem'
           }]
         }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save edit cell', () => {
+    it('should set editable to false', () => {
+      const [colId, cellId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        cols: [{
+          id: colId,
+          name: 'beech',
+          cells: [{
+            id: cellId,
+            combColId: colId,
+            name: 'leaff',
+            prevName: 'leaf',
+            editable: true
+          }]
+        }]
+      }, {
+        type: SAVE_EDIT_CELL,
+        id: cellId
+      }];
+
+      const expected = {
+        cols: [{
+          id: colId,
+          name: 'beech',
+          cells: [{
+            id: cellId,
+            combColId: colId,
+            name: 'leaff',
+            prevName: 'leaf',
+            editable: false
+          }]
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('save edit cell success', () => {
+    it('is a noop right now', () => {
+
+    });
+  });
+
+  describe('save edit cell failure', () => {
+    it('should set the msg', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'unk',
+        cols: [],
+        msg: ''
+      }, {
+        type: SAVE_EDIT_CELL_FAILURE,
+        msg: 'Internal Server Error'
+      }];
+
+      const expected = {
+        id: id,
+        name: 'unk',
+        cols: [],
+        msg: 'Internal Server Error'
       };
 
       expect(comb(...input)).to.deep.equal(expected);

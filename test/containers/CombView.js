@@ -347,7 +347,38 @@ describe('CombView', () => {
 
       Simulate.click(cancelBtns[0]);
       expect(dispatchSpy).to.have.been.calledOnce;
-      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.cancelEditCell(cellId));     
+      expect(dispatchSpy.args[0][0]).to.deep.equal(combActions.cancelEditCell(cellId));
+    });
+
+    it('should render save cell btn when editable is true', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combColId: combId,
+          name: 'elm',
+          position: 0,
+          cells: [{
+            id: cellId,
+            name: 'leaf',
+            position: 0,
+            editable: true
+          }]
+        }]
+      });
+
+      const saveBtns = scryRenderedDOMComponentsWithClass(output.component, 'save-edit-cell');
+      expect(saveBtns.length).to.equal(1);
+      expect(saveBtns[0].textContent).to.equal('save');
+
+      let dispatchSpy = output.props.dispatch;
+      dispatchSpy.reset();
+
+      Simulate.click(saveBtns[0]);
+      expect(dispatchSpy).to.have.been.calledOnce;
+      expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateSaveEditCell().toString());
     });
 
     it('should render add button which dispatches newCol', () => {

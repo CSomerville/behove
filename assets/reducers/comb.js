@@ -3,7 +3,8 @@ import {
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL,
-  UPDATE_CELL_POSES, NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL
+  UPDATE_CELL_POSES, NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL, SAVE_EDIT_CELL,
+  SAVE_EDIT_CELL_SUCCESS, SAVE_EDIT_CELL_FAILURE
  } from '../actions/comb_actions';
 
 export default function(state = { id: null, name: null, cols: [], isFetching: false, msg: '' }, action) {
@@ -374,23 +375,46 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
         ]
       });
     case CANCEL_EDIT_CELL:
-    [colInd, cellInd] = indexById(state.cols, null, action.id);
-    return Object.assign({}, state, {
-      cols: [
-        ...state.cols.slice(0, colInd),
-        Object.assign({}, state.cols[colInd], {
-          cells: [
-            ...state.cols[colInd].cells.slice(0, cellInd),
-            Object.assign({}, state.cols[colInd].cells[cellInd], {
-              editable: false,
-              name: state.cols[colInd].cells[cellInd].prevName
-            }),
-            ...state.cols[colInd].cells.slice(cellInd + 1)
-          ]
-        }),
-        ...state.cols.slice(colInd + 1)
-      ]
-    });
+      [colInd, cellInd] = indexById(state.cols, null, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, colInd),
+          Object.assign({}, state.cols[colInd], {
+            cells: [
+              ...state.cols[colInd].cells.slice(0, cellInd),
+              Object.assign({}, state.cols[colInd].cells[cellInd], {
+                editable: false,
+                name: state.cols[colInd].cells[cellInd].prevName
+              }),
+              ...state.cols[colInd].cells.slice(cellInd + 1)
+            ]
+          }),
+          ...state.cols.slice(colInd + 1)
+        ]
+      });
+    case SAVE_EDIT_CELL:
+      [colInd, cellInd] = indexById(state.cols, null, action.id);
+      return Object.assign({}, state, {
+        cols: [
+          ...state.cols.slice(0, colInd),
+          Object.assign({}, state.cols[colInd], {
+            cells: [
+              ...state.cols[colInd].cells.slice(0, cellInd),
+              Object.assign({}, state.cols[colInd].cells[cellInd], {
+                editable: false
+              }),
+              ...state.cols[colInd].cells.slice(cellInd + 1)
+            ]
+          }),
+          ...state.cols.slice(colInd + 1)
+        ]
+      });
+    case SAVE_EDIT_CELL_SUCCESS:
+      return state;
+    case SAVE_EDIT_CELL_FAILURE:
+      return Object.assign({}, state, {
+        msg: action.msg
+      });
     default:
       return state;
   }

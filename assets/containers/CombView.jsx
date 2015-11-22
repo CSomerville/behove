@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
-  initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell
+  initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell, initiateSaveEditCell
  } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
@@ -62,6 +62,9 @@ export class CombView extends Component {
           }}
           triggerCancelEditCell={(id) => {
             dispatch(cancelEditCell(id));
+          }}
+          triggerSaveCell={(id) => {
+            dispatch(initiateSaveEditCell(id));
           }}
           />
       </div>
