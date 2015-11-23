@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import verifySession from '../utils/verifysession';
 import { combsGet, combPost, combGet } from './combshandler';
 import { combColPost, combColsPost, combColDelete } from './combcolshandler';
-import { cellPost, cellsPost } from './cellhandler';
+import { cellPost, cellsPost, cellDelete } from './cellhandler';
 
 let apiRoutes = express.Router();
 
@@ -20,5 +20,6 @@ apiRoutes.post('/cell', cellPost);
 apiRoutes.post('/cells', cellsPost);
 
 apiRoutes.delete('/col/:id', combColDelete);
+apiRoutes.delete('/cell', cellDelete);
 
 export default apiRoutes;

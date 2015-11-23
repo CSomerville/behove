@@ -134,3 +134,9 @@ export function updateCellPoses(cells) {
     return Promise.all(promises);
   });
 }
+
+export function deleteCell(id) {
+  return db.task((t) => {
+    return t.none("DELETE FROM cells WHERE id = $1", [id]);
+  });
+}

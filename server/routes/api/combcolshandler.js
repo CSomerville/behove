@@ -25,7 +25,6 @@ export function combColDelete(req, res) {
     .then(() => {
       res.sendStatus(200);
     }, (err) => {
-      console.log(err);
       res.sendStatus(500);
     });
 }
