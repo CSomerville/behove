@@ -381,6 +381,37 @@ describe('CombView', () => {
       expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateSaveEditCell().toString());
     });
 
+    it('should render delete button when editable is true', () => {
+      const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const output = setup({
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: colId,
+          combColId: combId,
+          name: 'elm',
+          position: 0,
+          cells: [{
+            id: cellId,
+            name: 'leaf',
+            position: 0,
+            editable: true
+          }]
+        }]
+      });
+
+        const deleteBtns = scryRenderedDOMComponentsWithClass(output.component, 'delete-cell');
+        expect(deleteBtns.length).to.equal(1);
+        expect(deleteBtns[0].textContent).to.equal('delete');
+
+        let dispatchSpy = output.props.dispatch;
+        dispatchSpy.reset();
+        Simulate.click(deleteBtns[0]);
+        expect(dispatchSpy).to.have.been.calledOnce;
+        expect(dispatchSpy.args[0][0].toString()).to.deep
+          .equal(combActions.initiateDeleteCell(cellId).toString());
+    });
+
     it('should render add button which dispatches newCol', () => {
       const [combId, colId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
       const output = setup({

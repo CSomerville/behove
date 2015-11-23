@@ -67,7 +67,8 @@ export default class OneCol extends Component {
           triggerChangeCellName={this.props.triggerChangeCellName}
           triggerEditCell={this.props.triggerEditCell}
           triggerCancelEditCell={this.props.triggerCancelEditCell}
-          triggerSaveCell={this.props.triggerSaveCell} />
+          triggerSaveCell={this.props.triggerSaveCell}
+          triggerDeleteCell={this.props.triggerDeleteCell}/>
         {!col.cells.length &&
           <DropPlaceholder col={col}
             triggerInsert={this.props.triggerInsert} />
