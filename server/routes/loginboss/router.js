@@ -10,7 +10,7 @@ loginBoss.use(bodyParser.urlencoded({extended: false}));
 
 loginBoss.get('/login', loginGet);
 
-loginBoss.get('/app', verifySession, appStart);
+loginBoss.get('/app*', verifySession, appStart);
 
 loginBoss.post('/login', loginPost);
 

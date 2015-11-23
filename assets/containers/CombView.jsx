@@ -3,14 +3,25 @@ import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
   initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
   initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell, initiateSaveEditCell,
-  initiateDeleteCell
+  initiateDeleteCell, updateCombId
  } from '../actions/comb_actions';
 import CombColumns from '../components/CombColumns';
 
 export class CombView extends Component {
   componentDidMount() {
-    const { dispatch, comb } = this.props;
-    dispatch(initiateFetchComb(comb.id));
+    const { dispatch, comb, router } = this.props;
+    if (comb.id) {
+      dispatch(initiateFetchComb(comb.id));
+    } else {
+      dispatch(updateCombId(router.params.id));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { dispatch } = this.props;
+    if (prevProps.comb.id !== this.props.comb.id) {
+      dispatch(initiateFetchComb(this.props.comb.id));
+    }
   }
 
   render() {
@@ -78,7 +89,8 @@ export class CombView extends Component {
 
 function select(state) {
   return {
-    comb: state.comb
+    comb: state.comb,
+    router: state.router
   }
 }
 
