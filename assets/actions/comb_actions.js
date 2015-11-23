@@ -35,6 +35,9 @@ export const CANCEL_EDIT_CELL = 'CANCEL_EDIT_CELL';
 export const SAVE_EDIT_CELL = 'SAVE_EDIT_CELL';
 export const SAVE_EDIT_CELL_SUCCESS = 'SAVE_EDIT_CELL_SUCCESS';
 export const SAVE_EDIT_CELL_FAILURE = 'SAVE_EDIT_CELL_FAILURE';
+export const DELETE_CELL = 'DELETE_CELL';
+export const DELETE_CELL_SUCCESS = 'DELETE_CELL_SUCCESS';
+export const DELETE_CELL_FAILURE = 'DELETE_CELL_FAILURE';
 
 function fetchComb() {
   return {
@@ -395,7 +398,7 @@ export function initiateSaveEditCell(cell, base) {
   return (dispatch) => {
 
     dispatch(saveEditCell(cell.id));
-    
+
     fetch(base + '/api/cell', {
       method: 'post',
       headers: {
@@ -410,5 +413,48 @@ export function initiateSaveEditCell(cell, base) {
       .then((res) => checkStatus(res))
       .then(() => dispatch(saveEditCellSuccess()))
       .catch((err) => dispatch(saveEditCellFailure(err.message)));
+  }
+}
+
+function deleteCell(id) {
+  return {
+    type: DELETE_CELL,
+    id: id
+  }
+}
+
+function deleteCellSuccess() {
+  return {
+    type: DELETE_CELL_SUCCESS
+  }
+}
+
+function deleteCellFailure(msg) {
+  return {
+    type: DELETE_CELL_FAILURE,
+    msg: msg
+  }
+}
+
+export function initiateDeleteCell(id, base) {
+  base = base || '';
+
+  return (dispatch) => {
+    dispatch(deleteCell(id));
+    fetch(base + '/api/cell', {
+      method: 'delete',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(
+        {id: id}
+      )
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(deleteCellSuccess()))
+      .catch((err) => dispatch(deleteCellFailure(err.message)))
+
   }
 }

@@ -6,7 +6,7 @@ import {
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
   SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL, UPDATE_CELL_POSES,
   NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL, SAVE_EDIT_CELL, SAVE_EDIT_CELL_SUCCESS,
-  SAVE_EDIT_CELL_FAILURE
+  SAVE_EDIT_CELL_FAILURE, DELETE_CELL, DELETE_CELL_SUCCESS, DELETE_CELL_FAILURE
  } from '../../assets/actions/comb_actions';
 import comb, { indexById } from '../../assets/reducers/comb';
 
@@ -1418,6 +1418,72 @@ describe('combReducer', () => {
       const expected = {
         id: id,
         name: 'unk',
+        cols: [],
+        msg: 'Internal Server Error'
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('delete cell', () => {
+    it('should remove cell by id', () => {
+      const [combId, combColId, cellId] = [uuid.v4(), uuid.v4(), uuid.v4()];
+      const input = [{
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: combColId,
+          combId: combId,
+          name: 'elm',
+          cells: [{
+            id: cellId,
+            combColId: combColId,
+            name: 'leaf'
+          }]
+        }]
+      }, {
+        type: DELETE_CELL,
+        id: cellId
+      }];
+
+      const expected = {
+        id: combId,
+        name: 'autumn',
+        cols: [{
+          id: combColId,
+          combId: combId,
+          name: 'elm',
+          cells: []
+        }]
+      };
+
+      expect(comb(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('delete cell success', () => {
+    it('should be a noop', () => {
+
+    });
+  });
+
+  describe('delete cell failure', () => {
+    it('should set msg', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        name: 'autumn',
+        cols: [],
+        msg: ''
+      }, {
+        type: DELETE_CELL_FAILURE,
+        msg: 'Internal Server Error'
+      }];
+
+      const expected = {
+        id: id,
+        name: 'autumn',
         cols: [],
         msg: 'Internal Server Error'
       };
