@@ -1,0 +1,58 @@
+$gold: #AD6800;
+$rust: #C42F0A;
+$blue: #92BFE5;
+
+li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+}
+
+.hexagon {
+  min-height: 150px;
+  min-width: 200px;
+  position: relative;
+  margin-top: 50px;
+  &::before {
+    content: '';
+    min-width: 0px;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    position: absolute;
+    top: -50px;
+  }
+  &::after {
+    content: '';
+    min-width: 0px;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    position: absolute;
+    top: 150px;
+  }
+}
+
+.even {
+  background-color: $gold;
+  &::before {
+    border-bottom: 50px solid $gold;
+  }
+  &::after {
+    border-top: 50px solid $gold;
+  }
+}
+
+.odd {
+  background-color: $rust;
+  &::before {
+    border-bottom: 50px solid $rust;
+  }
+  &::after {
+    border-top: 50px solid $rust;
+  }
+}
+
+.even-cell {
+  left: 100px;
+}

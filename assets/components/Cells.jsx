@@ -10,6 +10,7 @@ export default class Cells extends Component {
           <li key={cell.id}>
             <OneCellWrapper
               cell={cell}
+              ind={i}
               { ...rest }
               />
           </li>

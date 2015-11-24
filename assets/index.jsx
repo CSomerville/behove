@@ -8,6 +8,7 @@ import App from './containers/App';
 import CombsView from './containers/CombsView';
 import CombView from './containers/CombView';
 import Test from './containers/Test';
+import './styles/main.scss';
 
 const app = document.getElementById('app');
 

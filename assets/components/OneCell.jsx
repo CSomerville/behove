@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DragSource } from 'react-dnd';
+import classNames from 'classNames';
 
 const cellSource = {
   beginDrag(props) {
@@ -28,9 +29,19 @@ function collect(connect, monitor) {
 
 class OneCell extends Component {
   render() {
-    const { cell, connectDragSource, isDragging, triggerChangeCellName } = this.props;
+    const { cell, connectDragSource, isDragging, triggerChangeCellName, colInd, ind } = this.props;
+
+    const cellClass = classNames({
+      'hexagon': true,
+      'even': (colInd % 2 === 0),
+      'odd': (colInd % 2 !== 0),
+      'even-cell': (ind % 2 === 0),
+      'odd-cell': (ind % 2 !== 0)
+    })
+
     return connectDragSource(
-      <div style={{opacity: (isDragging) ? 0 : 1}}>
+      <div style={{opacity: (isDragging) ? 0 : 1}}
+        className={cellClass}>
         {!cell.editable &&
           <div>
             <h1 className="cell-title">{cell.name}</h1>

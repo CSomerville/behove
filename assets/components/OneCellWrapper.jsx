@@ -30,7 +30,7 @@ class OneCellWrapper extends Component {
   render() {
     const { connectDropTarget } = this.props;
     return connectDropTarget(
-      <div style={{height: '150px'}}>
+      <div>
         <OneCell {...this.props} />
       </div>
     );

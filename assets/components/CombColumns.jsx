@@ -9,7 +9,7 @@ export default class CombColumns extends Component {
       <ul style={{display: 'flex'}}>
         {this.props.comb.cols.map((col, i) =>
           <li key={i}>
-            <OneColWrapper col={col} { ...rest } />
+            <OneColWrapper col={col} ind={i} { ...rest } />
           </li>
         )}
         <AddButton
