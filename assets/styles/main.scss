@@ -87,7 +87,7 @@ nav {
   }
 }
 
-.editable-cell {
+.editable-cell, .editable-col {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -174,15 +174,15 @@ nav {
   margin-left: 10px;
 }
 
-.delete-cell {
+.delete-cell, .col-delete {
   @include typical-button($comb-background, $rust);
 }
 
-.cancel-edit-cell {
+.cancel-edit-cell, .col-cancel {
   @include typical-button($comb-background, $gold);
 }
 
-.save-edit-cell {
+.save-edit-cell, .col-save {
   @include typical-button($comb-background, $green);
 }
 

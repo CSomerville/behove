@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import Cells from './Cells';
 import DropPlaceholder from './DropPlaceholder';
 import { DragSource } from 'react-dnd';
@@ -29,6 +30,18 @@ function collect(connect, monitor) {
 
 export default class OneCol extends Component {
 
+  componentDidUpdate() {
+    if (this.props.col.editable) {
+      findDOMNode(this.refs.editColName).focus();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.col.editable) {
+      findDOMNode(this.refs.editColName).focus();
+    }    
+  }
+
   render() {
     const { connectDragSource, col, dragSource, connectDragPreview, isDragging, ind } = this.props;
     return connectDragSource(
@@ -46,8 +59,9 @@ export default class OneCol extends Component {
             </div>
           }
           {col.editable &&
-            <div>
+            <div className="editable-col">
               <input type="text" value={col.name}
+                ref="editColName"
                 onChange={this.props.onInputChange.bind(this, col.id)}
                 />
               <button className="col-delete"
@@ -79,7 +93,7 @@ export default class OneCol extends Component {
           <DropPlaceholder col={col}
             triggerInsert={this.props.triggerInsert} />
         }
-        <div className={(col.cells.length % 2 === 0) ? "hexagon add even-cell" : "hexagon add"}>          
+        <div className={(col.cells.length % 2 === 0) ? "hexagon add even-cell" : "hexagon add"}>
           <AddButton buttonClass="new-cell"
             onAddClick={this.props.triggerNewCell.bind(this, col.id)}
             />
