@@ -16,8 +16,11 @@ class App extends Component {
     );
     return (
       <div>
-        <h1>App Container</h1>
-        { links }
+        <nav>
+          <Link to='/app/combs'>
+            <h1>behove</h1>
+          </Link>
+        </nav>
         {this.props.children}
       </div>
     )

@@ -12,9 +12,13 @@ export default class CombColumns extends Component {
             <OneColWrapper col={col} ind={i} { ...rest } />
           </li>
         )}
-        <AddButton
-          onAddClick={this.props.onAddCol.bind(this, comb.id)}
-          buttonClass='new-col' />
+        <li>
+          <div className="hexagon add">
+            <AddButton
+              onAddClick={this.props.onAddCol.bind(this, comb.id)}
+              buttonClass='new-col' />
+          </div>
+        </li>
       </ul>
     );
   }

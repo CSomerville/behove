@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 import classNames from 'classNames';
 
@@ -28,6 +29,19 @@ function collect(connect, monitor) {
 
 
 class OneCell extends Component {
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.cell.editable && this.props.cell.editable) {
+      findDOMNode(this.refs.editCellName).focus();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.cell.editable) {
+      findDOMNode(this.refs.editCellName).focus();
+    }
+  }
+
   render() {
     const { cell, connectDragSource, isDragging, triggerChangeCellName, colInd, ind } = this.props;
 
@@ -52,8 +66,9 @@ class OneCell extends Component {
           </div>
         }
         {cell.editable &&
-          <div>
+          <div className="editable-cell">
             <input type="text" value={cell.name}
+              ref="editCellName"
               onChange={triggerChangeCellName.bind(this, cell.id)}/>
             <button className="delete-cell"
               onClick={this.props.triggerDeleteCell.bind(this, cell.id)}>

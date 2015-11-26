@@ -207,7 +207,7 @@ describe('CombView', () => {
     it('should create an empty drop target if no cells in col', () => {
       const [combId, colId] = [uuid.v4(), uuid.v4()];
       const output = setup({
-        combId: combId,
+        id: combId,
         name: 'autumn',
         cols: [{
           id: colId,

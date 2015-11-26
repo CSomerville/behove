@@ -1,6 +1,28 @@
+@import '../../node_modules/normalize.css/normalize.css';
+
 $gold: #AD6800;
 $rust: #C42F0A;
-$blue: #92BFE5;
+$comb-background: #FFE3D5;
+$green: #92956C;
+
+@mixin typical-button($color, $textcolor) {
+  background-color: $color;
+  border: 2px solid $color;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: $textcolor;
+  transition: all 200ms ease-in;
+  &:hover {
+    border: 2px solid darken($color, 10%);
+    background-color: darken($color, 10%);
+    color: darken($textcolor, 10%);
+  }
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background-color: $green;
+}
 
 li {
   list-style: none;
@@ -10,11 +32,39 @@ ul {
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+nav {
+  width: 100%;
+  color: $comb-background;
+  font-size: 24px;
+  letter-spacing: 7px;
+  display: flex;
+  justify-content: center;
+  h1 {
+    margin-bottom: 10px;
+  }
+}
+
+.comb-view {
+  background-color: $comb-background;
+}
+
 .hexagon {
+  cursor: -webkit-grab;
+  cursor: grab;
   min-height: 150px;
   min-width: 200px;
   position: relative;
   margin-top: 50px;
+  transition: all 200ms ease-in;
+  h1 {
+    color: $comb-background;
+    padding-left: 10px;
+  }
   &::before {
     content: '';
     min-width: 0px;
@@ -22,6 +72,8 @@ ul {
     border-right: 100px solid transparent;
     position: absolute;
     top: -50px;
+    left: 0;
+    transition: inherit;
   }
   &::after {
     content: '';
@@ -30,6 +82,26 @@ ul {
     border-right: 100px solid transparent;
     position: absolute;
     top: 150px;
+    left: 0;
+    transition: inherit;
+  }
+}
+
+.editable-cell {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  input {
+    width: 75%;
+    border: 2px solid $comb-background;
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: $comb-background;
+    margin: 5px;
+  }
+  button {
+    margin: 5px;
   }
 }
 
@@ -41,6 +113,15 @@ ul {
   &::after {
     border-top: 50px solid $gold;
   }
+  &:hover {
+    background-color: darken($gold, 2%);
+    &::before {
+      border-bottom: 50px solid darken($gold, 2%)
+    }
+    &::after {
+      border-top: 50px solid darken($gold, 2%)
+    }
+  }
 }
 
 .odd {
@@ -51,8 +132,56 @@ ul {
   &::after {
     border-top: 50px solid $rust;
   }
+  &:hover {
+    background-color: darken($rust, 2%);
+    &::before {
+      border-bottom: 50px solid darken($rust, 2%)
+    }
+    &::after {
+      border-top: 50px solid darken($rust, 2%)
+    }
+  }
+}
+
+.add {
+  cursor: pointer;
+  background-color: darken($comb-background, 10%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &::before {
+    border-bottom: 50px solid darken($comb-background, 10%);
+  }
+  &::after{
+    border-top: 50px solid darken($comb-background, 10%);
+  }
+  button {
+    background-color: rgba(0,0,0,0);
+    width: 75%;
+    border-style: none;
+    display: block;
+    font-size: 66px;
+    color: white;
+  }
 }
 
 .even-cell {
   left: 100px;
+}
+
+.edit-cell, .edit-col {
+  @include typical-button($comb-background, $gold);
+  margin-left: 10px;
+}
+
+.delete-cell {
+  @include typical-button($comb-background, $rust);
+}
+
+.cancel-edit-cell {
+  @include typical-button($comb-background, $gold);
+}
+
+.save-edit-cell {
+  @include typical-button($comb-background, $green);
 }

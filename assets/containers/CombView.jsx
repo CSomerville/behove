@@ -27,7 +27,7 @@ export class CombView extends Component {
   render() {
     const { dispatch, comb } = this.props;
     return (
-      <div>
+      <div className="comb-view">
         <CombColumns
           comb={comb}
           onEditClick={(id) => {
