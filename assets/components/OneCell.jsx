@@ -58,7 +58,9 @@ class OneCell extends Component {
         className={cellClass}>
         {!cell.editable &&
           <div>
-            <h1 className="cell-title">{cell.name}</h1>
+            <div className="holds-cell-title">
+              <h1 className="cell-title">{cell.name}</h1>              
+            </div>
             <button className="edit-cell"
               onClick={this.props.triggerEditCell.bind(this, cell.id)}>
               edit

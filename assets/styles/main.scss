@@ -185,3 +185,9 @@ nav {
 .save-edit-cell {
   @include typical-button($comb-background, $green);
 }
+
+.holds-cell-title {
+  max-height: 100px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
