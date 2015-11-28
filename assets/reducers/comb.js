@@ -2,7 +2,7 @@ import {
   FETCH_COMB, FETCH_COMB_SUCCESS, FETCH_COMB_FAILURE, UPDATE_COMB_ID, EDIT_COL, CHANGE_COL_NAME,
   CANCEL_EDIT_COL, SAVE_EDIT_COL, SAVE_EDIT_COL_SUCCESS, SAVE_EDIT_COL_FAILURE, DELETE_COL,
   DELETE_COL_SUCCESS, DELETE_COL_FAILURE, NEW_COL, REORDER_COLS, UPDATE_COL_POS, SAVE_COL_POSES,
-  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, INSERT_IN_EMPTY_COL,
+  SAVE_COL_POSES_SUCCESS, SAVE_COL_POSES_FAILURE, REORDER_CELLS, APPEND_TO_COL,
   UPDATE_CELL_POSES, NEW_CELL, CHANGE_CELL_NAME, EDIT_CELL, CANCEL_EDIT_CELL, SAVE_EDIT_CELL,
   SAVE_EDIT_CELL_SUCCESS, SAVE_EDIT_CELL_FAILURE, DELETE_CELL, DELETE_CELL_SUCCESS,
   DELETE_CELL_FAILURE
@@ -242,7 +242,7 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           return state;
         }
       }
-    case INSERT_IN_EMPTY_COL:
+    case APPEND_TO_COL:
       [sourceColInd, sourceInd] = indexById(state.cols, null, action.sourceId);
       targetColInd = indexById(state.cols, action.targetColId);
       if (sourceColInd < targetColInd) {
@@ -257,9 +257,12 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
             }),
             ...state.cols.slice(sourceColInd + 1, targetColInd),
             Object.assign({}, state.cols[targetColInd], {
-              cells: [Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
-                combColId: action.targetColId
-              })]
+              cells: [
+                ...state.cols[targetColInd].cells,
+                Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                  combColId: action.targetColId
+                })
+              ]
             }),
             ...state.cols.slice(targetColInd + 1)
           ]
@@ -269,9 +272,12 @@ export default function(state = { id: null, name: null, cols: [], isFetching: fa
           cols: [
             ...state.cols.slice(0, targetColInd),
             Object.assign({}, state.cols[targetColInd], {
-              cells: [Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
-                combColId: action.targetColId
-              })]
+              cells: [
+                ...state.cols[targetColInd].cells,
+                Object.assign({}, state.cols[sourceColInd].cells[sourceInd], {
+                  combColId: action.targetColId
+                })
+              ]
             }),
             ...state.cols.slice(targetColInd + 1, sourceColInd),
             Object.assign({}, state.cols[sourceColInd], {

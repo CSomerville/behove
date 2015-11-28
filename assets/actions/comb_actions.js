@@ -23,7 +23,7 @@ export const SAVE_COL_POSES ='SAVE_COL_POSES';
 export const SAVE_COL_POSES_SUCCESS = 'SAVE_COL_POSES_SUCCESS';
 export const SAVE_COL_POSES_FAILURE = 'SAVE_COL_POSES_FAILURE';
 export const REORDER_CELLS = 'REORDER_CELLS';
-export const INSERT_IN_EMPTY_COL = 'INSERT_IN_EMPTY_COL';
+export const APPEND_TO_COL = 'APPEND_TO_COL';
 export const UPDATE_CELL_POSES = 'UPDATE_CELL_POSES';
 export const SAVE_CELL_POSES = 'SAVE_CELL_POSES';
 export const SAVE_CELL_POSES_SUCCESS = 'SAVE_CELL_POSES_SUCCESS';
@@ -274,9 +274,9 @@ export function reorderCells(sourceId, sourceColId, targetId, targetColId) {
   }
 }
 
-export function insertInEmptyCol(sourceId, targetColId) {
+export function appendToCol(sourceId, targetColId) {
   return {
-    type: INSERT_IN_EMPTY_COL,
+    type: APPEND_TO_COL,
     sourceId: sourceId,
     targetColId: targetColId
   };

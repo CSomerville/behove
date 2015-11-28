@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initiateFetchComb, editCol, initiateSaveEditCol, cancelEditCol, changeColName,
-  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, insertInEmptyCol,
+  initiateDeleteCol, newCol, reorderCols, initiateSaveColPoses, reorderCells, appendToCol,
   initiateSaveCellPoses, newCell, changeCellName, editCell, cancelEditCell, initiateSaveEditCell,
   initiateDeleteCell, updateCombId
  } from '../actions/comb_actions';
@@ -58,7 +58,7 @@ export class CombView extends Component {
             dispatch(reorderCells(sourceId, sourceColId, targetId, targetColId));
           }}
           triggerInsert={(sourceId, targetColId) => {
-            dispatch(insertInEmptyCol(sourceId, targetColId));
+            dispatch(appendToCol(sourceId, targetColId));
           }}
           cellDragEnded={(sourceColId, sourceId) => {
             dispatch(initiateSaveCellPoses(sourceColId, sourceId));

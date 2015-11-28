@@ -203,23 +203,6 @@ describe('CombView', () => {
       expect(dispatchSpy).to.have.been.calledOnce;
       expect(dispatchSpy.args[0][0].toString()).to.equal(combActions.initiateDeleteCol().toString());
     });
-
-    it('should create an empty drop target if no cells in col', () => {
-      const [combId, colId] = [uuid.v4(), uuid.v4()];
-      const output = setup({
-        id: combId,
-        name: 'autumn',
-        cols: [{
-          id: colId,
-          combId: combId,
-          name: 'elm',
-          cells: []
-        }]
-      });
-
-      const dropTarget = scryRenderedDOMComponentsWithClass(output.component, 'drop-placeholder');
-      expect(dropTarget.length).to.equal(1);
-    });
   });
 
   describe('Cells', () => {

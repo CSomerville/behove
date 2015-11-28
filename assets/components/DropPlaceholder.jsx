@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
+import AddButton from './AddButton';
 
 function collect(connect, monitor) {
   return {
@@ -28,9 +29,13 @@ class DropPlaceholder extends Component {
   }
 
   render() {
-    const { connectDropTarget } = this.props;
+    const { connectDropTarget, col } = this.props;
     return connectDropTarget(
-      <div style={{height: '150px', backgroundColor: 'red'}} className="drop-placeholder"></div>
+      <div className={(col.cells.length % 2 === 0) ? "hexagon add even-cell" : "hexagon add"}>
+        <AddButton buttonClass="new-cell"
+          onAddClick={this.props.triggerNewCell.bind(this, col.id)}
+          />
+      </div>
     );
   }
 }

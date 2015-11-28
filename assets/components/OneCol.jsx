@@ -39,7 +39,7 @@ export default class OneCol extends Component {
   componentDidMount() {
     if (this.props.col.editable) {
       findDOMNode(this.refs.editColName).focus();
-    }    
+    }
   }
 
   render() {
@@ -89,15 +89,9 @@ export default class OneCol extends Component {
           triggerCancelEditCell={this.props.triggerCancelEditCell}
           triggerSaveCell={this.props.triggerSaveCell}
           triggerDeleteCell={this.props.triggerDeleteCell}/>
-        {!col.cells.length &&
-          <DropPlaceholder col={col}
-            triggerInsert={this.props.triggerInsert} />
-        }
-        <div className={(col.cells.length % 2 === 0) ? "hexagon add even-cell" : "hexagon add"}>
-          <AddButton buttonClass="new-cell"
-            onAddClick={this.props.triggerNewCell.bind(this, col.id)}
-            />
-        </div>
+        <DropPlaceholder col={col}
+          triggerNewCell={this.props.triggerNewCell}
+          triggerInsert={this.props.triggerInsert} />
       </div>
     );
   }
