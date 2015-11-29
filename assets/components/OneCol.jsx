@@ -82,6 +82,7 @@ export default class OneCol extends Component {
         )}
         <Cells cells={col.cells}
           colInd={ind}
+          combId={col.combId}
           cellDragEnded={this.props.cellDragEnded}
           triggerCellReorder={this.props.triggerCellReorder}
           triggerChangeCellName={this.props.triggerChangeCellName}

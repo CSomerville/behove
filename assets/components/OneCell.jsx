@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
+import { Link } from 'react-router';
 import classNames from 'classNames';
 
 const cellSource = {
@@ -43,8 +44,7 @@ class OneCell extends Component {
   }
 
   render() {
-    const { cell, connectDragSource, isDragging, triggerChangeCellName, colInd, ind } = this.props;
-
+    const { combId, cell, connectDragSource, isDragging, triggerChangeCellName, colInd, ind } = this.props;
     const cellClass = classNames({
       'hexagon': true,
       'even': (colInd % 2 === 0),
@@ -59,7 +59,9 @@ class OneCell extends Component {
         {!cell.editable &&
           <div>
             <div className="holds-cell-title">
-              <h1 className="cell-title">{cell.name}</h1>              
+              <Link to={`/app/comb/${combId}/cell/${cell.id}`}>
+                <h1 className="cell-title">{cell.name}</h1>
+              </Link>
             </div>
             <button className="edit-cell"
               onClick={this.props.triggerEditCell.bind(this, cell.id)}>

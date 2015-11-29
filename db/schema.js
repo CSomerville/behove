@@ -25,7 +25,9 @@ const dropTables = (t) => {
     t.none("DROP TABLE IF EXISTS combs CASCADE;"),
     t.none("DROP TABLE IF EXISTS combs_hist CASCADE;"),
     t.none("DROP TABLE IF EXISTS comb_cols CASCADE;"),
-    t.none("DROP TABLE IF EXISTS cells CASCADE;")
+    t.none("DROP TABLE IF EXISTS cells CASCADE;"),
+    t.none("DROP TABLE IF EXISTS checklists CASCADE;"),
+    t.none("DROP TABLE IF EXISTS checklist_items CASCADE;")
   ]);
 }
 
@@ -43,7 +45,11 @@ const establishSchema = (t) => {
     t.none(`CREATE TABLE comb_cols (id uuid PRIMARY KEY, comb_id uuid REFERENCES combs(id),
       position integer, name text);`),
     t.none(`CREATE TABLE cells (id uuid PRIMARY KEY, comb_col_id uuid REFERENCES comb_cols(id),
-       position integer, name text);`)
+      position integer, name text);`),
+    t.none(`CREATE TABLE checklists (id uuid PRIMARY KEY, cell_id uuid REFERENCES cells(id),
+      name text);`),
+    t.none(`CREATE TABLE checklist_items (id uuid PRIMARY KEY, checklist_id uuid REFERENCES checklists(id),
+      completed boolean, position integer, name text);`)
   ]);
 }
 

@@ -7,7 +7,7 @@ import store from './store/store';
 import App from './containers/App';
 import CombsView from './containers/CombsView';
 import CombView from './containers/CombView';
-import Test from './containers/Test';
+import CellView from './containers/CellView';
 import './styles/main.scss';
 
 const app = document.getElementById('app');
@@ -17,8 +17,9 @@ render(
     <ReduxRouter>
       <Route path="/app/" component={App}>
         <Route path="combs" component={CombsView} />
-        <Route path="comb/:id" component={CombView} />
-        <Route path="test" component={Test} />
+        <Route path="comb/:id" component={CombView}>
+          <Route path="cell/:cellid" component={CellView} />
+        </Route>
       </Route>
     </ReduxRouter>
   </Provider>, app);

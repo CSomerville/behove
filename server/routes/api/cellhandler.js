@@ -1,5 +1,14 @@
 import { findCell, createCell, updateCell, updateCellPoses, deleteCell } from '../../../db/queries';
 
+export function cellGet(req, res) {
+  findCell(req.body.id)
+    .then((cell) => {
+      res.send(JSON.stringify(cell));
+    }, (err) => {
+      res.sendStatus(500);
+    });
+}
+
 export function cellPost(req, res) {
   findCell(req.body.id)
     .then(() => {

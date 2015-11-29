@@ -191,3 +191,13 @@ nav {
   overflow: hidden;
   margin-bottom: 10px;
 }
+
+.cell-backdrop {
+  height: 100%;
+  width: 100%;
+  background-color: transparentize($comb-background, 0.1);
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  left: 0;
+}

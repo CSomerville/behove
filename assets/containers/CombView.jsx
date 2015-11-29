@@ -82,6 +82,7 @@ export class CombView extends Component {
             dispatch(initiateDeleteCell(id));
           }}
           />
+        {this.props.children}
       </div>
     );
   }
