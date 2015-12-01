@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import {
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
-  SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE
+  SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST
 } from '../../assets/actions/cell_actions';
 import cell from '../../assets/reducers/cell';
 
@@ -90,6 +90,7 @@ describe('cell reducer', () => {
         type: FETCH_CELL_SUCCESS,
         cell: {
           id: id,
+          checklists: [],
           combColId: colId,
           name: 'autumn',
           position: 0
@@ -319,6 +320,44 @@ describe('cell reducer', () => {
         checklistItems: [],
         isFetching: 0,
         msg: 'Internal Server Error'
+      };
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('edit checklist', () => {
+    it('should set editable to true and set prevName', () => {
+      const [cellId, checklistId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        id: cellId,
+        name: 'autumn',
+        checklists: [{
+          id: checklistId,
+          cellId: cellId,
+          name: 'plankton'
+        }],
+        checklistItems: [],
+        isFetching: 0,
+        msg: ''
+      }, {
+        type: EDIT_CHECKLIST,
+        id: checklistId
+      }];
+
+      const expected = {
+        id: cellId,
+        name: 'autumn',
+        checklists: [{
+          id: checklistId,
+          cellId: cellId,
+          name: 'plankton',
+          editable: true,
+          prevName: 'plankton'
+        }],
+        checklistItems: [],
+        isFetching: 0,
+        msg: ''
       };
 
       expect(cell(...input)).to.deep.equal(expected);

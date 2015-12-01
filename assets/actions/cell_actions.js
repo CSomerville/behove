@@ -12,6 +12,7 @@ export const CHANGE_CHECKLIST_NAME = 'CHANGE_CHECKLIST_NAME';
 export const SAVE_CHECKLIST = 'SAVE_CHECKLIST'
 export const SAVE_CHECKLIST_SUCCESS = 'SAVE_CHECKLIST_SUCCESS';
 export const SAVE_CHECKLIST_FAILURE = 'SAVE_CHECKLIST_FAILURE';
+export const EDIT_CHECKLIST = 'EDIT_CHECKLIST';
 
 export function updateCellId(id) {
   return {
@@ -118,5 +119,12 @@ export function initiateSaveChecklist(checklist, base) {
       .then(() => dispatch(saveChecklistSuccess()))
       .catch((err) => dispatch(saveChecklistFailure(err)));
 
+  }
+}
+
+export function editChecklist(id) {
+  return {
+    type: EDIT_CHECKLIST,
+    id: id
   }
 }
