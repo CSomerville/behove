@@ -160,6 +160,12 @@ export function updateChecklist(checklist) {
   });
 }
 
+export function deleteChecklist(id) {
+  return db.task((t) => {
+    return t.none("DELETE FROM checklists WHERE id = $1", [id]);
+  })
+}
+
 export function findOneCell(id) {
   return db.task((t) => {
     return t.one(`
