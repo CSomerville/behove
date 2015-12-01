@@ -13,6 +13,9 @@ export const SAVE_CHECKLIST = 'SAVE_CHECKLIST'
 export const SAVE_CHECKLIST_SUCCESS = 'SAVE_CHECKLIST_SUCCESS';
 export const SAVE_CHECKLIST_FAILURE = 'SAVE_CHECKLIST_FAILURE';
 export const EDIT_CHECKLIST = 'EDIT_CHECKLIST';
+export const DELETE_CHECKLIST = 'DELETE_CHECKLIST';
+export const DELETE_CHECKLIST_SUCCESS = 'DELETE_CHECKLIST_SUCCESS';
+export const DELETE_CHECKLIST_FAILURE = 'DELETE_CHECKLIST_FAILURE';
 
 export function updateCellId(id) {
   return {
@@ -126,5 +129,42 @@ export function editChecklist(id) {
   return {
     type: EDIT_CHECKLIST,
     id: id
+  }
+}
+
+function deleteChecklist(id) {
+  return {
+    type: DELETE_CHECKLIST,
+    id: id
+  }
+}
+
+function deleteChecklistSuccess() {
+  return {
+    type: DELETE_CHECKLIST_SUCCESS
+  }
+}
+
+function deleteChecklistFailure(msg) {
+  return {
+    type: DELETE_CHECKLIST_FAILURE,
+    msg: msg
+  }
+}
+
+export function initiateDeleteChecklist(id, base) {
+
+  base = base || '';
+
+  return (dispatch) => {
+    dispatch(deleteChecklist(id));
+    fetch(base + '/api/checklist/' + id, {
+      method: 'delete',
+      credentials: 'same-origin'
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(deleteChecklistSuccess()))
+      .catch((err) => dispatch(deleteChecklistFailure(err.message)));
+
   }
 }
