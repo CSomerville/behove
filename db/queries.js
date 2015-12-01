@@ -140,3 +140,22 @@ export function deleteCell(id) {
     return t.none("DELETE FROM cells WHERE id = $1", [id]);
   });
 }
+
+export function findChecklist(id) {
+  return db.task((t) => {
+    return t.one("SELECT * FROM checklists WHERE id = $1", [id]);
+  });
+}
+
+export function createChecklist(checklist) {
+  return db.task((t) => {
+    return t.none("INSERT INTO checklists (id, cell_id, name) VALUES ($1, $2, $3)",
+      [checklist.id, checklist.cellId, checklist.name]);
+  });
+}
+
+export function updateChecklist(checklist) {
+  return db.task((t) => {
+    return t.none("UPDATE checklists SET name = $1 WHERE id = $2", [checklist.name, checklist.id]);
+  });
+}
