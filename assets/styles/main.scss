@@ -182,7 +182,7 @@ nav {
   @include typical-button($comb-background, $rust);
 }
 
-.cancel-edit-cell, .col-cancel {
+.cancel-edit-cell, .col-cancel, .new-checklist {
   @include typical-button($comb-background, $gold);
 }
 
@@ -216,5 +216,8 @@ nav {
   border-radius: 5px;
   h1 {
     padding: 10px 100px;
+  }
+  .cell-show-controls {
+    float: right;
   }
 }

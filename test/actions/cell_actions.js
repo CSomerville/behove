@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 
-import { updateCellId, initiateFetchCell,
-UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE
+import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName,
+UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME
 } from '../../assets/actions/cell_actions';
 import mockStore from '../mockstore';
 
@@ -58,10 +58,41 @@ describe('cell actions', () => {
         { type: FETCH_CELL },
         { type: FETCH_CELL_FAILURE, msg: 'Internal Server Error' }
       ];
-      
+
       const store = mockStore({}, expectedActions, done);
       store.dispatch(initiateFetchCell(id, 'http://127.0.0.1:3000'));
 
+    });
+  });
+
+  describe('newChecklist', () => {
+    it('should create id, empty name field and set editable to true', () => {
+      const id = uuid.v4();
+      const expected = {
+        type: NEW_CHECKLIST,
+        id: id,
+        name: '',
+        editable: true
+      };
+
+      expect(newChecklist().type).to.equal(expected.type);
+      expect(newChecklist().id.length).to.equal(expected.id.length);
+      expect(newChecklist().name).to.equal(expected.name);
+      expect(newChecklist().editable).to.equal(expected.editable);
+    });
+  });
+
+  describe('changeChecklistName', () => {
+    it('should pass the id and value', () => {
+      const id = uuid.v4();
+      const ev = { target: { value: 'elm' }};
+      const expected = {
+        type: CHANGE_CHECKLIST_NAME,
+        id: id,
+        name: 'elm'
+      };
+
+      expect(changeChecklistName(id, ev)).to.deep.equal(expected);
     });
   });
 });
