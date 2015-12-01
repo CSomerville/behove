@@ -28,8 +28,11 @@ export class CellView extends Component {
       <CellShow
         cell={cell}
         router={router}
-        backToComb={() => {
-          dispatch(pushState({}, '/app/comb/' + router.params.id));
+        backToComb={(e) => {
+          e.stopPropagation();
+          if (e.target.className === 'cell-backdrop') {
+            dispatch(pushState({}, '/app/comb/' + router.params.id));            
+          }
         }}
         />
     );
