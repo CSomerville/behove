@@ -1,7 +1,7 @@
-import { findCell, createCell, updateCell, updateCellPoses, deleteCell } from '../../../db/queries';
+import { findOneCell, findCell, createCell, updateCell, updateCellPoses, deleteCell } from '../../../db/queries';
 
 export function cellGet(req, res) {
-  findCell(req.params.id)
+  findOneCell(req.params.id)
     .then((cell) => {
       res.send(JSON.stringify(cell));
     }, (err) => {

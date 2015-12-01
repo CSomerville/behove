@@ -159,3 +159,18 @@ export function updateChecklist(checklist) {
     return t.none("UPDATE checklists SET name = $1 WHERE id = $2", [checklist.name, checklist.id]);
   });
 }
+
+export function findOneCell(id) {
+  return db.task((t) => {
+    return t.one(`
+        SELECT *, (
+          SELECT COALESCE(json_agg(c), '[]')
+          FROM (
+            SELECT * FROM checklists WHERE cell_id = $1
+          ) c
+        ) AS checklists
+        FROM cells
+        WHERE id = $1
+      `, [id])
+  });
+}

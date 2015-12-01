@@ -24,6 +24,7 @@ export default function(state = defaultState, action) {
     case FETCH_CELL_SUCCESS:
       return Object.assign({}, state, {
         name: action.cell.name,
+        checklists: action.cell.checklists,
         isFetching: (state.isFetching - 1)
       });
     case FETCH_CELL_FAILURE:
