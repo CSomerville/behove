@@ -218,7 +218,7 @@ describe('cell reducer', () => {
   });
 
   describe('save checklist', () => {
-    it('should add to isFetching total', () => {
+    it('should add to isFetching total and set editable to false', () => {
       const [cellId, checklistId] = [uuid.v4(), uuid.v4()];
       const input = [{
         id: cellId,
@@ -226,13 +226,15 @@ describe('cell reducer', () => {
         checklists: [{
           id: checklistId,
           cellId: cellId,
-          name: 'plankton'
+          name: 'plankton',
+          editable: true
         }],
         checklistItems: [],
         isFetching: 0,
         msg: ''
       }, {
-        type: SAVE_CHECKLIST
+        type: SAVE_CHECKLIST,
+        id: checklistId
       }];
 
       const expected = {
@@ -241,7 +243,8 @@ describe('cell reducer', () => {
         checklists: [{
           id: checklistId,
           cellId: cellId,
-          name: 'plankton'
+          name: 'plankton',
+          editable: false
         }],
         checklistItems: [],
         isFetching: 1,

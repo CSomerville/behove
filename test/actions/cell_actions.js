@@ -110,7 +110,7 @@ describe('cell actions', () => {
         .reply(200)
 
       const expectedActions = [
-        { type: SAVE_CHECKLIST },
+        { type: SAVE_CHECKLIST, id: id },
         { type: SAVE_CHECKLIST_SUCCESS }
       ];
 
@@ -129,7 +129,7 @@ describe('cell actions', () => {
         .reply(500)
 
       const expectedActions = [
-        { type: SAVE_CHECKLIST },
+        { type: SAVE_CHECKLIST, id: id },
         { type: SAVE_CHECKLIST_FAILURE, msg: 'Internal Server Error' }
       ];
 

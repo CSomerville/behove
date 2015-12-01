@@ -54,8 +54,16 @@ export default function(state = defaultState, action) {
         ]
       });
     case SAVE_CHECKLIST:
+      ind = indexById(state.checklists.slice(), action.id);
       return Object.assign({}, state, {
-        isFetching: (state.isFetching + 1)
+        isFetching: (state.isFetching + 1),
+        checklists: [
+          ...state.checklists.slice(0, ind),
+          Object.assign({}, state.checklists[ind], {
+            editable: false
+          }),
+          ...state.checklists.slice(ind + 1)
+        ]
       });
     case SAVE_CHECKLIST_SUCCESS:
       return Object.assign({}, state, {

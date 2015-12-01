@@ -75,9 +75,10 @@ export function changeChecklistName(id, e) {
   }
 }
 
-function saveChecklist(){
+function saveChecklist(id){
   return {
-    type: SAVE_CHECKLIST
+    type: SAVE_CHECKLIST,
+    id: id
   }
 }
 
@@ -99,7 +100,7 @@ export function initiateSaveChecklist(checklist, base) {
   base = base || '';
 
   return (dispatch) => {
-    dispatch(saveChecklist())
+    dispatch(saveChecklist(checklist.id))
     fetch(base + '/api/checklist/' + checklist.id, {
       method: 'post',
       headers: {
