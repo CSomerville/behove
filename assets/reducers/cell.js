@@ -1,5 +1,6 @@
 import {
-  UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME
+  UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
+  SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE
 } from '../actions/cell_actions';
 
 const defaultState = {
@@ -52,6 +53,19 @@ export default function(state = defaultState, action) {
           ...state.checklists.slice(ind + 1)
         ]
       });
+    case SAVE_CHECKLIST:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching + 1)
+      });
+    case SAVE_CHECKLIST_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1)
+      });
+    case SAVE_CHECKLIST_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1),
+        msg: action.msg
+      })
     default:
       return state;
   }

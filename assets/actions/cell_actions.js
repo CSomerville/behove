@@ -9,6 +9,9 @@ export const FETCH_CELL_SUCCESS = 'FETCH_CELL_SUCCESS';
 export const FETCH_CELL_FAILURE = 'FETCH_CELL_FAILURE';
 export const NEW_CHECKLIST = 'NEW_CHECKLIST';
 export const CHANGE_CHECKLIST_NAME = 'CHANGE_CHECKLIST_NAME';
+export const SAVE_CHECKLIST = 'SAVE_CHECKLIST'
+export const SAVE_CHECKLIST_SUCCESS = 'SAVE_CHECKLIST_SUCCESS';
+export const SAVE_CHECKLIST_FAILURE = 'SAVE_CHECKLIST_FAILURE';
 
 export function updateCellId(id) {
   return {
@@ -69,5 +72,50 @@ export function changeChecklistName(id, e) {
     type: CHANGE_CHECKLIST_NAME,
     id: id,
     name: e.target.value
+  }
+}
+
+function saveChecklist(){
+  return {
+    type: SAVE_CHECKLIST
+  }
+}
+
+function saveChecklistSuccess(){
+  return {
+    type: SAVE_CHECKLIST_SUCCESS
+  }
+}
+
+function saveChecklistFailure(err){
+  return {
+    type: SAVE_CHECKLIST_FAILURE,
+    msg: err.message
+  }
+}
+
+export function initiateSaveChecklist(checklist, base) {
+
+  base = base || '';
+
+  return (dispatch) => {
+    dispatch(saveChecklist())
+    fetch(base + '/api/checklist/' + checklist.id, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        id: checklist.id,
+        name: checklist.name,
+        cellId: checklist.cellId
+      })
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(saveChecklistSuccess()))
+      .catch((err) => dispatch(saveChecklistFailure(err)));
+
   }
 }

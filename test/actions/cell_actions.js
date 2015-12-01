@@ -2,8 +2,9 @@ import { expect } from 'chai';
 import uuid from 'node-uuid';
 import nock from 'nock';
 
-import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName,
-UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME
+import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName, initiateSaveChecklist,
+UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
+SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE
 } from '../../assets/actions/cell_actions';
 import mockStore from '../mockstore';
 
@@ -93,6 +94,47 @@ describe('cell actions', () => {
       };
 
       expect(changeChecklistName(id, ev)).to.deep.equal(expected);
+    });
+  });
+
+  describe('initiateSaveChecklist', () => {
+    it('should return SUCCESS on success', (done) => {
+      const id = uuid.v4();
+      const checklist = {
+        id: id,
+        name: 'plankton'
+      };
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/checklist/' + id, checklist)
+        .reply(200)
+
+      const expectedActions = [
+        { type: SAVE_CHECKLIST },
+        { type: SAVE_CHECKLIST_SUCCESS }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveChecklist(checklist, 'http://127.0.0.1:3000'));
+    });
+    it('should return FAILURE with message', (done) => {
+      const id = uuid.v4();
+      const checklist = {
+        id: id,
+        name: 'plankton'
+      };
+
+      nock('http://127.0.0.1:3000')
+        .post('/api/checklist/' + id, checklist)
+        .reply(500)
+
+      const expectedActions = [
+        { type: SAVE_CHECKLIST },
+        { type: SAVE_CHECKLIST_FAILURE, msg: 'Internal Server Error' }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateSaveChecklist(checklist, 'http://127.0.0.1:3000'));
     });
   });
 });
