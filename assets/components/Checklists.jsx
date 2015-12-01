@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 export default class Checklists extends Component {
   render() {
-    const { checklists, changeName } = this.props;
+    const { checklists, changeName, triggerSave } = this.props;
     return (
       <div>
         <ul>
@@ -12,8 +12,14 @@ export default class Checklists extends Component {
                 <h1>{checklist.name}</h1>
               }
               {checklist.editable &&
-                <input type="text" value={checklist.name}
-                  onChange={changeName.bind(this, checklist.id)}/>
+                <div>
+                  <input type="text" value={checklist.name}
+                    onChange={changeName.bind(this, checklist.id)}/>
+                  <button className="checklist-save"
+                    onClick={triggerSave.bind(this, checklist)}>
+                    save
+                  </button>                  
+                </div>
               }
             </li>
           )}

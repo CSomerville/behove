@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Checklists from '../components/Checklists';
-import { changeChecklistName } from '../actions/cell_actions';
+import { changeChecklistName, initiateSaveChecklist } from '../actions/cell_actions';
 
 export class ChecklistsWrap extends Component {
   render() {
@@ -11,6 +11,9 @@ export class ChecklistsWrap extends Component {
         checklists={cell.checklists}
         changeName={(id, e) => {
           dispatch(changeChecklistName(id, e));
+        }}
+        triggerSave={(checklist) => {
+          dispatch(initiateSaveChecklist(checklist));
         }}
         />
     );
