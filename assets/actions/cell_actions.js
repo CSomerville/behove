@@ -16,6 +16,7 @@ export const EDIT_CHECKLIST = 'EDIT_CHECKLIST';
 export const DELETE_CHECKLIST = 'DELETE_CHECKLIST';
 export const DELETE_CHECKLIST_SUCCESS = 'DELETE_CHECKLIST_SUCCESS';
 export const DELETE_CHECKLIST_FAILURE = 'DELETE_CHECKLIST_FAILURE';
+export const CANCEL_EDIT_CHECKLIST = 'CANCEL_EDIT_CHECKLIST';
 
 export function updateCellId(id) {
   return {
@@ -166,5 +167,12 @@ export function initiateDeleteChecklist(id, base) {
       .then(() => dispatch(deleteChecklistSuccess()))
       .catch((err) => dispatch(deleteChecklistFailure(err.message)));
 
+  }
+}
+
+export function cancelEditChecklist(id) {
+  return {
+    type: CANCEL_EDIT_CHECKLIST,
+    id: id
   }
 }

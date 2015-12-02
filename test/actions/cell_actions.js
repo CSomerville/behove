@@ -3,10 +3,10 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 
 import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName, initiateSaveChecklist,
-  editChecklist, initiateDeleteChecklist,
+  editChecklist, initiateDeleteChecklist, cancelEditChecklist,
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
-  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE
+  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST
 } from '../../assets/actions/cell_actions';
 import mockStore from '../mockstore';
 
@@ -184,5 +184,17 @@ describe('cell actions', () => {
       const store = mockStore({}, expectedActions, done);
       store.dispatch(initiateDeleteChecklist(id, 'http://127.0.0.1:3000'));
     });
+  });
+
+  describe('cancelEditChecklist', () => {
+    it('should pass in the id', () => {
+      const id = uuid.v4();
+      const expected = {
+        type: CANCEL_EDIT_CHECKLIST,
+        id: id
+      };
+
+      expect(cancelEditChecklist(id)).to.deep.equal(expected);
+    })
   });
 });

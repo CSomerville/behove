@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 export default class Checklists extends Component {
   render() {
-    const { checklists, changeName, triggerSave, triggerEditable, triggerDelete } = this.props;
+    const { checklists, changeName, triggerSave, triggerEditable, triggerDelete,
+      triggerCancel } = this.props;
     return (
       <div>
         <ul>
@@ -24,6 +25,10 @@ export default class Checklists extends Component {
                   <button className="checklist-item"
                     onClick={triggerDelete.bind(this, checklist.id)}>
                     delete
+                  </button>
+                  <button className="checklist-cancel"
+                    onClick={triggerCancel.bind(this, checklist.id)}>
+                    cancel
                   </button>
                   <button className="checklist-save"
                     onClick={triggerSave.bind(this, checklist)}>
