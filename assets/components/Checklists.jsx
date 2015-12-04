@@ -8,29 +8,29 @@ export default class Checklists extends Component {
       <div>
         <ul>
           {checklists.map((checklist, i) =>
-            <li key={checklist.id}>
+            <li key={checklist.id} className="checklist">
               {!checklist.editable &&
                 <div>
-                  <p>{checklist.name}</p>
-                  <button className="checklist-edit"
+                  <p className="checklist-name">{checklist.name}</p>
+                  <button className="edit-checklist"
                     onClick={triggerEditable.bind(this, checklist.id)}>
                     edit
                   </button>
                 </div>
               }
               {checklist.editable &&
-                <div>
+                <div className="editable-checklist">
                   <input type="text" value={checklist.name}
                     onChange={changeName.bind(this, checklist.id)}/>
-                  <button className="checklist-item"
+                  <button className="delete-checklist"
                     onClick={triggerDelete.bind(this, checklist.id)}>
                     delete
                   </button>
-                  <button className="checklist-cancel"
+                  <button className="cancel-checklist"
                     onClick={triggerCancel.bind(this, checklist.id)}>
                     cancel
                   </button>
-                  <button className="checklist-save"
+                  <button className="save-checklist"
                     onClick={triggerSave.bind(this, checklist)}>
                     save
                   </button>

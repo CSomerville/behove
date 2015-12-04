@@ -178,15 +178,15 @@ nav {
   margin-left: 10px;
 }
 
-.delete-cell, .col-delete {
+.delete-cell, .col-delete, .delete-checklist {
   @include typical-button($comb-background, $rust);
 }
 
-.cancel-edit-cell, .col-cancel, .new-checklist {
+.cancel-edit-cell, .col-cancel, .new-checklist, .edit-checklist, .cancel-checklist {
   @include typical-button($comb-background, $gold);
 }
 
-.save-edit-cell, .col-save {
+.save-edit-cell, .col-save, .save-checklist {
   @include typical-button($comb-background, $green);
 }
 
@@ -211,7 +211,7 @@ nav {
 .cell-show {
   background-color: $green;
   width: 75%;
-  height: 75%;
+  min-height: 75%;
   color: $comb-background;
   border-radius: 5px;
   h1 {
@@ -219,5 +219,33 @@ nav {
   }
   .cell-show-controls {
     float: right;
+  }
+  .checklist {
+    max-width: 66%;
+    margin-top: 30px;
+    .checklist-name {
+      display: inline;
+      padding: 10px;
+    }
+    .edit-checklist {
+      float: right;
+    }
+    .editable-checklist {
+      min-width: 66%;
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-around;
+      input {
+        flex-grow: 2;
+        background-color: lighten($green, 30%);
+        color: black;
+        border-width: 0;
+        border-radius: 5px;
+        margin-left: 10px;
+      }
+      button {
+        margin-left: 10px;
+      }
+    }
   }
 }
