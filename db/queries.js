@@ -180,3 +180,24 @@ export function findOneCell(id) {
       `, [id])
   });
 }
+
+export function findChecklistItem(id) {
+  return db.task((t) => {
+    return t.one("SELECT * FROM checklist_items WHERE id = $1", [id])
+  });
+}
+
+export function createChecklistItem(item) {
+  return db.task((t) => {
+    t.none(`INSERT INTO checklist_items (id, checklist_id, completed, position, name) VALUES
+            ($1, $2, $3, $4, $5)`, [item.id, item.checklistId, item.completed, item.position, item.name]);
+  });
+}
+
+export function updateChecklistItem(item) {
+  return db.task((t) => {
+    t.none(`UPDATE checklist_items SET checklist_id = $1, completed = $2, position = $3,
+            name = $4 WHERE id = $5`,
+            [item.checklistId, item.completed, item.position, item.name, item.id]);
+  });
+}

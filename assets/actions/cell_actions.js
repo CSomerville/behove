@@ -19,6 +19,9 @@ export const DELETE_CHECKLIST_FAILURE = 'DELETE_CHECKLIST_FAILURE';
 export const CANCEL_EDIT_CHECKLIST = 'CANCEL_EDIT_CHECKLIST';
 export const NEW_CHECKLIST_ITEM = 'NEW_CHECKLIST_ITEM';
 export const CHANGE_CHECKLIST_ITEM_NAME = 'CHANGE_CHECKLIST_ITEM_NAME';
+export const SAVE_CHECKLIST_ITEM = 'SAVE_CHECKLIST_ITEM';
+export const SAVE_CHECKLIST_ITEM_SUCCESS = 'SAVE_CHECKLIST_ITEM_SUCCESS';
+export const SAVE_CHECKLIST_ITEM_FAILURE = 'SAVE_CHECKLIST_ITEM_FAILURE';
 
 export function updateCellId(id) {
   return {
@@ -192,5 +195,51 @@ export function changeChecklistItemName(id, e) {
     type: CHANGE_CHECKLIST_ITEM_NAME,
     id: id,
     name: e.target.value
+  }
+}
+
+function saveChecklistItem(id) {
+  return {
+    type: SAVE_CHECKLIST_ITEM,
+    id: id
+  }
+}
+
+function saveChecklistItemSuccess() {
+  return {
+    type: SAVE_CHECKLIST_ITEM_SUCCESS
+  }
+}
+
+function saveChecklistItemFailure(err) {
+  return {
+    type: SAVE_CHECKLIST_ITEM_FAILURE,
+    msg: err.message
+  }
+}
+
+export function initiateSaveChecklistItem(checklistItem, base) {
+  base = base || '';
+
+  return (dispatch) => {
+    dispatch(saveChecklistItem(checklistItem.id));
+    fetch(base + '/api/checklist-item/' + checklistItem.id, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        id: checklistItem.id,
+        checklistId: checklistItem.checklistId,
+        name: checklistItem.name,
+        completed: checklistItem.completed,
+        position: checklistItem.position
+      })
+    })
+      .then((res) => checkStatus(res))
+      .then(() => dispatch(saveChecklistItemSuccess()))
+      .catch((err) => dispatch(saveChecklistItemFailure(err)));
   }
 }

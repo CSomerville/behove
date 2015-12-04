@@ -2,7 +2,7 @@ import {
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
-  CHANGE_CHECKLIST_ITEM_NAME
+  CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE
 } from '../actions/cell_actions';
 
 const defaultState = {
@@ -120,6 +120,7 @@ export default function(state = defaultState, action) {
         ]
       });
     case NEW_CHECKLIST_ITEM:
+      const pos = groupById(state.checklistItems, action.checklistId).length;
       return Object.assign({}, state, {
         checklistItems: [
           ...state.checklistItems.slice(), {
@@ -128,12 +129,13 @@ export default function(state = defaultState, action) {
             name: '',
             prevName: '',
             editable: true,
-            completed: false
+            completed: false,
+            position: pos
           }
         ]
       });
     case CHANGE_CHECKLIST_ITEM_NAME:
-      ind = indexById(state.checklistItems, action.id)
+      ind = indexById(state.checklistItems.slice(), action.id);
       return Object.assign({}, state, {
         checklistItems: [
           ...state.checklistItems.slice(0, ind),
@@ -142,6 +144,27 @@ export default function(state = defaultState, action) {
           }),
           ...state.checklistItems.slice(ind + 1)
         ]
+      });
+    case SAVE_CHECKLIST_ITEM:
+      ind = indexById(state.checklistItems.slice(), action.id);
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching + 1),
+        checklistItems: [
+          ...state.checklistItems.slice(0, ind),
+          Object.assign({}, state.checklistItems[ind], {
+            editable: false
+          }),
+          ...state.checklistItems.slice(ind + 1)
+        ]
+      });
+    case SAVE_CHECKLIST_ITEM_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1)
+      });
+    case SAVE_CHECKLIST_ITEM_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1),
+        msg: action.msg
       });
     default:
       return state;
@@ -155,4 +178,14 @@ function indexById(list, id) {
     }
   }
   throw new Error('search for id failed, bad input');
+}
+
+function groupById(list, checklistId) {
+  let acc = [];
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].checklistId && (list[i].checklistId === checklistId)) {
+      acc = [...acc.slice(), list.slice(i, i + 1)]
+    }
+  }
+  return acc;
 }
