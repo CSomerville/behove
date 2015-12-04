@@ -3,10 +3,11 @@ import uuid from 'node-uuid';
 import nock from 'nock';
 
 import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName, initiateSaveChecklist,
-  editChecklist, initiateDeleteChecklist, cancelEditChecklist,
+  editChecklist, initiateDeleteChecklist, cancelEditChecklist, newChecklistItem, changeChecklistItemName,
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
-  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST
+  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
+  CHANGE_CHECKLIST_ITEM_NAME
 } from '../../assets/actions/cell_actions';
 import mockStore from '../mockstore';
 
@@ -195,6 +196,35 @@ describe('cell actions', () => {
       };
 
       expect(cancelEditChecklist(id)).to.deep.equal(expected);
-    })
+    });
+  });
+
+  describe('newChecklistItem', () => {
+    it('should pass in checklist id and create new id', () => {
+      const [checklistId, id] = [uuid.v4(), uuid.v4()];
+      const expected = {
+        type: NEW_CHECKLIST_ITEM,
+        checklistId: checklistId,
+        id: id
+      };
+
+      expect(newChecklistItem().type).to.equal(expected.type);
+      expect(newChecklistItem(checklistId).checklistId).to.equal(expected.checklistId)
+      expect(newChecklistItem().id.length).to.equal(expected.id.length);
+    });
+  });
+
+  describe('changeChecklistItemName', () => {
+    it('given the id and event, should pass in the id and name', () => {
+      const id = uuid.v4();
+      const ev = { target: { value: 'leaff' } }
+      const expected = {
+        type: CHANGE_CHECKLIST_ITEM_NAME,
+        id: id,
+        name: 'leaff'
+      };
+
+      expect(changeChecklistItemName(id, ev)).to.deep.equal(expected);
+    });
   });
 });

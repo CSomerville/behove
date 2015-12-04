@@ -17,6 +17,8 @@ export const DELETE_CHECKLIST = 'DELETE_CHECKLIST';
 export const DELETE_CHECKLIST_SUCCESS = 'DELETE_CHECKLIST_SUCCESS';
 export const DELETE_CHECKLIST_FAILURE = 'DELETE_CHECKLIST_FAILURE';
 export const CANCEL_EDIT_CHECKLIST = 'CANCEL_EDIT_CHECKLIST';
+export const NEW_CHECKLIST_ITEM = 'NEW_CHECKLIST_ITEM';
+export const CHANGE_CHECKLIST_ITEM_NAME = 'CHANGE_CHECKLIST_ITEM_NAME';
 
 export function updateCellId(id) {
   return {
@@ -174,5 +176,21 @@ export function cancelEditChecklist(id) {
   return {
     type: CANCEL_EDIT_CHECKLIST,
     id: id
+  }
+}
+
+export function newChecklistItem(checklistId) {
+  return {
+    type: NEW_CHECKLIST_ITEM,
+    checklistId: checklistId,
+    id: uuid.v4()
+  }
+}
+
+export function changeChecklistItemName(id, e) {
+  return {
+    type: CHANGE_CHECKLIST_ITEM_NAME,
+    id: id,
+    name: e.target.value
   }
 }

@@ -1,7 +1,8 @@
 import {
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
-  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST
+  DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
+  CHANGE_CHECKLIST_ITEM_NAME
 } from '../actions/cell_actions';
 
 const defaultState = {
@@ -116,6 +117,30 @@ export default function(state = defaultState, action) {
             name: state.checklists[ind].prevName
           }),
           ...state.checklists.slice(ind + 1)
+        ]
+      });
+    case NEW_CHECKLIST_ITEM:
+      return Object.assign({}, state, {
+        checklistItems: [
+          ...state.checklistItems.slice(), {
+            id: action.id,
+            checklistId: action.checklistId,
+            name: '',
+            prevName: '',
+            editable: true,
+            completed: false
+          }
+        ]
+      });
+    case CHANGE_CHECKLIST_ITEM_NAME:
+      ind = indexById(state.checklistItems, action.id)
+      return Object.assign({}, state, {
+        checklistItems: [
+          ...state.checklistItems.slice(0, ind),
+          Object.assign({}, state.checklistItems[ind], {
+            name: action.name
+          }),
+          ...state.checklistItems.slice(ind + 1)
         ]
       });
     default:
