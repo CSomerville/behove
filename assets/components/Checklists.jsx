@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import ChItemsWrap from '../containers/ChItemsWrap';
 
 export default class Checklists extends Component {
   render() {
     const { checklists, changeName, triggerSave, triggerEditable, triggerDelete,
-      triggerCancel } = this.props;
+      triggerCancel, triggerNewItem } = this.props;
     return (
       <div>
         <ul>
@@ -36,6 +37,10 @@ export default class Checklists extends Component {
                   </button>
                 </div>
               }
+              <ChItemsWrap checklist={checklist} />
+              <button onClick={triggerNewItem.bind(this, checklist.id)}>
+                + item
+              </button>
             </li>
           )}
         </ul>

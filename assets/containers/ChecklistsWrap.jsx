@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Checklists from '../components/Checklists';
-import { changeChecklistName, initiateSaveChecklist, editChecklist, initiateDeleteChecklist, cancelEditChecklist
+import { changeChecklistName, initiateSaveChecklist, editChecklist, initiateDeleteChecklist, cancelEditChecklist,
+  newChecklistItem
 } from '../actions/cell_actions';
 
 export class ChecklistsWrap extends Component {
@@ -24,6 +25,9 @@ export class ChecklistsWrap extends Component {
         }}
         triggerCancel={(id) => {
           dispatch(cancelEditChecklist(id));
+        }}
+        triggerNewItem={(id) => {
+          dispatch(newChecklistItem(id));
         }}
         />
     );

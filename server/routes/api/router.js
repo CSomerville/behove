@@ -22,7 +22,7 @@ apiRoutes.post('/cols', combColsPost);
 apiRoutes.post('/cell', cellPost);
 apiRoutes.post('/cells', cellsPost);
 apiRoutes.post('/checklist/:id', checklistsPost);
-apiRoutes.post('/checklistitems/:id', checklistItemsPost);
+apiRoutes.post('/checklist-item/:id', checklistItemsPost);
 
 apiRoutes.delete('/col/:id', combColDelete);
 apiRoutes.delete('/cell', cellDelete);

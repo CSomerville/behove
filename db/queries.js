@@ -169,12 +169,22 @@ export function deleteChecklist(id) {
 export function findOneCell(id) {
   return db.task((t) => {
     return t.one(`
+        WITH checklist_ids AS (
+          SELECT id FROM checklists
+          WHERE cell_id = $1
+        )
         SELECT *, (
           SELECT COALESCE(json_agg(c), '[]')
           FROM (
             SELECT * FROM checklists WHERE cell_id = $1
           ) c
-        ) AS checklists
+        ) AS checklists, (
+          SELECT COALESCE(json_agg(ch), '[]')
+          FROM (
+            SELECT * FROM checklist_items
+            WHERE checklist_id IN (SELECT * FROM checklist_ids)
+          ) ch
+        ) AS checklist_items
         FROM cells
         WHERE id = $1
       `, [id])
