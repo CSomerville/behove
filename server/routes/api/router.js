@@ -5,7 +5,7 @@ import { combsGet, combPost, combGet } from './combshandler';
 import { combColPost, combColsPost, combColDelete } from './combcolshandler';
 import { cellGet, cellPost, cellsPost, cellDelete } from './cellhandler';
 import { checklistsPost, checklistsDelete } from './checklistshandler'
-import { checklistItemsPost } from './checklistitemshandler';
+import { checklistItemsPost, checklistItemsDelete } from './checklistitemshandler';
 
 let apiRoutes = express.Router();
 
@@ -27,5 +27,6 @@ apiRoutes.post('/checklist-item/:id', checklistItemsPost);
 apiRoutes.delete('/col/:id', combColDelete);
 apiRoutes.delete('/cell', cellDelete);
 apiRoutes.delete('/checklist/:id', checklistsDelete);
+apiRoutes.delete('/checklist-item/:id', checklistItemsDelete);
 
 export default apiRoutes;

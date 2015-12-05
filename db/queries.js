@@ -211,3 +211,9 @@ export function updateChecklistItem(item) {
             [item.checklistId, item.completed, item.position, item.name, item.id]);
   });
 }
+
+export function deleteChecklistItem(id) {
+  return db.task((t) => {
+    t.none("DELETE FROM checklist_items WHERE id = $1", [id])
+  })
+}
