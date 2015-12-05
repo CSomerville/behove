@@ -15,7 +15,7 @@ export default class ChItems extends Component {
 
   render() {
     const items = this.findItems();
-    const { triggerChangeName, triggerSave } = this.props;
+    const { triggerChangeName, triggerSave, triggerEdit, triggerCancel, triggerDelete } = this.props;
     return (
       <ul>
         {items.map((item, i) =>
@@ -23,6 +23,10 @@ export default class ChItems extends Component {
             {!item.editable &&
             <div>
               <p>{item.name}</p>
+              <button className="edit-checklist-item"
+                onClick={triggerEdit.bind(this, item.id)}>
+                edit
+              </button>
             </div>
             }
             {item.editable &&
@@ -30,6 +34,14 @@ export default class ChItems extends Component {
                 <input type="text"
                   value={item.name}
                   onChange={triggerChangeName.bind(this, item.id)} />
+                <button className="delete-checklist-item"
+                  onClick={triggerDelete.bind(this, item.id)}>
+                  delete
+                </button>
+                <button className="cancel-checklist-item"
+                  onClick={triggerCancel.bind(this, item.id)}>
+                  cancel
+                </button>
                 <button className="save-checklist-item"
                   onClick={triggerSave.bind(this, item)}>
                   save

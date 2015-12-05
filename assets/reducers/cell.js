@@ -3,7 +3,8 @@ import {
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
   CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
-  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM
+  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM_SUCCESS,
+  DELETE_CHECKLIST_ITEM_FAILURE
 } from '../actions/cell_actions';
 
 const defaultState = {
@@ -192,6 +193,24 @@ export default function(state = defaultState, action) {
           ...state.checklistItems.slice(ind + 1)
         ]
       });
+    case DELETE_CHECKLIST_ITEM:
+      ind = indexById(state.checklistItems.slice(0), action.id);
+      return Object.assign({}, state, {
+        checklistItems: [
+          ...state.checklistItems.slice(0, ind),
+          ...state.checklistItems.slice(ind + 1)
+        ],
+        isFetching: (state.isFetching + 1)
+      });
+    case DELETE_CHECKLIST_ITEM_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1)
+      });
+    case DELETE_CHECKLIST_ITEM_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: (state.isFetching - 1),
+        msg: action.msg
+      })
     default:
       return state;
   }

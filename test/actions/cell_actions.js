@@ -4,12 +4,13 @@ import nock from 'nock';
 
 import { updateCellId, initiateFetchCell, newChecklist, changeChecklistName, initiateSaveChecklist,
   editChecklist, initiateDeleteChecklist, cancelEditChecklist, newChecklistItem, changeChecklistItemName,
-  initiateSaveChecklistItem, editChecklistItem, cancelEditChecklistItem,
+  initiateSaveChecklistItem, editChecklistItem, cancelEditChecklistItem, initiateDeleteChecklistItem,
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
   CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
-  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM
+  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM_SUCCESS,
+  DELETE_CHECKLIST_ITEM_FAILURE
 } from '../../assets/actions/cell_actions';
 import mockStore from '../mockstore';
 
@@ -299,5 +300,37 @@ describe('cell actions', () => {
 
       expect(cancelEditChecklistItem(id)).to.deep.equal(expected);
     });
+  });
+  describe('initiateDeleteChecklistItem', () => {
+    it('should call success on success', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .delete('/api/checklist-item/' + id)
+        .reply(200);
+
+      const expectedActions = [
+        { type: DELETE_CHECKLIST_ITEM, id: id },
+        { type: DELETE_CHECKLIST_ITEM_SUCCESS }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateDeleteChecklistItem(id, 'http://127.0.0.1:3000'));
+    });
+    it('should call failure on failure', (done) => {
+      const id = uuid.v4();
+
+      nock('http://127.0.0.1:3000')
+        .delete('/api/checklist-item/' + id)
+        .reply(500);
+
+      const expectedActions = [
+        { type: DELETE_CHECKLIST_ITEM, id: id },
+        { type: DELETE_CHECKLIST_ITEM_FAILURE, msg: 'Internal Server Error' }
+      ];
+
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(initiateDeleteChecklistItem(id, 'http://127.0.0.1:3000'));
+    })
   });
 });

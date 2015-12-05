@@ -5,7 +5,8 @@ import {
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
   CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
-  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM
+  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM_SUCCESS,
+  DELETE_CHECKLIST_ITEM_FAILURE
 } from '../../assets/actions/cell_actions';
 import cell from '../../assets/reducers/cell';
 
@@ -757,6 +758,87 @@ describe('cell reducer', () => {
           position: 0,
           completed: false
         }]
+      };
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('delete checklist item', () => {
+    it('should remove item and add to isFetching', () => {
+      const [cellId, checklistItemId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaff',
+          prevName: 'leaf',
+          editable: true,
+          position: 0,
+          completed: false
+        }],
+        isFetching: 0
+      }, {
+        type: DELETE_CHECKLIST_ITEM,
+        id: checklistItemId
+      }];
+
+      const expected = {
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [],
+        isFetching: 1
+      }
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('delete checklist item success', () => {
+    it('should reduce isFetching', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        checklists: [],
+        checklistItems: [],
+        isFetching: 1,
+        msg: ''
+      }, {
+        type: DELETE_CHECKLIST_ITEM_SUCCESS
+      }];
+
+      const expected = {
+        id: id,
+        checklists: [],
+        checklistItems: [],
+        isFetching: 0,
+        msg: ''
+      };
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('delete checklist item failure', () => {
+    it('should reduce isFetching and set the msg', () => {
+      const id = uuid.v4();
+      const input = [{
+        id: id,
+        checklists: [],
+        checklistItems: [],
+        isFetching: 1,
+        msg: ''
+      }, {
+        type: DELETE_CHECKLIST_ITEM_FAILURE,
+        msg: 'Internal Server Error'
+      }];
+
+      const expected = {
+        id: id,
+        checklists: [],
+        checklistItems: [],
+        isFetching: 0,
+        msg: 'Internal Server Error'
       };
 
       expect(cell(...input)).to.deep.equal(expected);

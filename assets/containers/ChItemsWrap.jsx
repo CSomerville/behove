@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ChItems from '../components/ChItems';
-import { changeChecklistItemName, initiateSaveChecklistItem } from '../actions/cell_actions';
+import { changeChecklistItemName, initiateSaveChecklistItem, editChecklistItem, cancelEditChecklistItem,
+  initiateDeleteChecklistItem
+} from '../actions/cell_actions';
 
 export class ChItemsWrap extends Component {
   render() {
@@ -14,6 +16,15 @@ export class ChItemsWrap extends Component {
         }}
         triggerSave={(checklistItem) => {
           dispatch(initiateSaveChecklistItem(checklistItem));
+        }}
+        triggerEdit={(id) => {
+          dispatch(editChecklistItem(id));
+        }}
+        triggerCancel={(id) => {
+          dispatch(cancelEditChecklistItem(id));
+        }}
+        triggerDelete={(id) => {
+          dispatch(initiateDeleteChecklistItem(id));
         }}
         />
     );
