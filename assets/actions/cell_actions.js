@@ -22,6 +22,8 @@ export const CHANGE_CHECKLIST_ITEM_NAME = 'CHANGE_CHECKLIST_ITEM_NAME';
 export const SAVE_CHECKLIST_ITEM = 'SAVE_CHECKLIST_ITEM';
 export const SAVE_CHECKLIST_ITEM_SUCCESS = 'SAVE_CHECKLIST_ITEM_SUCCESS';
 export const SAVE_CHECKLIST_ITEM_FAILURE = 'SAVE_CHECKLIST_ITEM_FAILURE';
+export const EDIT_CHECKLIST_ITEM = 'EDIT_CHECKLIST_ITEM';
+export const CANCEL_EDIT_CHECKLIST_ITEM = 'CANCEL_EDIT_CHECKLIST_ITEM';
 
 export function updateCellId(id) {
   return {
@@ -241,5 +243,19 @@ export function initiateSaveChecklistItem(checklistItem, base) {
       .then((res) => checkStatus(res))
       .then(() => dispatch(saveChecklistItemSuccess()))
       .catch((err) => dispatch(saveChecklistItemFailure(err)));
+  }
+}
+
+export function editChecklistItem(id) {
+  return {
+    type: EDIT_CHECKLIST_ITEM,
+    id: id
+  }
+}
+
+export function cancelEditChecklistItem(id) {
+  return {
+    type: CANCEL_EDIT_CHECKLIST_ITEM,
+    id: id
   }
 }

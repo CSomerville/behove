@@ -4,7 +4,8 @@ import {
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
-  CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE
+  CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
+  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM
 } from '../../assets/actions/cell_actions';
 import cell from '../../assets/reducers/cell';
 
@@ -93,6 +94,7 @@ describe('cell reducer', () => {
         cell: {
           id: id,
           checklists: [],
+          checklistItems: [],
           combColId: colId,
           name: 'autumn',
           position: 0
@@ -680,6 +682,81 @@ describe('cell reducer', () => {
         checklistItems: [],
         isFetching: 1,
         msg: 'Internal Server Error'
+      };
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('edit checklist item', () => {
+    it('should store prevName and set editable to true', () => {
+      const [cellId, checklistItemId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaf',
+          prevName: '',
+          editable: false,
+          position: 0,
+          completed: false
+        }]
+      }, {
+        type: EDIT_CHECKLIST_ITEM,
+        id: checklistItemId
+      }];
+
+      const expected = {
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaf',
+          prevName: 'leaf',
+          editable: true,
+          position: 0,
+          completed: false
+        }]
+      }
+
+      expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+
+  describe('cancel edit checklist item', () => {
+    it('should set editable to false and restore name from prevName', () => {
+      const [cellId, checklistItemId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaff',
+          prevName: 'leaf',
+          editable: true,
+          position: 0,
+          completed: false
+        }]
+      }, {
+        type: CANCEL_EDIT_CHECKLIST_ITEM,
+        id: checklistItemId
+      }];
+
+      const expected = {
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaf',
+          prevName: 'leaf',
+          editable: false,
+          position: 0,
+          completed: false
+        }]
       };
 
       expect(cell(...input)).to.deep.equal(expected);

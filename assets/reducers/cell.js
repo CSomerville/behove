@@ -2,7 +2,8 @@ import {
   UPDATE_CELL_ID, FETCH_CELL, FETCH_CELL_SUCCESS, FETCH_CELL_FAILURE, NEW_CHECKLIST, CHANGE_CHECKLIST_NAME,
   SAVE_CHECKLIST, SAVE_CHECKLIST_SUCCESS, SAVE_CHECKLIST_FAILURE, EDIT_CHECKLIST, DELETE_CHECKLIST,
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
-  CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE
+  CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
+  EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM
 } from '../actions/cell_actions';
 
 const defaultState = {
@@ -27,6 +28,7 @@ export default function(state = defaultState, action) {
       return Object.assign({}, state, {
         name: action.cell.name,
         checklists: action.cell.checklists,
+        checklistItems: action.cell.checklistItems,
         isFetching: (state.isFetching - 1)
       });
     case FETCH_CELL_FAILURE:
@@ -165,6 +167,30 @@ export default function(state = defaultState, action) {
       return Object.assign({}, state, {
         isFetching: (state.isFetching - 1),
         msg: action.msg
+      });
+    case EDIT_CHECKLIST_ITEM:
+      ind = indexById(state.checklistItems.slice(), action.id)
+      return Object.assign({}, state, {
+        checklistItems: [
+          ...state.checklistItems.slice(0, ind),
+          Object.assign({}, state.checklistItems[ind], {
+            editable: true,
+            prevName: state.checklistItems[ind].name
+          }),
+          ...state.checklistItems.slice(ind + 1)
+        ]
+      });
+    case CANCEL_EDIT_CHECKLIST_ITEM:
+      ind = indexById(state.checklistItems.slice(), action.id)
+      return Object.assign({}, state, {
+        checklistItems: [
+          ...state.checklistItems.slice(0, ind),
+          Object.assign({}, state.checklistItems[ind], {
+            editable: false,
+            name: state.checklistItems[ind].prevName
+          }),
+          ...state.checklistItems.slice(ind + 1)
+        ]
       });
     default:
       return state;
