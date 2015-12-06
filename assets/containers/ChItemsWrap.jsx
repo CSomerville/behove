@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ChItems from '../components/ChItems';
 import { changeChecklistItemName, initiateSaveChecklistItem, editChecklistItem, cancelEditChecklistItem,
-  initiateDeleteChecklistItem
+  initiateDeleteChecklistItem, toggleItemCompletion
 } from '../actions/cell_actions';
 
 export class ChItemsWrap extends Component {
@@ -25,6 +25,9 @@ export class ChItemsWrap extends Component {
         }}
         triggerDelete={(id) => {
           dispatch(initiateDeleteChecklistItem(id));
+        }}
+        triggerComplete={(id) => {
+          dispatch(toggleItemCompletion(id));
         }}
         />
     );

@@ -6,7 +6,7 @@ import {
   DELETE_CHECKLIST_SUCCESS, DELETE_CHECKLIST_FAILURE, CANCEL_EDIT_CHECKLIST, NEW_CHECKLIST_ITEM,
   CHANGE_CHECKLIST_ITEM_NAME, SAVE_CHECKLIST_ITEM, SAVE_CHECKLIST_ITEM_SUCCESS, SAVE_CHECKLIST_ITEM_FAILURE,
   EDIT_CHECKLIST_ITEM, CANCEL_EDIT_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM, DELETE_CHECKLIST_ITEM_SUCCESS,
-  DELETE_CHECKLIST_ITEM_FAILURE
+  DELETE_CHECKLIST_ITEM_FAILURE, TOGGLE_ITEM_COMPLETION
 } from '../../assets/actions/cell_actions';
 import cell from '../../assets/reducers/cell';
 
@@ -842,6 +842,45 @@ describe('cell reducer', () => {
       };
 
       expect(cell(...input)).to.deep.equal(expected);
+    });
+  });
+  describe('toggle item completion', () => {
+    it('should set completed false to true', () => {
+      const [cellId, checklistItemId] = [uuid.v4(), uuid.v4()];
+      const input = [{
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaf',
+          prevName: 'leaf',
+          editable: false,
+          position: 0,
+          completed: false
+        }],
+        isFetching: 0
+      }, {
+        type: TOGGLE_ITEM_COMPLETION,
+        id: checklistItemId
+      }];
+
+      const expected = {
+        id: cellId,
+        name: 'autumn',
+        checklists: [],
+        checklistItems: [{
+          id: checklistItemId,
+          name: 'leaf',
+          prevName: 'leaf',
+          editable: false,
+          position: 0,
+          completed: true
+        }],
+        isFetching: 0
+      };
+
+      expect(cell(...input)).to.deep.equal(expected); 
     });
   });
 });

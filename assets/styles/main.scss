@@ -19,6 +19,22 @@ $green: #92956C;
   }
 }
 
+@mixin editable-field() {
+  display: flex;
+  justify-content: space-around;
+  input {
+    flex-grow: 2;
+    background-color: lighten($green, 30%);
+    color: black;
+    border-width: 0;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+  button {
+    margin-left: 10px;
+  }
+}
+
 body {
   font-family: 'Raleway', sans-serif;
   background-color: $green;
@@ -178,15 +194,16 @@ nav {
   margin-left: 10px;
 }
 
-.delete-cell, .col-delete, .delete-checklist {
+.delete-cell, .col-delete, .delete-checklist, .delete-checklist-item {
   @include typical-button($comb-background, $rust);
 }
 
-.cancel-edit-cell, .col-cancel, .new-checklist, .edit-checklist, .cancel-checklist {
+.cancel-edit-cell, .col-cancel, .new-checklist, .edit-checklist, .cancel-checklist,
+.edit-checklist-item, .cancel-checklist-item {
   @include typical-button($comb-background, $gold);
 }
 
-.save-edit-cell, .col-save, .save-checklist {
+.save-edit-cell, .col-save, .save-checklist, .save-checklist-item, .add-checklist-item {
   @include typical-button($comb-background, $green);
 }
 
@@ -206,14 +223,17 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
 
 .cell-show {
   background-color: $green;
   width: 75%;
-  min-height: 75%;
+  max-height: 75%;
   color: $comb-background;
   border-radius: 5px;
+  position: relative;
+  overflow: auto;
   h1 {
     padding: 10px 100px;
   }
@@ -230,21 +250,41 @@ nav {
     .edit-checklist {
       float: right;
     }
+    .add-checklist-item {
+      margin-left: 10%;
+    }
     .editable-checklist {
-      min-width: 66%;
-      margin-top: 30px;
-      display: flex;
-      justify-content: space-around;
-      input {
-        flex-grow: 2;
-        background-color: lighten($green, 30%);
-        color: black;
-        border-width: 0;
-        border-radius: 5px;
-        margin-left: 10px;
-      }
-      button {
-        margin-left: 10px;
+      @include editable-field();
+    }
+    .checklist-items {
+      max-width: 80%;
+      margin-left: 10%;
+      li {
+        margin: 20px;
+        .toggle-item-complete {
+          background-color: lighten($green, 30%);
+          border-style: none;
+          border-width: 0;
+          color: black;
+          width: 20px;
+          height: 20px;
+        }
+        div {
+          display: inline;
+        }
+        p {
+          display: inline;
+          cursor: pointer;
+        }
+        .item-completed {
+          text-decoration: line-through;
+        }
+        .edit-checklist-item {
+          float: right;
+        }
+        .editable-checklist-item {
+          @include editable-field();
+        }
       }
     }
   }

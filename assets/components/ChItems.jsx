@@ -15,22 +15,30 @@ export default class ChItems extends Component {
 
   render() {
     const items = this.findItems();
-    const { triggerChangeName, triggerSave, triggerEdit, triggerCancel, triggerDelete } = this.props;
+    const { triggerChangeName, triggerSave, triggerEdit, triggerCancel, triggerDelete,
+    triggerComplete } = this.props;
     return (
-      <ul>
+      <ul className="checklist-items">
         {items.map((item, i) =>
           <li key={item.id}>
             {!item.editable &&
             <div>
-              <p>{item.name}</p>
-              <button className="edit-checklist-item"
-                onClick={triggerEdit.bind(this, item.id)}>
-                edit
+              <button className="toggle-item-complete"
+                onClick={triggerComplete.bind(this, item.id)}>
+                {(item.completed) ? 'x' : ''}
               </button>
+              <p className={(item.completed) ? 'item-completed' : ''}
+                onClick={triggerEdit.bind(this, item.id)}>
+                {item.name}
+              </p>
             </div>
             }
             {item.editable &&
-              <div>
+              <div className="editable-checklist-item">
+                <button className="toggle-item-complete"
+                  onClick={triggerComplete.bind(this, item.id)}>
+                  {(item.completed) ? 'x' : ''}
+                </button>
                 <input type="text"
                   value={item.name}
                   onChange={triggerChangeName.bind(this, item.id)} />

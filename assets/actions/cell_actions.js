@@ -27,6 +27,7 @@ export const CANCEL_EDIT_CHECKLIST_ITEM = 'CANCEL_EDIT_CHECKLIST_ITEM';
 export const DELETE_CHECKLIST_ITEM = 'DELETE_CHECKLIST_ITEM';
 export const DELETE_CHECKLIST_ITEM_SUCCESS = 'DELETE_CHECKLIST_ITEM_SUCCESS';
 export const DELETE_CHECKLIST_ITEM_FAILURE = 'DELETE_CHECKLIST_ITEM_FAILURE';
+export const TOGGLE_ITEM_COMPLETION = 'TOGGLE_ITEM_COMPLETION';
 
 export function updateCellId(id) {
   return {
@@ -296,5 +297,12 @@ export function initiateDeleteChecklistItem(id, base) {
       .then((res) => checkStatus(res))
       .then(() => dispatch(deleteChecklistItemSuccess()))
       .catch((err) => dispatch(deleteChecklistItemFailure(err)));
+  }
+}
+
+export function toggleItemCompletion(id) {
+  return {
+    type: TOGGLE_ITEM_COMPLETION,
+    id: id
   }
 }

@@ -12,7 +12,7 @@ export default class Checklists extends Component {
             <li key={checklist.id} className="checklist">
               {!checklist.editable &&
                 <div>
-                  <p className="checklist-name">{checklist.name}</p>
+                  <h2 className="checklist-name">{checklist.name}</h2>
                   <button className="edit-checklist"
                     onClick={triggerEditable.bind(this, checklist.id)}>
                     edit
@@ -38,7 +38,8 @@ export default class Checklists extends Component {
                 </div>
               }
               <ChItemsWrap checklist={checklist} />
-              <button onClick={triggerNewItem.bind(this, checklist.id)}>
+              <button className="add-checklist-item"
+                onClick={triggerNewItem.bind(this, checklist.id)}>
                 + item
               </button>
             </li>
