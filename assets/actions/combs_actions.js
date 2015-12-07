@@ -105,7 +105,13 @@ export function initiateFetchCombs(base) {
 
   return (dispatch) => {
     dispatch(fetchCombs());
-    fetch(base + '/api/combs', { credentials: 'same-origin' })
+    fetch(base + '/api/combs', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
       .then((res) => {
         checkStatus(res);
         return res.json()

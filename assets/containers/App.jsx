@@ -5,21 +5,15 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends Component {
   render() {
-    const links = [
-      '/app',
-      '/app/combs',
-      '/app/test'
-    ].map((el) =>
-      <p>
-        <Link to={el}>{el}</Link>
-      </p>
-    );
     return (
       <div>
         <nav>
           <Link to='/app/combs'>
             <h1>behove</h1>
           </Link>
+          <form action="/logout" method="POST">
+            <button type="submit">logout</button>
+          </form>
         </nav>
         {this.props.children}
       </div>
