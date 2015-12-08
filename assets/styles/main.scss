@@ -35,6 +35,15 @@ $green: #92956C;
   }
 }
 
+.top-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  button {
+    @include typical-button($rust, lighten($gold, 20%));
+  }
+}
+
 body {
   font-family: 'Raleway', sans-serif;
   background-color: $green;

@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <nav>
+        <nav className="top-nav">
           <Link to='/app/combs'>
             <h1>behove</h1>
           </Link>

@@ -15,7 +15,7 @@ const app = document.getElementById('app');
 render(
   <Provider store={store}>
     <ReduxRouter>
-      <Route path="/app/" component={App}>
+      <Route path="/app" component={App}>
         <Route path="combs" component={CombsView} />
         <Route path="comb/:id" component={CombView}>
           <Route path="cell/:cellid" component={CellView} />
